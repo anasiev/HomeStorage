@@ -89,7 +89,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         }`}
       >
         <div className="flex flex-col h-full overflow-y-auto">
-          {/* Бренд и заголовок */}
+          {/* Brand header */}
           <div className="p-5 border-b border-neutral-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-emerald-500 flex items-center justify-center text-neutral-950 font-black shadow-lg shadow-emerald-500/20">
@@ -97,48 +97,48 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </div>
               <div>
                 <h1 className="font-extrabold text-sm tracking-tight text-white flex items-center gap-1.5">
-                  Склад & Хранение
+                  Storage & Inventory
                   <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-neutral-800 text-emerald-400 font-normal">
-                    v1.0
+                    v1.1
                   </span>
                 </h1>
                 <p className="text-[11px] text-neutral-400">
-                  Инвентарь с этикетками
+                  Inventory & Labeling
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Статистика хранилища */}
+          {/* Storage statistics */}
           <div className="px-5 py-3 bg-neutral-950/60 border-b border-neutral-800/80 grid grid-cols-3 gap-2 text-xs">
             <div className="p-2 rounded-xl bg-neutral-800/50 text-center">
-              <span className="text-neutral-400 block text-xs">Вещей</span>
+              <span className="text-neutral-400 block text-xs">Items</span>
               <span className="font-bold text-sm text-emerald-400 font-mono">
                 {totalItems}
               </span>
             </div>
             <div className="p-2 rounded-xl bg-neutral-800/50 text-center">
-              <span className="text-neutral-400 block text-xs">Мест</span>
+              <span className="text-neutral-400 block text-xs">Locations</span>
               <span className="font-bold text-sm text-blue-400 font-mono">
                 {totalLocations}
               </span>
             </div>
             <div className="p-2 rounded-xl bg-neutral-800/50 text-center">
-              <span className="text-neutral-400 block text-xs">Категорий</span>
+              <span className="text-neutral-400 block text-xs">Categories</span>
               <span className="font-bold text-sm text-purple-400 font-mono">
                 {totalCategories}
               </span>
             </div>
           </div>
 
-          {/* Фиксированное меню операций по ТЗ (7 функций) */}
+          {/* Fixed operations menu */}
           <div className="p-4 flex-1 space-y-4">
             <div>
               <div className="px-2 mb-2 text-xs font-bold uppercase tracking-wider text-neutral-400">
-                Панель управления (Функции ТЗ)
+                Control Panel
               </div>
               <nav className="space-y-1.5">
-                {/* 1. Добавить вещь */}
+                {/* 1. Add item */}
                 <button
                   type="button"
                   onClick={() => {
@@ -149,14 +149,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 >
                   <div className="flex items-center gap-2.5">
                     <PackagePlus className="w-4.5 h-4.5 text-white" />
-                    <span>1. Добавить вещь</span>
+                    <span>1. Add Item</span>
                   </div>
                   <span className="text-xs opacity-80 font-normal group-hover:translate-x-0.5 transition-transform">
-                    Создать
+                    New
                   </span>
                 </button>
 
-                {/* 2. Удалить вещь */}
+                {/* 2. Delete item */}
                 <button
                   type="button"
                   onClick={() => {
@@ -167,7 +167,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 >
                   <div className="flex items-center gap-2.5">
                     <Trash2 className="w-4.5 h-4.5 text-rose-400" />
-                    <span>2. Удалить вещь</span>
+                    <span>2. Delete Item</span>
                   </div>
                   {selectedItemsCount > 0 && (
                     <span className="px-2 py-0.5 bg-rose-500/20 text-rose-300 rounded font-mono text-xs">
@@ -176,7 +176,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   )}
                 </button>
 
-                {/* 3. Переместить вещь */}
+                {/* 3. Move item */}
                 <button
                   type="button"
                   onClick={() => {
@@ -187,7 +187,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 >
                   <div className="flex items-center gap-2.5">
                     <ArrowRightLeft className="w-4.5 h-4.5 text-emerald-400" />
-                    <span>3. Переместить вещь</span>
+                    <span>3. Move Item</span>
                   </div>
                   {selectedItemsCount > 0 && (
                     <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-300 rounded font-mono text-xs">
@@ -196,7 +196,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   )}
                 </button>
 
-                {/* 4. Добавить место */}
+                {/* 4. Add location */}
                 <button
                   type="button"
                   onClick={() => {
@@ -207,14 +207,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 >
                   <div className="flex items-center gap-2.5">
                     <FolderPlus className="w-4.5 h-4.5 text-blue-400" />
-                    <span>4. Добавить место</span>
+                    <span>4. Add Location</span>
                   </div>
                   <span className="text-xs text-neutral-400 font-mono">
-                    д-ш-п-к
+                    h-w-s-b
                   </span>
                 </button>
 
-                {/* Изменить место */}
+                {/* Edit location */}
                 <button
                   type="button"
                   onClick={() => {
@@ -225,14 +225,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 >
                   <div className="flex items-center gap-2.5">
                     <Edit2 className="w-4.5 h-4.5 text-cyan-400" />
-                    <span>Изменить место</span>
+                    <span>Edit Location</span>
                   </div>
                   <span className="text-xs text-neutral-400">
-                    свойства
+                    properties
                   </span>
                 </button>
 
-                {/* 5. Удалить место */}
+                {/* 5. Delete location */}
                 <button
                   type="button"
                   onClick={() => {
@@ -243,14 +243,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 >
                   <div className="flex items-center gap-2.5">
                     <ShieldAlert className="w-4.5 h-4.5 text-amber-400" />
-                    <span>5. Удалить место</span>
+                    <span>5. Delete Location</span>
                   </div>
                   <span className="text-xs text-neutral-400">
-                    с защитой
+                    safe check
                   </span>
                 </button>
 
-                {/* 6. Переместить место */}
+                {/* 6. Move location */}
                 <button
                   type="button"
                   onClick={() => {
@@ -261,14 +261,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 >
                   <div className="flex items-center gap-2.5">
                     <FolderSync className="w-4.5 h-4.5 text-purple-400" />
-                    <span>6. Переместить место</span>
+                    <span>6. Move Location</span>
                   </div>
                   <span className="text-xs text-neutral-400 font-mono">
                     Drag&Drop
                   </span>
                 </button>
 
-                {/* 7. Показать место */}
+                {/* 7. Show location (Tree) */}
                 <button
                   type="button"
                   onClick={() => {
@@ -284,19 +284,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 >
                   <div className="flex items-center gap-2.5">
                     <Layers className="w-4.5 h-4.5 text-amber-400" />
-                    <span>7. Показать место (Дерево)</span>
+                    <span>7. Storage Tree</span>
                   </div>
                   <span className="text-xs font-mono text-emerald-400">
-                    4 ур.
+                    4 lvls
                   </span>
                 </button>
               </nav>
             </div>
 
-            {/* Категории каталога */}
+            {/* Catalog Categories */}
             <div className="pt-2 border-t border-neutral-800">
               <div className="px-2 mb-2 text-xs font-bold uppercase tracking-wider text-neutral-400">
-                Категории вещей
+                Item Categories
               </div>
               <div className="space-y-1.5">
                 <button
@@ -314,7 +314,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 >
                   <div className="flex items-center gap-2.5">
                     <FolderTree className="w-4.5 h-4.5 text-blue-400" />
-                    <span>Дерево категорий</span>
+                    <span>Category Tree</span>
                   </div>
                   <span className="text-xs text-neutral-400 font-mono">
                     {totalCategories}
@@ -331,17 +331,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 >
                   <div className="flex items-center gap-2.5">
                     <FolderPlus className="w-4.5 h-4.5 text-emerald-400" />
-                    <span>Добавить категорию</span>
+                    <span>Add Category</span>
                   </div>
                   <span className="text-xs text-emerald-400 font-mono">+</span>
                 </button>
               </div>
             </div>
 
-            {/* Быстрое переключение основного вида */}
+            {/* Main view toggle */}
             <div className="pt-2 border-t border-neutral-800">
               <div className="px-2 mb-2 text-xs font-bold uppercase tracking-wider text-neutral-400">
-                Режим экрана
+                View Mode
               </div>
               <div className="grid grid-cols-3 gap-1.5 p-1 bg-neutral-950 rounded-xl">
                 <button
@@ -353,7 +353,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       : 'text-neutral-400 hover:text-neutral-200'
                   }`}
                 >
-                  Вещи
+                  Items
                 </button>
                 <button
                   type="button"
@@ -364,7 +364,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       : 'text-neutral-400 hover:text-neutral-200'
                   }`}
                 >
-                  Места
+                  Storage
                 </button>
                 <button
                   type="button"
@@ -375,13 +375,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       : 'text-neutral-400 hover:text-neutral-200'
                   }`}
                 >
-                  Категории
+                  Categories
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Нижний блок: Импорт/Экспорт базы db.json и Справка по Go */}
+          {/* Bottom block: Import/Export db.json and Go Server info */}
           <div className="p-4 border-t border-neutral-800 bg-neutral-950/40 space-y-2">
             <button
               type="button"
@@ -390,7 +390,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             >
               <div className="flex items-center gap-2">
                 <Code className="w-4 h-4 text-cyan-400" />
-                <span>Сервер на Go (read.me)</span>
+                <span>Go Server &amp; Service</span>
               </div>
               <span className="text-[10px] font-mono text-cyan-400">net/http</span>
             </button>
@@ -400,7 +400,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 type="button"
                 onClick={onExportDb}
                 className="py-1.5 px-2 rounded-lg text-[11px] font-medium bg-neutral-800 hover:bg-neutral-700 text-neutral-300 flex items-center justify-center gap-1.5 transition-colors"
-                title="Скачать файл db.json"
+                title="Download db.json file"
               >
                 <Download className="w-3.5 h-3.5 text-neutral-400" />
                 <span>db.json</span>
@@ -409,20 +409,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 type="button"
                 onClick={onImportDbClick}
                 className="py-1.5 px-2 rounded-lg text-[11px] font-medium bg-neutral-800 hover:bg-neutral-700 text-neutral-300 flex items-center justify-center gap-1.5 transition-colors"
-                title="Загрузить свой db.json"
+                title="Import your db.json"
               >
                 <Upload className="w-3.5 h-3.5 text-neutral-400" />
-                <span>Импорт</span>
+                <span>Import</span>
               </button>
             </div>
 
             <button
               type="button"
               onClick={onResetData}
-              className="w-full text-center text-[10px] text-neutral-500 hover:text-neutral-300 py-1 transition-colors flex items-center justify-center gap-1"
+              className="w-full text-center text-[10px] text-neutral-500 hover:text-neutral-300 py-1 transition-colors flex items-center justify-center gap-1 cursor-pointer"
             >
               <RotateCcw className="w-3 h-3" />
-              Восстановить примеры склада
+              Reset to Sample Data
             </button>
           </div>
         </div>

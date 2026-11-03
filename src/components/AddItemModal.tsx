@@ -254,11 +254,11 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
-      setError('Укажите название вещи');
+      setError('Please enter item name');
       return;
     }
     if (!locationId) {
-      setError('Выберите место хранения');
+      setError('Please select a storage location');
       return;
     }
 
@@ -303,7 +303,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
       }
       onClose();
     } catch (err: any) {
-      setError(err?.message || 'Ошибка сохранения вещи на сервере');
+      setError(err?.message || 'Failed to save item to server');
     } finally {
       setIsSubmitting(false);
     }
@@ -312,7 +312,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-y-auto">
       <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full my-auto overflow-hidden flex flex-col border border-neutral-200 animate-in fade-in zoom-in-95 duration-150">
-        {/* Шапка */}
+        {/* Header */}
         <div className="px-6 py-4 bg-neutral-900 text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2.5 bg-neutral-800 rounded-xl text-emerald-400">
@@ -320,10 +320,10 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
             </div>
             <div>
               <h3 className="text-base font-bold">
-                {isEdit ? 'Редактировать вещь' : 'Добавить новую вещь'}
+                {isEdit ? 'Edit Item' : 'Add New Item'}
               </h3>
               <p className="text-xs text-neutral-400">
-                Заполните карточку для быстрого поиска и инвентаризации
+                Fill in the details for fast search and inventory tracking
               </p>
             </div>
           </div>
@@ -335,7 +335,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
           </button>
         </div>
 
-        {/* Форма */}
+        {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 overflow-y-auto max-h-[calc(90vh-130px)] space-y-5">
           {error && (
             <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm">
@@ -343,17 +343,17 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
             </div>
           )}
 
-          {/* 1. Название и Категория */}
+          {/* 1. Name and Category */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="sm:col-span-2">
               <label className="block text-xs font-semibold text-neutral-700 mb-1">
-                Название вещи <span className="text-rose-500">*</span>
+                Item Name <span className="text-rose-500">*</span>
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Например: Фильтр для пылесоса Samsung DJ97"
+                placeholder="e.g., Samsung HEPA Filter DJ97 or Cordless Drill"
                 required
                 className="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:bg-white"
               />
@@ -362,7 +362,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="text-xs font-semibold text-neutral-700">
-                  Категория каталога
+                  Catalog Category
                 </label>
                 {onOpenCreateCategory && (
                   <button
@@ -370,7 +370,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
                     onClick={onOpenCreateCategory}
                     className="text-[11px] text-emerald-600 hover:text-emerald-700 font-medium"
                   >
-                    + Новая
+                    + New
                   </button>
                 )}
               </div>
@@ -388,7 +388,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
                 }}
                 className="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:bg-white font-medium"
               >
-                <option value="">-- Без категории --</option>
+                <option value="">-- No Category --</option>
                 {inventoryManager.getCategories().map((c) => (
                   <option key={c.id} value={c.id}>
                     {inventoryManager.getCategoryPathString(c.id)}
@@ -398,12 +398,12 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
             </div>
           </div>
 
-          {/* 2. Место хранения (Иерархический выбор) */}
+          {/* 2. Storage Location */}
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-1 flex items-center justify-between">
-              <span>Место хранения в иерархии <span className="text-rose-500">*</span></span>
+              <span>Storage Location Hierarchy <span className="text-rose-500">*</span></span>
               <span className="text-[11px] text-neutral-500">
-                (Полка, Коробка, Шкаф или Верстак)
+                (Shelf, Box, Cabinet, or Workbench)
               </span>
             </label>
             <div className="relative">
@@ -414,15 +414,14 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
                 className="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm text-neutral-800 focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:bg-white font-medium"
               >
                 <option value="" disabled>
-                  -- Выберите полку или коробку --
+                  -- Select shelf, box, or location --
                 </option>
                 {locations.map((loc) => {
                   const path = inventoryManager.getLocationPathString(loc.id);
-                  const isContainerOrShelf = loc.type === 'container' || loc.type === 'shelf';
                   return (
                     <option key={loc.id} value={loc.id}>
                       {loc.full_code ? `[${loc.full_code}] ` : ''}
-                      {path} ({loc.type === 'container' ? 'Коробка' : loc.type === 'shelf' ? 'Полка' : loc.type === 'furniture' ? 'Мебель' : 'Локация'})
+                      {path} ({loc.type === 'container' ? 'Box/Bin' : loc.type === 'shelf' ? 'Shelf' : loc.type === 'furniture' ? 'Furniture' : 'Location'})
                     </option>
                   );
                 })}
@@ -431,7 +430,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
             {locationId && (
               <p className="text-xs text-emerald-700 mt-1.5 flex items-center gap-1 font-mono">
                 <Layers className="w-3.5 h-3.5" />
-                Код адреса: <strong>{inventoryManager.getLocation(locationId)?.full_code || '---'}</strong>
+                Location code: <strong>{inventoryManager.getLocation(locationId)?.full_code || '---'}</strong>
                 <span className="text-neutral-500 font-sans ml-1">
                   ({inventoryManager.getLocationPathString(locationId)})
                 </span>
@@ -439,26 +438,26 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
             )}
           </div>
 
-          {/* 3. Артикул (SKU) и Штрихкод */}
+          {/* 3. SKU and Barcode */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="text-xs font-semibold text-neutral-700">
-                  Артикул (SKU)
+                  SKU (Part Number)
                 </label>
                 <button
                   type="button"
                   onClick={handleGenerateSku}
                   className="text-[11px] text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1"
                 >
-                  <Sparkles className="w-3 h-3" /> Сгенерировать
+                  <Sparkles className="w-3 h-3" /> Generate
                 </button>
               </div>
               <input
                 type="text"
                 value={sku}
                 onChange={(e) => setSku(e.target.value)}
-                placeholder="Например: SAM-HEPA-0167"
+                placeholder="e.g., SAM-HEPA-0167"
                 className="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm font-mono focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:bg-white"
               />
             </div>
@@ -466,36 +465,36 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="text-xs font-semibold text-neutral-700">
-                  Штрихкод (Barcode)
+                  Barcode
                 </label>
                 <button
                   type="button"
                   onClick={handleGenerateBarcode}
                   className="text-[11px] text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1"
                 >
-                  <Barcode className="w-3 h-3" /> Сгенерировать
+                  <Barcode className="w-3 h-3" /> Generate
                 </button>
               </div>
               <input
                 type="text"
                 value={barcode}
                 onChange={(e) => setBarcode(e.target.value)}
-                placeholder="EAN-13 или ручной код"
+                placeholder="EAN-13 or custom code"
                 className="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm font-mono focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:bg-white"
               />
             </div>
           </div>
 
-          {/* 4. Загрузка фото (Мобильная камера + Десктоп Drag & Drop по ТЗ) */}
+          {/* 4. Photo upload (Smartphone Camera + Desktop Drag & Drop) */}
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-1.5 flex items-center justify-between">
-              <span>Фотографии вещи ({photos.length})</span>
+              <span>Item Photos ({photos.length})</span>
               <span className="text-[11px] text-neutral-500">
-                Поддержка нескольких фото
+                Multiple photos supported
               </span>
             </label>
 
-            {/* Зона загрузки и кнопка камеры */}
+            {/* Drop zone and camera button */}
             <div
               onDragOver={(e) => {
                 e.preventDefault();
@@ -510,32 +509,32 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
               }`}
             >
               <div className="flex flex-wrap items-center justify-center gap-3">
-                {/* Кнопка нативной камеры смартфона (capture="environment") */}
+                {/* Smartphone camera button */}
                 <button
                   type="button"
                   onClick={() => cameraInputRef.current?.click()}
                   className="px-3.5 py-2 bg-emerald-600 text-white hover:bg-emerald-700 rounded-xl text-xs font-medium flex items-center gap-2 shadow-xs transition-colors cursor-pointer"
                 >
                   <Camera className="w-4 h-4" />
-                  Снять на камеру смартфона
+                  Take Photo (Camera)
                 </button>
 
-                {/* Выбор из галереи / файлов */}
+                {/* Choose from gallery/files */}
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
                   className="px-3.5 py-2 bg-white border border-neutral-300 hover:bg-neutral-50 text-neutral-700 rounded-xl text-xs font-medium flex items-center gap-2 transition-colors cursor-pointer"
                 >
                   <Upload className="w-4 h-4 text-neutral-500" />
-                  Выбрать файл(ы)
+                  Choose Files
                 </button>
               </div>
 
               <p className="text-[11px] text-neutral-500">
-                Или перетащите фото сюда с компьютера (drag-and-drop)
+                Or drag & drop photos here from your computer
               </p>
 
-              {/* Скрытые инпуты */}
+              {/* Hidden inputs */}
               <input
                 ref={cameraInputRef}
                 type="file"
@@ -554,7 +553,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
               />
             </div>
 
-            {/* Галерея загруженных миниатюр */}
+            {/* Gallery of uploaded thumbnails */}
             {photos.length > 0 && (
               <div className="flex flex-wrap gap-2.5 mt-3">
                 {photos.map((src, idx) => (
@@ -564,20 +563,20 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
                   >
                     <img
                       src={src.startsWith('http') || src.startsWith('data:') || src.startsWith('/') ? src : `/${src}`}
-                      alt={`Фото ${idx + 1}`}
+                      alt={`Photo ${idx + 1}`}
                       className="w-full h-full object-cover"
                     />
                     <button
                       type="button"
                       onClick={() => removePhoto(idx)}
                       className="absolute top-1 right-1 p-1 bg-red-600 text-white rounded-full opacity-80 group-hover:opacity-100 transition-opacity"
-                      title="Удалить фото"
+                      title="Remove photo"
                     >
                       <Trash2 className="w-3 h-3" />
                     </button>
                     {idx === 0 && (
                       <span className="absolute bottom-0 inset-x-0 bg-neutral-900/70 text-white text-[9px] text-center py-0.5 font-medium">
-                        Главное
+                        Primary
                       </span>
                     )}
                   </div>
@@ -586,17 +585,17 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
             )}
           </div>
 
-          {/* 5. Габариты и масса (Parameters JSONB) */}
+          {/* 5. Dimensions and Weight (Parameters JSONB) */}
           <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-3">
             <div className="text-xs font-semibold text-neutral-800 flex items-center gap-1.5">
               <Scale className="w-4 h-4 text-neutral-500" />
-              Параметры вещи (Масса и Габариты)
+              Item Parameters (Weight & Dimensions)
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div>
                 <label className="block text-[11px] text-neutral-600 mb-1">
-                  Масса (кг)
+                  Weight (kg)
                 </label>
                 <input
                   type="number"
@@ -611,7 +610,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
 
               <div>
                 <label className="block text-[11px] text-neutral-600 mb-1">
-                  Длина (мм)
+                  Length (mm)
                 </label>
                 <input
                   type="number"
@@ -625,7 +624,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
 
               <div>
                 <label className="block text-[11px] text-neutral-600 mb-1">
-                  Ширина (мм)
+                  Width (mm)
                 </label>
                 <input
                   type="number"
@@ -639,7 +638,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
 
               <div>
                 <label className="block text-[11px] text-neutral-600 mb-1">
-                  Высота (мм)
+                  Height (mm)
                 </label>
                 <input
                   type="number"
@@ -653,34 +652,34 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
             </div>
           </div>
 
-          {/* 6. Описание и Заметки */}
+          {/* 6. Description and Notes */}
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-1">
-              Подробное описание и назначение
+              Description & Notes
             </label>
             <textarea
               rows={2}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Опишите состояние, совместимость с техникой, номер партии или комплектность..."
+              placeholder="Describe condition, model compatibility, batch number, contents..."
               className="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:bg-white"
             />
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-1">
-              Дополнительные заметки
+              Additional Notes / Tags
             </label>
             <input
               type="text"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Срок годности, особенности монтажа, контакты мастера..."
+              placeholder="Expiration date, installation notes, vendor contact..."
               className="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:bg-white"
             />
           </div>
 
-          {/* Кнопки действий */}
+          {/* Action buttons */}
           <div className="pt-2 flex items-center justify-end gap-3 border-t border-neutral-200">
             <button
               type="button"
@@ -688,7 +687,7 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
               disabled={isSubmitting}
               className="px-4 py-2.5 text-sm font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors disabled:opacity-50"
             >
-              Отмена
+              Cancel
             </button>
             <button
               type="submit"
@@ -698,12 +697,12 @@ export const AddItemModal: React.FC<AddItemModalProps> = ({
               {isSubmitting ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>Сохранение в db.json...</span>
+                  <span>Saving to db.json...</span>
                 </>
               ) : (
                 <>
                   <PackagePlus className="w-4 h-4" />
-                  <span>{isEdit ? 'Сохранить изменения' : 'Добавить вещь на склад'}</span>
+                  <span>{isEdit ? 'Save Changes' : 'Add Item to Storage'}</span>
                 </>
               )}
             </button>

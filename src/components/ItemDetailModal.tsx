@@ -91,9 +91,9 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
     if (!isoString) return '---';
     try {
       const d = new Date(isoString);
-      return d.toLocaleDateString('ru-RU', {
+      return d.toLocaleDateString('en-US', {
         day: '2-digit',
-        month: 'long',
+        month: 'short',
         year: 'numeric',
       });
     } catch {
@@ -104,7 +104,7 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs overflow-y-auto">
       <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full my-auto overflow-hidden flex flex-col border border-neutral-200 animate-in fade-in zoom-in-95 duration-150">
-        {/* Шапка модалки */}
+        {/* Modal Header */}
         <div className="px-6 py-4 bg-neutral-900 text-white flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
             <div className="p-2.5 bg-neutral-800 rounded-xl text-emerald-400 shrink-0">
@@ -126,17 +126,17 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors shrink-0 ml-3"
+            className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors shrink-0 ml-3 cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Тело модалки */}
+        {/* Modal Body */}
         <div className="p-6 overflow-y-auto max-h-[calc(88vh-140px)] space-y-6">
-          {/* Верхний блок: Галерея фото слева + Ключевая информация справа */}
+          {/* Top section: Photo Gallery & Key Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-            {/* Галерея изображений */}
+            {/* Gallery */}
             <div className="space-y-3">
               <div className="relative aspect-4/3 w-full bg-neutral-100 rounded-2xl overflow-hidden border border-neutral-200 group shadow-2xs">
                 <img
@@ -145,7 +145,7 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
                   className="w-full h-full object-cover"
                 />
 
-                {/* Навигация слайдера */}
+                {/* Slider nav */}
                 {photos.length > 1 && (
                   <>
                     <button
@@ -154,7 +154,7 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
                           prev > 0 ? prev - 1 : photos.length - 1
                         )
                       }
-                      className="absolute left-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/50 text-white hover:bg-black/80 transition-colors"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/50 text-white hover:bg-black/80 transition-colors cursor-pointer"
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </button>
@@ -164,7 +164,7 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
                           prev < photos.length - 1 ? prev + 1 : 0
                         )
                       }
-                      className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/50 text-white hover:bg-black/80 transition-colors"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/50 text-white hover:bg-black/80 transition-colors cursor-pointer"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </button>
@@ -182,14 +182,14 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
                 )}
               </div>
 
-              {/* Миниатюры */}
+              {/* Thumbnails */}
               {photos.length > 1 && (
                 <div className="flex items-center gap-2 overflow-x-auto pb-1">
                   {photos.map((url, idx) => (
                     <button
                       key={idx}
                       onClick={() => setActivePhotoIdx(idx)}
-                      className={`w-16 h-16 rounded-xl overflow-hidden border-2 shrink-0 transition-all ${
+                      className={`w-16 h-16 rounded-xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer ${
                         idx === activePhotoIdx
                           ? 'border-emerald-600 scale-105 shadow-xs'
                           : 'border-transparent opacity-70 hover:opacity-100'
@@ -206,19 +206,19 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
               )}
             </div>
 
-            {/* Место хранения, категория, артикул и штрихкод */}
+            {/* Location, category, sku, barcode */}
             <div className="space-y-4 text-xs">
-              {/* Место хранения */}
+              {/* Storage location */}
               <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200 space-y-1">
                 <div className="text-[10px] uppercase font-bold text-neutral-500 tracking-wider flex items-center justify-between">
-                  <span>Место хранения на складе</span>
+                  <span>Storage Location</span>
                   <span className="font-mono font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.2 rounded">
                     {fullCode}
                   </span>
                 </div>
                 <div className="text-sm font-bold text-neutral-900 flex items-center gap-1.5 mt-0.5">
                   <MapPin className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>{loc?.name || 'Без названия'}</span>
+                  <span>{loc?.name || 'Unnamed'}</span>
                 </div>
                 <p className="text-neutral-600 font-medium leading-relaxed">
                   {locPath}
@@ -230,19 +230,19 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
                       onSelectLocation(loc.id);
                       onClose();
                     }}
-                    className="text-emerald-700 hover:underline font-semibold flex items-center gap-1 pt-1"
+                    className="text-emerald-700 hover:underline font-semibold flex items-center gap-1 pt-1 cursor-pointer"
                   >
                     <ExternalLink className="w-3 h-3" />
-                    Показать все вещи в этом месте
+                    Show all items in this location
                   </button>
                 )}
               </div>
 
-              {/* Категория каталога */}
+              {/* Category */}
               {categoryPath && (
                 <div className="p-3.5 bg-blue-50/70 rounded-xl border border-blue-200/80 space-y-1">
                   <div className="text-[10px] uppercase font-bold text-blue-700 tracking-wider">
-                    Категория каталога
+                    Catalog Category
                   </div>
                   <div className="flex items-center gap-1.5 text-neutral-900 font-semibold text-xs">
                     <span
@@ -258,28 +258,28 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
                         onSelectCategory(cat.id);
                         onClose();
                       }}
-                      className="text-blue-700 hover:underline font-semibold flex items-center gap-1 pt-0.5"
+                      className="text-blue-700 hover:underline font-semibold flex items-center gap-1 pt-0.5 cursor-pointer"
                     >
                       <ExternalLink className="w-3 h-3" />
-                      Показать вещи этой категории
+                      Show items in this category
                     </button>
                   )}
                 </div>
               )}
 
-              {/* Артикул (SKU) и Штрихкод с копированием */}
+              {/* SKU and Barcode with copy */}
               <div className="grid grid-cols-2 gap-2.5">
                 <div className="p-3 bg-neutral-50 rounded-xl border border-neutral-200">
                   <span className="text-[10px] uppercase font-bold text-neutral-400 block mb-0.5">
-                    Артикул (SKU)
+                    SKU (Part Number)
                   </span>
                   <div className="font-mono text-xs font-bold text-neutral-900 flex items-center justify-between">
                     <span className="truncate">{item.sku || '---'}</span>
                     {item.sku && (
                       <button
                         onClick={() => copyToClipboard(item.sku, 'sku')}
-                        className="text-neutral-400 hover:text-neutral-700 p-0.5"
-                        title="Скопировать артикул"
+                        className="text-neutral-400 hover:text-neutral-700 p-0.5 cursor-pointer"
+                        title="Copy SKU"
                       >
                         {copiedField === 'sku' ? (
                           <Check className="w-3.5 h-3.5 text-emerald-600" />
@@ -293,15 +293,15 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
 
                 <div className="p-3 bg-neutral-50 rounded-xl border border-neutral-200">
                   <span className="text-[10px] uppercase font-bold text-neutral-400 block mb-0.5">
-                    Штрихкод
+                    Barcode
                   </span>
                   <div className="font-mono text-xs font-bold text-neutral-900 flex items-center justify-between">
                     <span className="truncate">{item.barcode || '---'}</span>
                     {item.barcode && (
                       <button
                         onClick={() => copyToClipboard(item.barcode, 'barcode')}
-                        className="text-neutral-400 hover:text-neutral-700 p-0.5"
-                        title="Скопировать штрихкод"
+                        className="text-neutral-400 hover:text-neutral-700 p-0.5 cursor-pointer"
+                        title="Copy Barcode"
                       >
                         {copiedField === 'barcode' ? (
                           <Check className="w-3.5 h-3.5 text-emerald-600" />
@@ -314,7 +314,7 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
                 </div>
               </div>
 
-              {/* Интерактивный штрихкод и QR код для сканирования */}
+              {/* Barcode & QR visualization */}
               {(item.barcode || item.sku) && (
                 <div className="p-3 bg-white border border-neutral-200 rounded-xl flex items-center justify-between gap-2 shadow-2xs">
                   <div className="flex-1 overflow-hidden">
@@ -335,61 +335,61 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
             </div>
           </div>
 
-          {/* Параметры товара (Масса и Габариты) */}
+          {/* Physical specs & dimensions */}
           <div className="p-4 bg-neutral-50 rounded-xl border border-neutral-200 space-y-3 text-xs">
             <h4 className="font-bold text-neutral-900 flex items-center gap-1.5">
               <Scale className="w-4 h-4 text-neutral-500" />
-              Физические параметры и габариты
+              Physical Specifications & Dimensions
             </h4>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="p-2.5 bg-white rounded-lg border border-neutral-200">
-                <span className="text-neutral-400 text-[10px] block">Масса</span>
+                <span className="text-neutral-400 text-[10px] block">Weight</span>
                 <span className="font-mono font-bold text-neutral-800 text-sm">
                   {item.parameters?.weight_kg !== undefined
-                    ? `${item.parameters.weight_kg} кг`
-                    : 'Не указана'}
+                    ? `${item.parameters.weight_kg} kg`
+                    : 'Not specified'}
                 </span>
                 {item.parameters?.weight_kg !== undefined && (
                   <span className="text-[10px] text-neutral-500 block">
-                    ({Math.round(item.parameters.weight_kg * 1000)} г)
+                    ({Math.round(item.parameters.weight_kg * 1000)} g)
                   </span>
                 )}
               </div>
 
               <div className="p-2.5 bg-white rounded-lg border border-neutral-200">
-                <span className="text-neutral-400 text-[10px] block">Длина</span>
+                <span className="text-neutral-400 text-[10px] block">Length</span>
                 <span className="font-mono font-bold text-neutral-800 text-sm">
-                  {dims?.length ? `${dims.length} мм` : '---'}
+                  {dims?.length ? `${dims.length} mm` : '---'}
                 </span>
               </div>
 
               <div className="p-2.5 bg-white rounded-lg border border-neutral-200">
-                <span className="text-neutral-400 text-[10px] block">Ширина</span>
+                <span className="text-neutral-400 text-[10px] block">Width</span>
                 <span className="font-mono font-bold text-neutral-800 text-sm">
-                  {dims?.width ? `${dims.width} мм` : '---'}
+                  {dims?.width ? `${dims.width} mm` : '---'}
                 </span>
               </div>
 
               <div className="p-2.5 bg-white rounded-lg border border-neutral-200">
-                <span className="text-neutral-400 text-[10px] block">Высота</span>
+                <span className="text-neutral-400 text-[10px] block">Height</span>
                 <span className="font-mono font-bold text-neutral-800 text-sm">
-                  {dims?.height ? `${dims.height} мм` : '---'}
+                  {dims?.height ? `${dims.height} mm` : '---'}
                 </span>
                 {volumeLiters && (
                   <span className="text-[10px] text-neutral-500 block">
-                    Объем: ~{volumeLiters} л
+                    Volume: ~{volumeLiters} L
                   </span>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Описание и заметки */}
+          {/* Description and notes */}
           {item.description && (
             <div className="space-y-1.5 text-xs">
               <h4 className="font-bold text-neutral-900">
-                Описание и назначение:
+                Description & Purpose:
               </h4>
               <p className="text-neutral-700 leading-relaxed bg-neutral-50 p-3.5 rounded-xl border border-neutral-200 whitespace-pre-line">
                 {item.description}
@@ -400,7 +400,7 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
           {item.parameters?.notes && (
             <div className="space-y-1 text-xs">
               <h4 className="font-bold text-neutral-900">
-                Дополнительные заметки:
+                Additional Notes:
               </h4>
               <p className="text-neutral-600 bg-amber-50/60 p-3 rounded-xl border border-amber-200/80 leading-relaxed">
                 {item.parameters.notes}
@@ -408,14 +408,14 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
             </div>
           )}
 
-          {/* Даты создания и изменения */}
+          {/* Creation & modification dates */}
           <div className="flex flex-wrap items-center justify-between text-[11px] text-neutral-400 pt-2 border-t border-neutral-100">
-            <span>Добавлено: {formatDate(item.created_at)}</span>
-            <span>Изменено: {formatDate(item.updated_at)}</span>
+            <span>Added: {formatDate(item.created_at)}</span>
+            <span>Updated: {formatDate(item.updated_at)}</span>
           </div>
         </div>
 
-        {/* Нижняя панель действий */}
+        {/* Action bar */}
         <div className="px-6 py-4 bg-neutral-50 border-t border-neutral-200 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <button
@@ -426,7 +426,7 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
               className="px-3.5 py-2 text-rose-600 hover:bg-rose-50 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               <Trash2 className="w-4 h-4" />
-              <span>Удалить</span>
+              <span>Delete</span>
             </button>
           </div>
 
@@ -439,7 +439,7 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
               className="px-3.5 py-2 bg-white border border-neutral-300 hover:bg-neutral-100 text-neutral-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               <ArrowRightLeft className="w-4 h-4 text-emerald-600" />
-              <span>Переместить</span>
+              <span>Move</span>
             </button>
 
             <button
@@ -450,7 +450,7 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
               className="px-3.5 py-2 bg-white border border-neutral-300 hover:bg-neutral-100 text-neutral-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               <Printer className="w-4 h-4 text-blue-600" />
-              <span>Печать этикетки</span>
+              <span>Print Label</span>
             </button>
 
             <button
@@ -461,7 +461,7 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
               className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
             >
               <Edit3 className="w-4 h-4" />
-              <span>Редактировать</span>
+              <span>Edit</span>
             </button>
           </div>
         </div>

@@ -89,20 +89,19 @@ export const CategoriesTreeView: React.FC<CategoriesTreeViewProps> = ({
           inventoryManager.moveCategory(draggedCatId, targetCat.id);
           onCategoriesChanged();
         } catch (err: any) {
-          alert(err?.message || 'Не удалось переместить категорию');
+          alert(err?.message || 'Failed to move category');
         }
       }
     }
     setDraggedCatId(null);
   };
 
-  // Надежное получение дочерних категорий с нормализацией parent_id (null, undefined, '')
+  // Safe category child retrieval with parent_id normalization
   const getCategoryChildren = (parentId: string | null): CategoryNode[] => {
     if (!categories || categories.length === 0) return [];
     const allCatIds = new Set(categories.map((c) => c.id));
 
     if (parentId === null) {
-      // Корневые категории: parent_id равен null, undefined, '', либо ссылается на отсутствующего родителя
       return categories.filter((c) => !c.parent_id || !allCatIds.has(c.parent_id));
     }
     return categories.filter((c) => c.parent_id === parentId);
@@ -143,11 +142,11 @@ export const CategoriesTreeView: React.FC<CategoriesTreeViewProps> = ({
                     : 'border-transparent hover:bg-neutral-100 text-neutral-800'
                 }`}
               >
-                {/* Левая часть */}
+                {/* Left side */}
                 <div className="flex items-center gap-1.5 min-w-0 flex-1">
                   <div
                     className="cursor-grab active:cursor-grabbing text-neutral-300 group-hover:text-neutral-500"
-                    title="Перетащите для перемещения в другую категорию"
+                    title="Drag to move into another category"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <GripVertical className="w-3.5 h-3.5" />
@@ -169,18 +168,18 @@ export const CategoriesTreeView: React.FC<CategoriesTreeViewProps> = ({
                     <span className="w-4.5" />
                   )}
 
-                  {/* Цветная иконка или точка */}
+                  {/* Color dot */}
                   <span
                     className="w-2.5 h-2.5 rounded-full shrink-0"
                     style={{ backgroundColor: cat.color || '#0284c7' }}
                   />
 
-                  {/* Название */}
+                  {/* Name */}
                   <span className="text-xs truncate font-medium">
                     {cat.name}
                   </span>
 
-                  {/* Счетчик вещей в категории */}
+                  {/* Items count badge */}
                   {itemsInCat.length > 0 && (
                     <span
                       className={`text-[10px] px-1.5 py-0.2 rounded-full font-semibold shrink-0 ml-1 ${
@@ -188,14 +187,14 @@ export const CategoriesTreeView: React.FC<CategoriesTreeViewProps> = ({
                           ? 'bg-blue-600 text-white'
                           : 'bg-neutral-200/80 text-neutral-700'
                       }`}
-                      title={`${itemsInCat.length} вещей в этой категории и подкатегориях`}
+                      title={`${itemsInCat.length} items in this category and subcategories`}
                     >
                       {itemsInCat.length}
                     </span>
                   )}
                 </div>
 
-                {/* Правая часть: действия при наведении */}
+                {/* Right side: hover actions */}
                 <div
                   className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
                   onClick={(e) => e.stopPropagation()}
@@ -204,7 +203,7 @@ export const CategoriesTreeView: React.FC<CategoriesTreeViewProps> = ({
                     type="button"
                     onClick={() => onAddSubCategory(cat.id)}
                     className="p-1 rounded-lg text-neutral-500 hover:text-blue-700 hover:bg-white"
-                    title="Добавить подкатегорию"
+                    title="Add subcategory"
                   >
                     <Plus className="w-3.5 h-3.5" />
                   </button>
@@ -212,7 +211,7 @@ export const CategoriesTreeView: React.FC<CategoriesTreeViewProps> = ({
                     type="button"
                     onClick={() => onEditCategory(cat)}
                     className="p-1 rounded-lg text-neutral-500 hover:text-amber-700 hover:bg-white"
-                    title="Редактировать / Переименовать / Переместить"
+                    title="Edit / Rename / Move"
                   >
                     <Edit2 className="w-3.5 h-3.5" />
                   </button>
@@ -220,7 +219,7 @@ export const CategoriesTreeView: React.FC<CategoriesTreeViewProps> = ({
                     type="button"
                     onClick={() => onDeleteCategory(cat)}
                     className="p-1 rounded-lg text-neutral-500 hover:text-rose-700 hover:bg-white"
-                    title="Удалить категорию"
+                    title="Delete category"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -241,7 +240,7 @@ export const CategoriesTreeView: React.FC<CategoriesTreeViewProps> = ({
         <div className="flex items-center gap-1.5">
           <FolderTree className="w-4 h-4 text-blue-600" />
           <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-700">
-            Дерево категорий каталога
+            Catalog Category Tree
           </h4>
         </div>
         {selectedCategoryId && (
@@ -249,7 +248,7 @@ export const CategoriesTreeView: React.FC<CategoriesTreeViewProps> = ({
             onClick={() => onSelectCategory(null)}
             className="text-[11px] text-blue-600 hover:underline font-medium"
           >
-            Сбросить фильтр
+            Reset filter
           </button>
         )}
       </div>
@@ -257,7 +256,7 @@ export const CategoriesTreeView: React.FC<CategoriesTreeViewProps> = ({
       <div className="max-h-[500px] overflow-y-auto pr-1">
         {getCategoryChildren(null).length === 0 ? (
           <div className="text-center py-6 text-xs text-neutral-400">
-            Категорий пока нет. Нажмите «Создать категорию».
+            No categories yet. Click "Add Category".
           </div>
         ) : (
           renderTree(null, 0)
@@ -265,9 +264,9 @@ export const CategoriesTreeView: React.FC<CategoriesTreeViewProps> = ({
       </div>
 
       <div className="mt-3 pt-2.5 border-t border-neutral-100 flex items-center justify-between text-[11px] text-neutral-500">
-        <span>Перетаскивайте для смены родителя</span>
+        <span>Drag to change parent category</span>
         <span className="font-mono text-blue-700 font-semibold">
-          Категорий: {categories.length}
+          Total categories: {categories.length}
         </span>
       </div>
     </div>

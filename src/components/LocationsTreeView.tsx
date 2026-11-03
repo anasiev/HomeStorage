@@ -116,14 +116,14 @@ export const LocationsTreeView: React.FC<LocationsTreeViewProps> = ({
           inventoryManager.moveLocation(draggedNodeId, targetLoc.id);
           onLocationMoved();
         } catch (err: any) {
-          alert(err?.message || 'Не удалось переместить узел');
+          alert(err?.message || 'Failed to move location');
         }
       }
     }
     setDraggedNodeId(null);
   };
 
-  // Рекурсивный рендер узлов дерева
+  // Recursive render of tree nodes
   const renderTreeNodes = (parentId: string | null, depth = 0) => {
     const children = locations.filter((loc) => loc.parent_id === parentId);
 
@@ -138,7 +138,7 @@ export const LocationsTreeView: React.FC<LocationsTreeViewProps> = ({
           const isDropTarget = dropTargetId === loc.id;
           const isDragging = draggedNodeId === loc.id;
 
-          // Подсчет вещей в этом месте
+          // Item count in this location
           const check = inventoryManager.canDeleteLocation(loc.id);
           const itemCount = check.totalItemCount;
 
@@ -161,12 +161,12 @@ export const LocationsTreeView: React.FC<LocationsTreeViewProps> = ({
                     : 'border-transparent hover:bg-neutral-100 text-neutral-800'
                 }`}
               >
-                {/* Левая часть: кнопка раскрытия, иконка, код, имя */}
+                {/* Left side: toggle, icon, code, name */}
                 <div className="flex items-center gap-1.5 min-w-0 flex-1">
-                  {/* Grip для drag-and-drop */}
+                  {/* Grip for drag-and-drop */}
                   <div
                     className="cursor-grab active:cursor-grabbing text-neutral-300 group-hover:text-neutral-500"
-                    title="Перетащите для смены родителя"
+                    title="Drag to change parent location"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <GripVertical className="w-3.5 h-3.5" />
@@ -190,17 +190,17 @@ export const LocationsTreeView: React.FC<LocationsTreeViewProps> = ({
 
                   {getNodeIcon(loc.type)}
 
-                  {/* Код адреса */}
+                  {/* Location code */}
                   <span className="font-mono text-[11px] font-bold text-neutral-500 bg-neutral-200/60 px-1 py-0.5 rounded shrink-0">
                     {loc.full_code}
                   </span>
 
-                  {/* Название */}
+                  {/* Name */}
                   <span className="text-xs truncate font-medium">
                     {loc.name}
                   </span>
 
-                  {/* Бейдж количества вещей */}
+                  {/* Item counter badge */}
                   {itemCount > 0 && (
                     <span
                       className={`text-[10px] px-1.5 py-0.2 rounded-full font-semibold shrink-0 ml-1 ${
@@ -208,71 +208,71 @@ export const LocationsTreeView: React.FC<LocationsTreeViewProps> = ({
                           ? 'bg-emerald-600 text-white'
                           : 'bg-neutral-200/80 text-neutral-700'
                       }`}
-                      title={`${itemCount} вещей внутри`}
+                      title={`${itemCount} items inside`}
                     >
                       {itemCount}
                     </span>
                   )}
                 </div>
 
-                {/* Правая часть: быстрые действия при наведении */}
+                {/* Right side: quick hover actions */}
                 <div
                   className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {/* Добавить подуровень */}
+                  {/* Add sub-location */}
                   <button
                     type="button"
                     onClick={() => onAddSubLocation(loc.id)}
                     className="p-1 rounded-lg text-neutral-500 hover:text-emerald-700 hover:bg-white"
-                    title="Добавить место внутри"
+                    title="Add sub-location inside"
                   >
                     <Plus className="w-3.5 h-3.5" />
                   </button>
 
-                  {/* Редактировать место */}
+                  {/* Edit location */}
                   <button
                     type="button"
                     onClick={() => onEditLocation(loc)}
                     className="p-1 rounded-lg text-neutral-500 hover:text-blue-700 hover:bg-white"
-                    title="Редактировать параметры места"
+                    title="Edit location properties"
                   >
                     <Edit2 className="w-3.5 h-3.5" />
                   </button>
 
-                  {/* Распечатать этикетку */}
+                  {/* Print label */}
                   <button
                     type="button"
                     onClick={() => onPrintLocationLabel(loc)}
                     className="p-1 rounded-lg text-neutral-500 hover:text-blue-700 hover:bg-white"
-                    title="Распечатать этикетку со штрихкодом и QR"
+                    title="Print QR / barcode label"
                   >
                     <Printer className="w-3.5 h-3.5" />
                   </button>
 
-                  {/* Переместить */}
+                  {/* Move location */}
                   <button
                     type="button"
                     onClick={() => onMoveLocation(loc)}
                     className="p-1 rounded-lg text-neutral-500 hover:text-amber-700 hover:bg-white"
-                    title="Переместить место"
+                    title="Move location"
                   >
                     <FolderSync className="w-3.5 h-3.5" />
                   </button>
 
-                  {/* Удалить */}
+                  {/* Delete location */}
                   <button
                     type="button"
                     onClick={() => onDeleteLocation(loc)}
                     className="p-1 rounded-lg text-neutral-500 hover:text-rose-700 hover:bg-white"
-                    title="Удалить место"
+                    title="Delete location"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
 
-              {/* Дочерние узлы */}
+              {/* Child nodes */}
               {hasChildren && isExpanded && renderTreeNodes(loc.id, depth + 1)}
             </div>
           );
@@ -287,7 +287,7 @@ export const LocationsTreeView: React.FC<LocationsTreeViewProps> = ({
         <div className="flex items-center gap-1.5">
           <Layers className="w-4 h-4 text-emerald-600" />
           <h4 className="text-xs font-bold uppercase tracking-wider text-neutral-700">
-            Иерархия мест хранения
+            Storage Location Hierarchy
           </h4>
         </div>
         {selectedLocationId && (
@@ -295,7 +295,7 @@ export const LocationsTreeView: React.FC<LocationsTreeViewProps> = ({
             onClick={() => onSelectLocation(null)}
             className="text-[11px] text-emerald-600 hover:underline font-medium"
           >
-            Сбросить фильтр
+            Reset filter
           </button>
         )}
       </div>
@@ -303,7 +303,7 @@ export const LocationsTreeView: React.FC<LocationsTreeViewProps> = ({
       <div className="max-h-[500px] overflow-y-auto pr-1">
         {locations.filter((l) => l.parent_id === null).length === 0 ? (
           <div className="text-center py-6 text-xs text-neutral-400">
-            Мест хранения пока нет. Нажмите «Добавить место».
+            No storage locations yet. Click "Add Location".
           </div>
         ) : (
           renderTreeNodes(null, 0)
@@ -311,9 +311,9 @@ export const LocationsTreeView: React.FC<LocationsTreeViewProps> = ({
       </div>
 
       <div className="mt-3 pt-2.5 border-t border-neutral-100 flex items-center justify-between text-[11px] text-neutral-500">
-        <span>Перетаскивайте узлы для смены полки/шкафа</span>
+        <span>Drag nodes to reassign parent shelf/furniture</span>
         <span className="font-mono text-emerald-700 font-semibold">
-          Всего мест: {locations.length}
+          Total locations: {locations.length}
         </span>
       </div>
     </div>

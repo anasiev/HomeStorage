@@ -81,7 +81,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
-      setError('Укажите название категории');
+      setError('Please enter category name');
       return;
     }
 
@@ -89,7 +89,6 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
       const normalizedParentId = parentId && parentId.trim() ? parentId.trim() : null;
 
       if (isEdit && initialCategory) {
-        // Проверяем, изменился ли родитель
         if (normalizedParentId !== (initialCategory.parent_id || null)) {
           inventoryManager.moveCategory(initialCategory.id, normalizedParentId);
         }
@@ -111,14 +110,14 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
       }
       onClose();
     } catch (err: any) {
-      setError(err?.message || 'Ошибка сохранения категории');
+      setError(err?.message || 'Failed to save category');
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden flex flex-col border border-neutral-200 animate-in fade-in zoom-in-95 duration-150">
-        {/* Шапка */}
+        {/* Header */}
         <div className="px-6 py-4 bg-neutral-900 text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2.5 bg-neutral-800 rounded-xl text-emerald-400">
@@ -126,10 +125,10 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
             </div>
             <div>
               <h3 className="text-base font-bold">
-                {isEdit ? 'Редактировать категорию' : 'Создать категорию'}
+                {isEdit ? 'Edit Category' : 'Create Category'}
               </h3>
               <p className="text-xs text-neutral-400">
-                {isEdit ? 'Переименование и перемещение в дереве' : 'Добавление новой группы каталога'}
+                {isEdit ? 'Rename and relocate within tree' : 'Add a new catalog category'}
               </p>
             </div>
           </div>
@@ -141,7 +140,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
           </button>
         </div>
 
-        {/* Форма */}
+        {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {error && (
             <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs">
@@ -149,27 +148,27 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
             </div>
           )}
 
-          {/* 1. Название */}
+          {/* 1. Name */}
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-1">
-              Название категории <span className="text-rose-500">*</span>
+              Category Name <span className="text-rose-500">*</span>
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Например: Запчасти бытовой техники или Инструменты"
+              placeholder="e.g., Appliance Spare Parts or Hand Tools"
               required
               className="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
             />
           </div>
 
-          {/* 2. Родительская категория (Иерархия) */}
+          {/* 2. Parent Category */}
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-1 flex items-center justify-between">
-              <span>Родительская категория:</span>
+              <span>Parent Category:</span>
               <span className="text-[11px] text-neutral-500 font-normal">
-                {parentId ? 'Вложенная подкатегория' : 'Корневая категория'}
+                {parentId ? 'Nested Subcategory' : 'Root Category'}
               </span>
             </label>
             <select
@@ -177,7 +176,7 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
               onChange={(e) => setParentId(e.target.value || null)}
               className="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm font-medium focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
             >
-              <option value="">-- Корневая категория (Верхний уровень) --</option>
+              <option value="">-- Root Category (Top Level) --</option>
               {allowedParents.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {inventoryManager.getCategoryPathString(cat.id)}
@@ -186,11 +185,11 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
             </select>
           </div>
 
-          {/* 3. Цвет метки */}
+          {/* 3. Color accent */}
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-1.5 flex items-center gap-1.5">
               <Palette className="w-3.5 h-3.5 text-neutral-500" />
-              <span>Цветовой акцент:</span>
+              <span>Color accent:</span>
             </label>
             <div className="flex items-center gap-2">
               {CATEGORY_COLORS.map((c) => (
@@ -207,35 +206,35 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({
             </div>
           </div>
 
-          {/* 4. Описание */}
+          {/* 4. Description */}
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-1">
-              Описание / Примечание
+              Description / Notes
             </label>
             <textarea
               rows={2}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Что входит в эту категорию..."
+              placeholder="Items and equipment included in this category..."
               className="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
             />
           </div>
 
-          {/* Кнопки */}
+          {/* Buttons */}
           <div className="pt-2 flex items-center justify-end gap-3 border-t border-neutral-200">
             <button
               type="button"
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors"
             >
-              Отмена
+              Cancel
             </button>
             <button
               type="submit"
               className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold shadow-xs flex items-center gap-2 transition-colors cursor-pointer"
             >
               <Check className="w-4 h-4" />
-              {isEdit ? 'Сохранить изменения' : 'Создать категорию'}
+              {isEdit ? 'Save Changes' : 'Create Category'}
             </button>
           </div>
         </form>

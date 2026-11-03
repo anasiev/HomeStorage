@@ -135,7 +135,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
             <h4
               onClick={() => (onView ? onView(item) : onEdit(item))}
               className="text-base sm:text-lg font-bold text-neutral-900 truncate cursor-pointer hover:text-emerald-600 transition-colors"
-              title="Открыть карточку товара"
+              title="Open item details"
             >
               {item.name}
             </h4>
@@ -145,15 +145,15 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           </div>
         </div>
 
-        {/* Правые метрики и кнопки */}
+        {/* Right metrics and buttons */}
         <div className="flex items-center gap-1.5 sm:gap-2 self-end sm:self-center shrink-0">
           {(item.parameters?.weight_kg || item.parameters?.dimensions_mm) && (
             <div className="text-xs text-neutral-600 font-mono hidden md:block text-right pr-2 border-r border-neutral-200">
-              {item.parameters?.weight_kg && <div>{item.parameters.weight_kg} кг</div>}
+              {item.parameters?.weight_kg && <div>{item.parameters.weight_kg} kg</div>}
               {item.parameters?.dimensions_mm && (
                 <div>
                   {item.parameters.dimensions_mm.length}×{item.parameters.dimensions_mm.width}×
-                  {item.parameters.dimensions_mm.height} мм
+                  {item.parameters.dimensions_mm.height} mm
                 </div>
               )}
             </div>
@@ -162,35 +162,35 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           <button
             onClick={() => onPrintLabel(item)}
             className="p-2 sm:p-2.5 text-neutral-600 hover:text-blue-600 hover:bg-neutral-100 rounded-xl cursor-pointer transition-colors"
-            title="Печать этикетки"
+            title="Print label"
           >
             <Printer className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
           <button
             onClick={() => onMove(item)}
             className="p-2 sm:p-2.5 text-neutral-600 hover:text-emerald-600 hover:bg-neutral-100 rounded-xl cursor-pointer transition-colors"
-            title="Переместить вещь"
+            title="Move item"
           >
             <ArrowRightLeft className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
           <button
             onClick={() => (onView ? onView(item) : onEdit(item))}
             className="p-2 sm:p-2.5 text-neutral-600 hover:text-blue-600 hover:bg-neutral-100 rounded-xl cursor-pointer transition-colors"
-            title="Просмотр карточки"
+            title="View item details"
           >
             <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
           <button
             onClick={() => onEdit(item)}
             className="p-2 sm:p-2.5 text-neutral-600 hover:text-amber-600 hover:bg-neutral-100 rounded-xl cursor-pointer transition-colors"
-            title="Редактировать"
+            title="Edit item"
           >
             <Edit3 className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
           <button
             onClick={() => onDelete(item)}
             className="p-2 sm:p-2.5 text-neutral-600 hover:text-rose-600 hover:bg-neutral-100 rounded-xl cursor-pointer transition-colors"
-            title="Удалить"
+            title="Delete item"
           >
             <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
@@ -278,16 +278,16 @@ export const ItemCard: React.FC<ItemCardProps> = ({
             {locationPath}
           </div>
 
-          {/* Название */}
+          {/* Name */}
           <h3
             onClick={() => (onView ? onView(item) : onEdit(item))}
             className="font-bold text-neutral-900 text-base leading-snug line-clamp-2 cursor-pointer hover:text-emerald-600 transition-colors"
-            title="Открыть карточку товара"
+            title="Open item details"
           >
             {item.name}
           </h3>
 
-          {/* Артикул, штрихкод, категория */}
+          {/* SKU, Barcode, Category */}
           <div className="flex flex-wrap items-center gap-1.5 mt-2">
             {item.sku && (
               <span className="font-mono text-xs bg-neutral-100 text-neutral-700 px-2 py-0.5 rounded-lg font-semibold">
@@ -296,7 +296,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
             )}
             {item.barcode && (
               <span className="font-mono text-xs bg-neutral-100 text-neutral-700 px-2 py-0.5 rounded-lg">
-                ШК: {item.barcode}
+                Barcode: {item.barcode}
               </span>
             )}
             {categoryDisplayName && (
@@ -310,47 +310,47 @@ export const ItemCard: React.FC<ItemCardProps> = ({
             )}
           </div>
 
-          {/* Описание */}
+          {/* Description */}
           {item.description && (
             <p className="text-xs sm:text-sm text-neutral-600 line-clamp-2 mt-2 leading-relaxed">
               {item.description}
             </p>
           )}
 
-          {/* Параметры: масса и габариты */}
+          {/* Parameters: weight and dimensions */}
           {(item.parameters?.weight_kg !== undefined || item.parameters?.dimensions_mm) && (
             <div className="mt-2.5 pt-2 border-t border-neutral-100 flex items-center justify-between text-xs text-neutral-500 font-mono">
               {item.parameters.weight_kg !== undefined && (
                 <span className="flex items-center gap-1">
                   <Scale className="w-3.5 h-3.5 text-neutral-400" />
-                  {item.parameters.weight_kg} кг
+                  {item.parameters.weight_kg} kg
                 </span>
               )}
               {item.parameters.dimensions_mm && (
                 <span>
                   {item.parameters.dimensions_mm.length}×{item.parameters.dimensions_mm.width}×
-                  {item.parameters.dimensions_mm.height} мм
+                  {item.parameters.dimensions_mm.height} mm
                 </span>
               )}
             </div>
           )}
         </div>
 
-        {/* Нижний тулбар кнопок */}
+        {/* Bottom toolbar buttons */}
         <div className="pt-2 border-t border-neutral-100 flex items-center justify-between gap-1.5">
           <button
             onClick={() => onPrintLabel(item)}
             className="flex-1 py-2 px-2.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-            title="Распечатать этикетку со штрихкодом"
+            title="Print barcode & QR label"
           >
             <Printer className="w-4 h-4 text-neutral-600" />
-            <span>Этикетка</span>
+            <span>Label</span>
           </button>
 
           <button
             onClick={() => onMove(item)}
             className="p-2 text-neutral-600 hover:text-emerald-700 hover:bg-neutral-100 rounded-xl transition-colors cursor-pointer"
-            title="Переместить в другое место"
+            title="Move to another location"
           >
             <ArrowRightLeft className="w-4 h-4" />
           </button>
@@ -358,7 +358,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           <button
             onClick={() => (onView ? onView(item) : onEdit(item))}
             className="p-2 text-neutral-600 hover:text-blue-700 hover:bg-neutral-100 rounded-xl transition-colors cursor-pointer"
-            title="Просмотр карточки товара"
+            title="View item details"
           >
             <Eye className="w-4 h-4" />
           </button>
@@ -366,7 +366,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           <button
             onClick={() => onEdit(item)}
             className="p-2 text-neutral-600 hover:text-amber-700 hover:bg-neutral-100 rounded-xl transition-colors cursor-pointer"
-            title="Редактировать"
+            title="Edit item"
           >
             <Edit3 className="w-4 h-4" />
           </button>
@@ -374,7 +374,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           <button
             onClick={() => onDelete(item)}
             className="p-2 text-neutral-600 hover:text-rose-700 hover:bg-neutral-100 rounded-xl transition-colors cursor-pointer"
-            title="Удалить вещь"
+            title="Delete item"
           >
             <Trash2 className="w-4 h-4" />
           </button>

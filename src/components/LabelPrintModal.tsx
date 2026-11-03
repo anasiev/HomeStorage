@@ -58,7 +58,7 @@ export const LabelPrintModal: React.FC<LabelPrintModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs print:p-0 print:bg-white print:fixed print:inset-0">
       <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col border border-neutral-200 print:shadow-none print:border-none print:w-full print:max-w-none">
-        {/* Заголовок модалки (скрыт при печати) */}
+        {/* Modal header (hidden during printing) */}
         <div className="px-5 py-4 bg-neutral-900 text-white flex items-center justify-between print:hidden">
           <div className="flex items-center gap-2.5">
             <div className="p-2 bg-neutral-800 rounded-lg text-emerald-400">
@@ -66,10 +66,10 @@ export const LabelPrintModal: React.FC<LabelPrintModalProps> = ({
             </div>
             <div>
               <h3 className="text-base font-semibold">
-                Печать этикетки {isItem ? 'вещи' : 'места хранения'}
+                Print {isItem ? 'Item Label' : 'Location Label'}
               </h3>
               <p className="text-xs text-neutral-400">
-                Маркировка для наклеивания на полку, коробку или деталь
+                Barcode label for shelves, boxes, bins, and parts
               </p>
             </div>
           </div>
@@ -81,18 +81,18 @@ export const LabelPrintModal: React.FC<LabelPrintModalProps> = ({
           </button>
         </div>
 
-        {/* Настройки этикетки (скрыты при печати) */}
+        {/* Label options (hidden during printing) */}
         <div className="p-4 bg-neutral-50 border-b border-neutral-200 flex flex-wrap items-center gap-4 text-xs print:hidden">
           <div>
-            <label className="block text-neutral-500 mb-1 font-medium">Размер стикера:</label>
+            <label className="block text-neutral-500 mb-1 font-medium">Label size:</label>
             <select
               value={labelSize}
               onChange={(e) => setLabelSize(e.target.value as any)}
               className="px-2.5 py-1.5 bg-white border border-neutral-300 rounded-lg text-neutral-800 focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
             >
-              <option value="compact">Компактный (40 × 25 мм)</option>
-              <option value="standard">Стандартный (58 × 40 мм)</option>
-              <option value="large">Большой (75 × 50 мм)</option>
+              <option value="compact">Compact (40 × 25 mm)</option>
+              <option value="standard">Standard (58 × 40 mm)</option>
+              <option value="large">Large (75 × 50 mm)</option>
             </select>
           </div>
 
@@ -104,7 +104,7 @@ export const LabelPrintModal: React.FC<LabelPrintModalProps> = ({
                 onChange={(e) => setIncludeQr(e.target.checked)}
                 className="rounded text-emerald-600 focus:ring-emerald-500"
               />
-              QR-код
+              QR Code
             </label>
             <label className="flex items-center gap-1.5 cursor-pointer text-neutral-700">
               <input
@@ -113,19 +113,19 @@ export const LabelPrintModal: React.FC<LabelPrintModalProps> = ({
                 onChange={(e) => setIncludeBarcode(e.target.checked)}
                 className="rounded text-emerald-600 focus:ring-emerald-500"
               />
-              Штрихкод
+              Barcode
             </label>
           </div>
         </div>
 
-        {/* Интерактивная зона предварительного просмотра и печати */}
+        {/* Preview and print zone */}
         <div className="p-6 flex flex-col items-center justify-center bg-neutral-100 print:bg-white print:p-0">
           <div className="text-xs text-neutral-500 mb-2 flex items-center gap-1 print:hidden">
             <Eye className="w-3.5 h-3.5" />
-            Предпросмотр стикера:
+            Sticker Preview:
           </div>
 
-          {/* Сам стикер (готовый для печати) */}
+          {/* Sticker container */}
           <div
             id="printable-label"
             className={`bg-white border-2 border-dashed border-neutral-400 print:border print:border-black rounded-lg p-3 text-neutral-900 shadow-sm flex flex-col justify-between ${
@@ -136,11 +136,11 @@ export const LabelPrintModal: React.FC<LabelPrintModalProps> = ({
                 : 'w-[300px] min-h-[180px]'
             }`}
           >
-            {/* Верхняя строка: Код адреса (жирный моноширинный) */}
+            {/* Top row: Code */}
             <div className="flex items-start justify-between border-b border-neutral-300 pb-1.5 mb-1.5">
               <div>
                 <span className="text-[10px] uppercase font-bold tracking-wider text-neutral-500 block">
-                  {isItem ? 'АРТИКУЛ / КОД' : 'АДРЕС ХРАНЕНИЯ'}
+                  {isItem ? 'SKU / BARCODE' : 'STORAGE ADDRESS'}
                 </span>
                 <span className="font-mono text-base font-extrabold text-neutral-900 tracking-wide">
                   {code}
@@ -150,18 +150,18 @@ export const LabelPrintModal: React.FC<LabelPrintModalProps> = ({
                 <div className="text-right">
                   <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-neutral-200 font-semibold text-neutral-700">
                     {targetLocation?.type === 'container'
-                      ? 'КОНТЕЙНЕР'
+                      ? 'CONTAINER'
                       : targetLocation?.type === 'shelf'
-                      ? 'ПОЛКА'
+                      ? 'SHELF'
                       : targetLocation?.type === 'furniture'
-                      ? 'МЕБЕЛЬ'
-                      : 'ЛОКАЦИЯ'}
+                      ? 'FURNITURE'
+                      : 'LOCATION'}
                   </span>
                 </div>
               )}
             </div>
 
-            {/* Название и иерархия */}
+            {/* Title and hierarchy */}
             <div className="my-1">
               <h4 className="font-bold text-xs leading-snug line-clamp-2 text-neutral-900">
                 {title}
@@ -172,12 +172,12 @@ export const LabelPrintModal: React.FC<LabelPrintModalProps> = ({
               {isItem && locCode && (
                 <div className="mt-1 flex items-center gap-1 text-[10px] font-mono text-emerald-800 bg-emerald-50 px-1 py-0.5 rounded w-fit">
                   <Tag className="w-3 h-3 text-emerald-600" />
-                  <span>Место: {locCode}</span>
+                  <span>Loc: {locCode}</span>
                 </div>
               )}
             </div>
 
-            {/* Графика (QR и/или штрихкод) */}
+            {/* Graphics (QR / Barcode) */}
             <div className="flex items-center justify-between gap-2 pt-1 border-t border-neutral-200 mt-auto">
               {includeQr && (
                 <div className="shrink-0">
@@ -199,28 +199,28 @@ export const LabelPrintModal: React.FC<LabelPrintModalProps> = ({
           <div className="mt-3 flex items-center gap-2 print:hidden">
             <button
               onClick={copyCode}
-              className="px-3 py-1.5 text-xs bg-white border border-neutral-300 rounded-lg text-neutral-700 hover:bg-neutral-50 flex items-center gap-1.5 transition-colors"
+              className="px-3 py-1.5 text-xs bg-white border border-neutral-300 rounded-lg text-neutral-700 hover:bg-neutral-50 flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-              {copied ? 'Скопировано!' : 'Скопировать код'}
+              {copied ? 'Copied!' : 'Copy Code'}
             </button>
           </div>
         </div>
 
-        {/* Кнопки действий (скрыты при печати) */}
+        {/* Action buttons (hidden during printing) */}
         <div className="p-4 bg-white border-t border-neutral-200 flex items-center justify-end gap-3 print:hidden">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors"
+            className="px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors cursor-pointer"
           >
-            Закрыть
+            Close
           </button>
           <button
             onClick={handlePrint}
             className="px-5 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-xs flex items-center gap-2 transition-colors cursor-pointer"
           >
             <Printer className="w-4 h-4" />
-            Распечатать этикетку
+            Print Label
           </button>
         </div>
       </div>

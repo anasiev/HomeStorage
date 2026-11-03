@@ -68,12 +68,12 @@ export const MoveLocationModal: React.FC<MoveLocationModalProps> = ({
   const handleMove = (e: React.FormEvent) => {
     e.preventDefault();
     if (!sourceId) {
-      setError('Выберите перемещаемое место');
+      setError('Please select a location to move');
       return;
     }
 
     if (sourceNode && (sourceNode.parent_id ?? null) === (newParentId ?? null)) {
-      setError('Место хранения уже находится здесь. Выберите новое целевое расположение.');
+      setError('Location is already here. Select a different target location.');
       return;
     }
 
@@ -82,23 +82,23 @@ export const MoveLocationModal: React.FC<MoveLocationModalProps> = ({
       onLocationMoved();
       onClose();
     } catch (err: any) {
-      setError(err?.message || 'Ошибка перемещения места');
+      setError(err?.message || 'Failed to move location');
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
       <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col border border-neutral-200 animate-in fade-in zoom-in-95 duration-150">
-        {/* Шапка */}
+        {/* Header */}
         <div className="px-6 py-4 bg-neutral-900 text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2.5 bg-neutral-800 rounded-xl text-emerald-400">
               <FolderSync className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold">Переместить место хранения</h3>
+              <h3 className="text-base font-bold">Move Storage Location</h3>
               <p className="text-xs text-neutral-400">
-                Перенос коробки или полки со всеми находящимися внутри вещами
+                Relocate a box or shelf together with all items inside
               </p>
             </div>
           </div>
@@ -110,7 +110,7 @@ export const MoveLocationModal: React.FC<MoveLocationModalProps> = ({
           </button>
         </div>
 
-        {/* Форма */}
+        {/* Form */}
         <form onSubmit={handleMove} className="p-6 space-y-4">
           {error && (
             <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs">
@@ -118,10 +118,10 @@ export const MoveLocationModal: React.FC<MoveLocationModalProps> = ({
             </div>
           )}
 
-          {/* 1. Выбор перемещаемого места */}
+          {/* 1. Select location to move */}
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-1">
-              Какое место переместить: <span className="text-rose-500">*</span>
+              Select location to move: <span className="text-rose-500">*</span>
             </label>
             <select
               value={sourceId}
@@ -141,34 +141,34 @@ export const MoveLocationModal: React.FC<MoveLocationModalProps> = ({
             </select>
           </div>
 
-          {/* Информация о перемещаемом объекте */}
+          {/* Location details card */}
           {sourceNode && (
             <div className="p-3 bg-neutral-50 border border-neutral-200 rounded-xl text-xs space-y-1.5">
               <div className="flex items-center justify-between">
-                <span className="text-neutral-500">Текущий адрес:</span>
+                <span className="text-neutral-500">Current address code:</span>
                 <span className="font-mono font-bold text-neutral-800">
                   {sourceNode.full_code}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-neutral-500">Текущий путь:</span>
+                <span className="text-neutral-500">Current path:</span>
                 <span className="font-medium text-neutral-800 truncate max-w-[280px]" title={currentPath}>
                   {currentPath}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-neutral-500">Вещей внутри (переедут вместе):</span>
-                <span className="font-bold text-emerald-700">{itemsCount} шт.</span>
+                <span className="text-neutral-500">Items inside (will move together):</span>
+                <span className="font-bold text-emerald-700">{itemsCount} pcs</span>
               </div>
             </div>
           )}
 
-          {/* 2. Выбор нового родителя */}
+          {/* 2. Destination selector */}
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-1 flex items-center justify-between">
-              <span>Куда переместить (новый родитель):</span>
+              <span>Destination (new parent location):</span>
               <span className="text-[11px] text-neutral-400">
-                или в корень для верхнего уровня
+                or to root for top level
               </span>
             </label>
             <select
@@ -180,14 +180,14 @@ export const MoveLocationModal: React.FC<MoveLocationModalProps> = ({
               className="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm font-medium focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
             >
               <option value="">
-                -- В корень (Сделать верхней локацией){sourceNode?.parent_id === null ? ' [Текущее]' : ''} --
+                -- To Root (Make Top-Level Location){sourceNode?.parent_id === null ? ' [Current]' : ''} --
               </option>
               {validParents.map((loc) => {
                 const isCurrentParent = sourceNode?.parent_id === loc.id;
                 return (
                   <option key={loc.id} value={loc.id}>
                     [{loc.full_code}] {inventoryManager.getLocationPathString(loc.id)}
-                    {isCurrentParent ? ' (Текущий родитель)' : ''}
+                    {isCurrentParent ? ' (Current Parent)' : ''}
                   </option>
                 );
               })}
@@ -197,25 +197,25 @@ export const MoveLocationModal: React.FC<MoveLocationModalProps> = ({
           <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900 flex items-start gap-2">
             <AlertCircle className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
             <div>
-              Все вложенные подразделы и адреса этикеток автоматически пересчитаются в формат [Локация]-[Стеллаж]-[Полка]-[Коробка].
+              All sub-locations, child boxes, and label codes will automatically update to the [Location]-[Furniture]-[Shelf]-[Box] format.
             </div>
           </div>
 
-          {/* Кнопки */}
+          {/* Buttons */}
           <div className="pt-2 flex items-center justify-end gap-3 border-t border-neutral-200">
             <button
               type="button"
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors cursor-pointer"
             >
-              Отмена
+              Cancel
             </button>
             <button
               type="submit"
               className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold shadow-xs flex items-center gap-2 transition-colors cursor-pointer"
             >
               <Check className="w-4 h-4" />
-              Переместить со всеми вещами
+              Move Location & Items
             </button>
           </div>
         </form>

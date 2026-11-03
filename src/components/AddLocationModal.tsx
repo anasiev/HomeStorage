@@ -48,20 +48,20 @@ export const AddLocationModal: React.FC<AddLocationModalProps> = ({
       setError(null);
       if (!initialParentId) {
         setType('location');
-        setCodeSuffix('д');
+        setCodeSuffix('h');
       } else {
         const parent = locations.find((l) => l.id === initialParentId);
         if (parent) {
           if (parent.type === 'location') {
             setType('furniture');
-            setCodeSuffix('ш1');
+            setCodeSuffix('w1');
           } else if (parent.type === 'furniture') {
             setType('shelf');
-            setCodeSuffix('п1');
+            setCodeSuffix('s1');
             setShelfNumber(1);
           } else if (parent.type === 'shelf') {
             setType('container');
-            setCodeSuffix('к1');
+            setCodeSuffix('b1');
           }
         }
       }
@@ -70,9 +70,9 @@ export const AddLocationModal: React.FC<AddLocationModalProps> = ({
 
   if (!isOpen) return null;
 
-  // Рассчитываем превью полного кода
+  // Calculate preview of the full address code
   const calculatePreviewCode = () => {
-    const suffix = codeSuffix.trim().toLowerCase() || 'код';
+    const suffix = codeSuffix.trim().toLowerCase() || 'code';
     if (!parentId) return suffix;
 
     const parentNode = locations.find((l) => l.id === parentId);
@@ -85,25 +85,25 @@ export const AddLocationModal: React.FC<AddLocationModalProps> = ({
     setType(newType);
     if (newType === 'location') {
       setParentId(null);
-      setCodeSuffix('д');
+      setCodeSuffix('h');
     } else if (newType === 'furniture') {
-      setCodeSuffix('ш1');
+      setCodeSuffix('w1');
     } else if (newType === 'shelf') {
-      setCodeSuffix('п1');
+      setCodeSuffix('s1');
       setShelfNumber(1);
     } else if (newType === 'container') {
-      setCodeSuffix('к1');
+      setCodeSuffix('b1');
     }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
-      setError('Укажите название места хранения');
+      setError('Please enter storage location name');
       return;
     }
     if (type !== 'location' && !parentId) {
-      setError('Для данного типа необходимо выбрать родительское место');
+      setError('Parent location is required for this level');
       return;
     }
 
@@ -120,23 +120,23 @@ export const AddLocationModal: React.FC<AddLocationModalProps> = ({
       onLocationAdded(created);
       onClose();
     } catch (err: any) {
-      setError(err?.message || 'Не удалось добавить место');
+      setError(err?.message || 'Failed to add location');
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
       <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col border border-neutral-200 animate-in fade-in zoom-in-95 duration-150">
-        {/* Шапка */}
+        {/* Header */}
         <div className="px-6 py-4 bg-neutral-900 text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2.5 bg-neutral-800 rounded-xl text-emerald-400">
               <FolderPlus className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold">Добавить место хранения</h3>
+              <h3 className="text-base font-bold">Add Storage Location</h3>
               <p className="text-xs text-neutral-400">
-                Создание узла в 4-уровневой иерархии склада
+                Create a node in the 4-tier storage hierarchy
               </p>
             </div>
           </div>
@@ -148,7 +148,7 @@ export const AddLocationModal: React.FC<AddLocationModalProps> = ({
           </button>
         </div>
 
-        {/* Форма */}
+        {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {error && (
             <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs">
@@ -156,10 +156,10 @@ export const AddLocationModal: React.FC<AddLocationModalProps> = ({
             </div>
           )}
 
-          {/* 1. Выбор уровня иерархии */}
+          {/* 1. Hierarchy Level Selection */}
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-2">
-              Уровень и тип элемента в иерархии:
+              Hierarchy level and location type:
             </label>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <button
@@ -173,8 +173,8 @@ export const AddLocationModal: React.FC<AddLocationModalProps> = ({
               >
                 <Home className="w-4 h-4 text-emerald-600 shrink-0" />
                 <div>
-                  <div>1. Локация</div>
-                  <div className="text-[10px] text-neutral-500 font-normal">Дом, Гараж, Дача</div>
+                  <div>1. Location</div>
+                  <div className="text-[10px] text-neutral-500 font-normal">Home, Garage, Pantry</div>
                 </div>
               </button>
 
@@ -189,8 +189,8 @@ export const AddLocationModal: React.FC<AddLocationModalProps> = ({
               >
                 <Warehouse className="w-4 h-4 text-blue-600 shrink-0" />
                 <div>
-                  <div>2. Мебель / Стеллаж</div>
-                  <div className="text-[10px] text-neutral-500 font-normal">Шкаф, Верстак</div>
+                  <div>2. Furniture / Rack</div>
+                  <div className="text-[10px] text-neutral-500 font-normal">Wardrobe, Workbench</div>
                 </div>
               </button>
 
@@ -205,8 +205,8 @@ export const AddLocationModal: React.FC<AddLocationModalProps> = ({
               >
                 <Layers className="w-4 h-4 text-amber-600 shrink-0" />
                 <div>
-                  <div>3. Полка</div>
-                  <div className="text-[10px] text-neutral-500 font-normal">Отсчет снизу</div>
+                  <div>3. Shelf</div>
+                  <div className="text-[10px] text-neutral-500 font-normal">Counted from bottom</div>
                 </div>
               </button>
 
@@ -221,18 +221,18 @@ export const AddLocationModal: React.FC<AddLocationModalProps> = ({
               >
                 <Box className="w-4 h-4 text-purple-600 shrink-0" />
                 <div>
-                  <div>4. Коробка / Ящик</div>
-                  <div className="text-[10px] text-neutral-500 font-normal">Органайзер, кейс</div>
+                  <div>4. Box / Container / Bin</div>
+                  <div className="text-[10px] text-neutral-500 font-normal">Organizer, Crate, Case</div>
                 </div>
               </button>
             </div>
           </div>
 
-          {/* 2. Родительский узел (если не корневая локация) */}
+          {/* 2. Parent Location Node */}
           {type !== 'location' && (
             <div>
               <label className="block text-xs font-semibold text-neutral-700 mb-1">
-                Родительское место (куда поместить): <span className="text-rose-500">*</span>
+                Parent Location (Where to place): <span className="text-rose-500">*</span>
               </label>
               <select
                 value={parentId || ''}
@@ -241,7 +241,7 @@ export const AddLocationModal: React.FC<AddLocationModalProps> = ({
                 className="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500 font-medium"
               >
                 <option value="" disabled>
-                  -- Выберите родительское место --
+                  -- Select Parent Location --
                 </option>
                 {locations
                   .filter((loc) => {
@@ -257,10 +257,10 @@ export const AddLocationModal: React.FC<AddLocationModalProps> = ({
             </div>
           )}
 
-          {/* 3. Название */}
+          {/* 3. Name */}
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-1">
-              Название места <span className="text-rose-500">*</span>
+              Location Name <span className="text-rose-500">*</span>
             </label>
             <input
               type="text"
@@ -268,30 +268,30 @@ export const AddLocationModal: React.FC<AddLocationModalProps> = ({
               onChange={(e) => setName(e.target.value)}
               placeholder={
                 type === 'location'
-                  ? 'Например: Гараж или Дача'
+                  ? 'e.g., Garage or Country House'
                   : type === 'furniture'
-                  ? 'Например: Шкаф-купе 1'
+                  ? 'e.g., Wardrobe 1 or Metal Rack'
                   : type === 'shelf'
-                  ? 'Например: Полка 3 (отсчет снизу)'
-                  : 'Например: Коробка с проводами'
+                  ? 'e.g., Shelf 3 (from bottom)'
+                  : 'e.g., Box with Cables'
               }
               required
               className="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
             />
           </div>
 
-          {/* 4. Код суффикса и Номер полки */}
+          {/* 4. Code suffix and Shelf number */}
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-semibold text-neutral-700 mb-1 flex items-center justify-between">
-                <span>Код-суффикс маркировки</span>
-                <span className="text-[10px] text-neutral-400">д, ш1, п3, к1</span>
+                <span>Address Code Suffix</span>
+                <span className="text-[10px] text-neutral-400">h, w1, s3, b1</span>
               </label>
               <input
                 type="text"
                 value={codeSuffix}
                 onChange={(e) => setCodeSuffix(e.target.value.toLowerCase())}
-                placeholder="к1"
+                placeholder="b1"
                 className="w-full px-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm font-mono uppercase focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
               />
             </div>
@@ -299,8 +299,8 @@ export const AddLocationModal: React.FC<AddLocationModalProps> = ({
             {type === 'shelf' ? (
               <div>
                 <label className="block text-xs font-semibold text-neutral-700 mb-1 flex items-center justify-between">
-                  <span>Номер полки</span>
-                  <span className="text-[10px] text-emerald-600 font-medium">снизу вверх</span>
+                  <span>Shelf Number</span>
+                  <span className="text-[10px] text-emerald-600 font-medium">from bottom</span>
                 </label>
                 <input
                   type="number"
@@ -310,7 +310,7 @@ export const AddLocationModal: React.FC<AddLocationModalProps> = ({
                   onChange={(e) => {
                     const val = parseInt(e.target.value, 10);
                     setShelfNumber(isNaN(val) ? undefined : val);
-                    if (!isNaN(val)) setCodeSuffix(`п${val}`);
+                    if (!isNaN(val)) setCodeSuffix(`s${val}`);
                   }}
                   className="w-full px-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
                 />
@@ -318,49 +318,49 @@ export const AddLocationModal: React.FC<AddLocationModalProps> = ({
             ) : (
               <div>
                 <label className="block text-xs font-semibold text-neutral-700 mb-1">
-                  Примечание / Описание
+                  Notes / Description
                 </label>
                 <input
                   type="text"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Особенности места..."
+                  placeholder="Location features or details..."
                   className="w-full px-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-xs focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
             )}
           </div>
 
-          {/* 5. Превью генерируемого адреса этикетки */}
+          {/* 5. Preview of generated address code */}
           <div className="p-3 bg-neutral-100 rounded-xl border border-neutral-200 flex items-center justify-between">
             <div>
               <span className="text-[10px] uppercase font-bold text-neutral-500 tracking-wider block">
-                Сгенерированный адрес этикетки:
+                Generated Label Address:
               </span>
               <span className="font-mono text-base font-extrabold text-emerald-700">
                 {calculatePreviewCode()}
               </span>
             </div>
             <div className="text-[11px] text-neutral-500 max-w-[200px] text-right font-medium">
-              Формат: [Локация]-[Стеллаж]-[Полка]-[Коробка]
+              Format: [Location]-[Furniture]-[Shelf]-[Box]
             </div>
           </div>
 
-          {/* Кнопки */}
+          {/* Buttons */}
           <div className="pt-2 flex items-center justify-end gap-3 border-t border-neutral-200">
             <button
               type="button"
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors"
             >
-              Отмена
+              Cancel
             </button>
             <button
               type="submit"
               className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold shadow-xs flex items-center gap-2 transition-colors cursor-pointer"
             >
               <PlusCircle className="w-4 h-4" />
-              Создать место
+              Create Location
             </button>
           </div>
         </form>

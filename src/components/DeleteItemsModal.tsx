@@ -33,7 +33,7 @@ export const DeleteItemsModal: React.FC<DeleteItemsModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden flex flex-col border border-neutral-200 animate-in fade-in zoom-in-95 duration-150">
-        {/* Шапка */}
+        {/* Header */}
         <div className="px-6 py-4 bg-rose-900 text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2.5 bg-rose-800 rounded-xl text-rose-200">
@@ -41,10 +41,10 @@ export const DeleteItemsModal: React.FC<DeleteItemsModalProps> = ({
             </div>
             <div>
               <h3 className="text-base font-bold">
-                Удаление {itemsToDelete.length === 1 ? 'вещи' : `${itemsToDelete.length} вещей`}
+                Delete {itemsToDelete.length === 1 ? '1 Item' : `${itemsToDelete.length} Items`}
               </h3>
               <p className="text-xs text-rose-200">
-                Подтверждение безвозвратного удаления из инвентаря
+                Confirm permanent deletion from inventory
               </p>
             </div>
           </div>
@@ -56,12 +56,12 @@ export const DeleteItemsModal: React.FC<DeleteItemsModalProps> = ({
           </button>
         </div>
 
-        {/* Тело */}
+        {/* Body */}
         <div className="p-6 space-y-4">
           <div className="flex items-start gap-3 p-3.5 bg-rose-50 rounded-xl border border-rose-200 text-rose-900 text-xs">
             <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
             <div>
-              Вы уверены, что хотите удалить следующие позиции? Фотографии и карточки вещей будут удалены из базы.
+              Are you sure you want to permanently delete these items? Their photo records and data will be removed.
             </div>
           </div>
 
@@ -84,14 +84,14 @@ export const DeleteItemsModal: React.FC<DeleteItemsModalProps> = ({
             ))}
           </div>
 
-          {/* Кнопки */}
+          {/* Buttons */}
           <div className="pt-2 flex items-center justify-end gap-3 border-t border-neutral-200">
             <button
               type="button"
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors"
             >
-              Отмена
+              Cancel
             </button>
             <button
               type="button"
@@ -99,7 +99,7 @@ export const DeleteItemsModal: React.FC<DeleteItemsModalProps> = ({
               className="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-sm font-semibold shadow-xs flex items-center gap-2 transition-colors cursor-pointer"
             >
               <Trash2 className="w-4 h-4" />
-              Да, удалить навсегда
+              Yes, Delete Permanently
             </button>
           </div>
         </div>

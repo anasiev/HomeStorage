@@ -61,15 +61,15 @@ export const DeleteLocationModal: React.FC<DeleteLocationModalProps> = ({
           <div className="w-12 h-12 bg-neutral-100 text-neutral-400 rounded-2xl flex items-center justify-center mx-auto">
             <FolderMinus className="w-6 h-6" />
           </div>
-          <h3 className="font-bold text-base text-neutral-900">Нет мест для удаления</h3>
+          <h3 className="font-bold text-base text-neutral-900">No locations to delete</h3>
           <p className="text-xs text-neutral-500">
-            В вашей базе данных пока не создано ни одного места хранения.
+            There are no storage locations created in your database yet.
           </p>
           <button
             onClick={onClose}
             className="w-full py-2 bg-neutral-900 hover:bg-neutral-800 text-white rounded-xl text-xs font-semibold cursor-pointer"
           >
-            Закрыть
+            Close
           </button>
         </div>
       </div>
@@ -85,14 +85,14 @@ export const DeleteLocationModal: React.FC<DeleteLocationModalProps> = ({
       onLocationDeleted();
       onClose();
     } catch (err: any) {
-      setError(err?.message || 'Не удалось удалить место');
+      setError(err?.message || 'Failed to delete location');
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
       <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col border border-neutral-200 animate-in fade-in zoom-in-95 duration-150">
-        {/* Шапка */}
+        {/* Header */}
         <div className={`px-6 py-4 text-white flex items-center justify-between ${
           check.canDelete ? 'bg-neutral-900' : 'bg-amber-950'
         }`}>
@@ -104,10 +104,10 @@ export const DeleteLocationModal: React.FC<DeleteLocationModalProps> = ({
             </div>
             <div>
               <h3 className="text-base font-bold">
-                {check.canDelete ? 'Удаление места хранения' : 'Блокировка удаления'}
+                {check.canDelete ? 'Delete Storage Location' : 'Deletion Blocked'}
               </h3>
               <p className="text-xs text-neutral-300">
-                Защита от случайной потери привязанных вещей
+                Protection against accidental item loss
               </p>
             </div>
           </div>
@@ -119,15 +119,15 @@ export const DeleteLocationModal: React.FC<DeleteLocationModalProps> = ({
           </button>
         </div>
 
-        {/* Тело */}
+        {/* Body */}
         <div className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
-          {/* Селектор выбора удаляемого места */}
+          {/* Location Selector */}
           {locations.length > 0 && (
             <div className="p-3 bg-neutral-100 rounded-xl border border-neutral-200">
               <label className="block text-xs font-bold text-neutral-800 mb-1.5 flex items-center justify-between">
-                <span>Выберите удаляемое место:</span>
+                <span>Select location to delete:</span>
                 <span className="text-[10px] text-neutral-500 font-normal">
-                  Всего мест: {locations.length}
+                  Total locations: {locations.length}
                 </span>
               </label>
               <select
@@ -147,10 +147,10 @@ export const DeleteLocationModal: React.FC<DeleteLocationModalProps> = ({
             </div>
           )}
 
-          {/* Карточка текущей выбранной локации */}
+          {/* Current location card */}
           <div className="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200">
             <div className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">
-              Расположение в иерархии:
+              Location in hierarchy:
             </div>
             <div className="text-sm font-bold text-neutral-900 mt-0.5 flex items-center gap-2">
               <span className="font-mono text-xs px-2 py-0.5 bg-neutral-200 rounded text-neutral-800 font-extrabold">
@@ -163,26 +163,26 @@ export const DeleteLocationModal: React.FC<DeleteLocationModalProps> = ({
             </div>
           </div>
 
-          {/* Предупреждение если внутри лежат вещи */}
+          {/* Block warning if items present */}
           {!check.canDelete ? (
             <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200 space-y-3">
               <div className="flex items-start gap-2.5">
                 <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-sm font-bold text-amber-900">
-                    Удаление невозможно: место содержит вещи!
+                    Cannot delete: location contains items!
                   </h4>
                   <p className="text-xs text-amber-800 mt-1 leading-relaxed">
-                    По правилам системы нельзя удалить место, если в нем или его дочерних полках/коробках находятся вещи.
+                    According to storage rules, a location cannot be deleted while items are stored in it or its child shelves/boxes.
                   </p>
                 </div>
               </div>
 
               <div className="bg-white/90 rounded-xl p-3 border border-amber-200 text-xs space-y-2">
                 <div className="font-semibold text-neutral-800 flex items-center justify-between">
-                  <span>Обнаружено вещей:</span>
+                  <span>Items detected:</span>
                   <span className="px-2 py-0.5 bg-amber-200 text-amber-900 rounded-full font-bold">
-                    {check.totalItemCount} шт.
+                    {check.totalItemCount} pcs
                   </span>
                 </div>
 
@@ -201,7 +201,7 @@ export const DeleteLocationModal: React.FC<DeleteLocationModalProps> = ({
                   ))}
                   {check.items.length > 10 && (
                     <div className="text-[11px] text-center text-neutral-500 pt-1 font-medium">
-                      ...и еще {check.items.length - 10} вещей
+                      ...and {check.items.length - 10} more items
                     </div>
                   )}
                 </div>
@@ -217,7 +217,7 @@ export const DeleteLocationModal: React.FC<DeleteLocationModalProps> = ({
                   className="w-full py-2.5 px-3 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-xs"
                 >
                   <ArrowRight className="w-3.5 h-3.5" />
-                  Переместить эти вещи в другое место
+                  Move these items to another location
                 </button>
               )}
             </div>
@@ -225,13 +225,13 @@ export const DeleteLocationModal: React.FC<DeleteLocationModalProps> = ({
             <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 space-y-2">
               <div className="flex items-center gap-2 text-emerald-800 text-sm font-semibold">
                 <Layers className="w-4 h-4 text-emerald-600" />
-                Проверка пройдена: место пусто
+                Check passed: location is empty
               </div>
               <p className="text-xs text-neutral-600 leading-relaxed">
-                В этом месте и его подразделах нет ни одной вещи. Удаление безопасно и не приведет к потере вещей.
+                There are no items inside this location or its sub-sections. Deletion is safe and will not result in item loss.
                 {check.childLocationCount > 0 && (
                   <span className="block mt-1 font-medium text-neutral-700">
-                    Внимание: также будут удалены пустые дочерние подразделы ({check.childLocationCount} шт.).
+                    Note: empty sub-locations will also be deleted ({check.childLocationCount} pcs).
                   </span>
                 )}
               </p>
@@ -244,14 +244,14 @@ export const DeleteLocationModal: React.FC<DeleteLocationModalProps> = ({
             </div>
           )}
 
-          {/* Кнопки */}
+          {/* Buttons */}
           <div className="pt-2 flex items-center justify-end gap-3 border-t border-neutral-200">
             <button
               type="button"
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors cursor-pointer"
             >
-              Отмена
+              Cancel
             </button>
             {check.canDelete && (
               <button
@@ -260,7 +260,7 @@ export const DeleteLocationModal: React.FC<DeleteLocationModalProps> = ({
                 className="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-sm font-semibold shadow-xs flex items-center gap-2 transition-colors cursor-pointer"
               >
                 <Trash2 className="w-4 h-4" />
-                Подтвердить удаление
+                Confirm Deletion
               </button>
             )}
           </div>

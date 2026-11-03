@@ -140,7 +140,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
                           ? 'hover:bg-blue-700 text-white'
                           : 'hover:bg-neutral-200 text-neutral-500'
                       }`}
-                      title={isExpanded ? 'Свернуть' : 'Развернуть'}
+                      title={isExpanded ? 'Collapse' : 'Expand'}
                     >
                       {isExpanded ? (
                         <ChevronDown className="w-4 h-4 stroke-[2.5]" />
@@ -192,7 +192,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-3">
-      {/* Главная поисковая строка по центру */}
+      {/* Centered main live search */}
       <div className="relative flex items-center shadow-lg rounded-2xl bg-white border border-neutral-300/80 focus-within:border-emerald-500 focus-within:ring-4 focus-within:ring-emerald-500/10 transition-all overflow-hidden">
         <div className="pl-4 text-neutral-400 flex items-center justify-center">
           <Search className="w-5 h-5 text-emerald-600" />
@@ -202,7 +202,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
           type="text"
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="Живой поиск по названию, артикулу (SKU), штрихкоду, категории, адресу (д-ш1-п3-к1)..."
+          placeholder="Live search by name, SKU, barcode, category, address code (h-w1-s3-b1)..."
           className="w-full py-3.5 pl-3 pr-10 text-base text-neutral-900 placeholder-neutral-400 focus:outline-hidden bg-transparent"
         />
 
@@ -211,18 +211,18 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
             type="button"
             onClick={() => onSearchChange('')}
             className="p-2 mr-2 rounded-lg text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 transition-colors cursor-pointer"
-            title="Очистить поиск"
+            title="Clear search"
           >
             <X className="w-4 h-4" />
           </button>
         )}
       </div>
 
-      {/* Панель фильтров: адаптивная верстка без горизонтального скролла */}
+      {/* Filter toolbar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
-        {/* Кнопки и бейджи фильтров */}
+        {/* Filter buttons & active tags */}
         <div className="flex flex-wrap items-center gap-2">
-          {/* Кнопка раскрытия дерева категорий */}
+          {/* Category tree button */}
           <button
             type="button"
             onClick={() => setIsCategoryTreeOpen((prev) => !prev)}
@@ -237,8 +237,8 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
             <FolderTree className="w-4 h-4 text-blue-600 shrink-0" />
             <span>
               {hasActiveCategory
-                ? `Категория: ${categoryPath || selectedCategoryName}`
-                : `Дерево категорий (${categories.length})`}
+                ? `Category: ${categoryPath || selectedCategoryName}`
+                : `Category Tree (${categories.length})`}
             </span>
             <ChevronDown
               className={`w-4 h-4 transition-transform ${
@@ -247,7 +247,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
             />
           </button>
 
-          {/* Фильтр выбранного места хранения */}
+          {/* Active location tag */}
           {filterLocation && (
             <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-xl text-xs sm:text-sm font-semibold shadow-2xs">
               <MapPin className="w-4 h-4 text-emerald-700 shrink-0" />
@@ -257,14 +257,14 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
               <button
                 onClick={onClearLocationFilter}
                 className="p-1 hover:bg-emerald-200 rounded-full transition-colors ml-1 text-emerald-800 cursor-pointer"
-                title="Сбросить фильтр места"
+                title="Clear location filter"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
             </div>
           )}
 
-          {/* Фильтр выбранной категории (с кнопкой быстрого сброса) */}
+          {/* Active category tag */}
           {hasActiveCategory && (
             <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-100 text-blue-900 border border-blue-300 rounded-xl text-xs sm:text-sm font-semibold shadow-2xs">
               <Tag className="w-4 h-4 text-blue-700 shrink-0" />
@@ -275,7 +275,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
                   onSelectCategoryName('');
                 }}
                 className="p-1 hover:bg-blue-200 rounded-full transition-colors ml-1 text-blue-800 cursor-pointer"
-                title="Сбросить фильтр категории"
+                title="Clear category filter"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -283,10 +283,10 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
           )}
         </div>
 
-        {/* Правая сторона: счетчик и переключение вида (плитка/список) */}
+        {/* Right side: results count and grid/list view switcher */}
         <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0">
           <span className="text-sm text-neutral-600 font-medium">
-            Найдено:{' '}
+            Found:{' '}
             <strong className="text-neutral-900 font-bold text-sm sm:text-base">
               {totalResults}
             </strong>
@@ -301,7 +301,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
                   ? 'bg-neutral-900 text-white shadow-2xs'
                   : 'text-neutral-500 hover:text-neutral-900'
               }`}
-              title="Вид: Плитка"
+              title="Grid view"
             >
               <LayoutGrid className="w-4 h-4" />
             </button>
@@ -313,7 +313,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
                   ? 'bg-neutral-900 text-white shadow-2xs'
                   : 'text-neutral-500 hover:text-neutral-900'
               }`}
-              title="Вид: Список"
+              title="List view"
             >
               <List className="w-4 h-4" />
             </button>
@@ -321,14 +321,14 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
         </div>
       </div>
 
-      {/* Раскрывающееся дерево категорий (аккордеон без горизонтального скролла) */}
+      {/* Expandable Category Tree */}
       {isCategoryTreeOpen && (
         <div className="w-full max-w-full bg-white rounded-2xl border border-neutral-200 p-3 sm:p-4 shadow-md space-y-3 animate-in fade-in slide-in-from-top-2 duration-150">
           <div className="flex items-center justify-between pb-2 border-b border-neutral-100">
             <div className="flex items-center gap-2">
               <FolderTree className="w-4 h-4 text-blue-600" />
               <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-neutral-700">
-                Дерево категорий каталога
+                Catalog Category Tree
               </h4>
             </div>
 
@@ -341,21 +341,21 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
                   }}
                   className="text-xs sm:text-sm text-neutral-500 hover:text-neutral-900 underline cursor-pointer"
                 >
-                  Сбросить выбор
+                  Clear filter
                 </button>
               )}
               <button
                 type="button"
                 onClick={() => setIsCategoryTreeOpen(false)}
                 className="p-1 rounded-lg text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100"
-                title="Свернуть дерево"
+                title="Collapse tree"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
           </div>
 
-          {/* Пункт «Все категории» */}
+          {/* Option: "All categories" */}
           <div
             onClick={() => handleSelectCategory(null)}
             className={`flex items-center justify-between gap-2 px-3 py-2 rounded-xl cursor-pointer transition-all border text-sm sm:text-base ${
@@ -366,7 +366,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
           >
             <div className="flex items-center gap-2">
               <Tag className="w-4 h-4 text-emerald-400" />
-              <span>Все категории (без фильтра)</span>
+              <span>All categories (no filter)</span>
             </div>
             {!hasActiveCategory && <Check className="w-4 h-4 stroke-[3]" />}
           </div>

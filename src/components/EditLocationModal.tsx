@@ -103,15 +103,15 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
           <div className="w-12 h-12 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mx-auto">
             <FolderEdit className="w-6 h-6" />
           </div>
-          <h3 className="font-bold text-base text-neutral-900">Места хранения не найдены</h3>
+          <h3 className="font-bold text-base text-neutral-900">No storage locations found</h3>
           <p className="text-xs text-neutral-500">
-            В базе данных еще нет мест хранения. Создайте первое место через «Добавить место».
+            There are no storage locations in the database yet. Click "Add Location" to create one.
           </p>
           <button
             onClick={onClose}
             className="w-full py-2 bg-neutral-900 hover:bg-neutral-800 text-white rounded-xl text-xs font-semibold"
           >
-            Закрыть
+            Close
           </button>
         </div>
       </div>
@@ -145,11 +145,11 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
-      setError('Укажите название места хранения');
+      setError('Please enter storage location name');
       return;
     }
     if (type !== 'location' && !parentId) {
-      setError('Для данного типа необходимо выбрать родительское место');
+      setError('Parent location is required for this level');
       return;
     }
 
@@ -167,7 +167,7 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
       onLocationUpdated(updated);
       onClose();
     } catch (err: any) {
-      setError(err?.message || 'Не удалось обновить место хранения');
+      setError(err?.message || 'Failed to update storage location');
     }
   };
 
@@ -192,9 +192,9 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
               )}
             </div>
             <div>
-              <h3 className="text-base font-bold">Редактировать место хранения</h3>
+              <h3 className="text-base font-bold">Edit Storage Location</h3>
               <p className="text-xs text-neutral-400">
-                Код узла: <span className="font-mono text-emerald-400">{activeLocation.full_code}</span>
+                Location code: <span className="font-mono text-emerald-400">{activeLocation.full_code}</span>
               </p>
             </div>
           </div>
@@ -217,9 +217,9 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
           {/* 0. Location Selector Dropdown */}
           <div className="p-3.5 bg-neutral-100 rounded-xl border border-neutral-200">
             <label className="block text-xs font-bold text-neutral-800 mb-1.5 flex items-center justify-between">
-              <span>Выберите место для редактирования:</span>
+              <span>Select location to edit:</span>
               <span className="text-[10px] text-neutral-500 font-normal">
-                Всего мест: {locations.length}
+                Total locations: {locations.length}
               </span>
             </label>
             <select
@@ -238,7 +238,7 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
           {/* 1. Hierarchy Level / Type */}
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-2">
-              Тип элемента иерархии:
+              Hierarchy level and type:
             </label>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <button
@@ -252,8 +252,8 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
               >
                 <Home className="w-4 h-4 text-emerald-600 shrink-0" />
                 <div>
-                  <div>1. Локация</div>
-                  <div className="text-[10px] text-neutral-500 font-normal">Дом, Гараж, Дача</div>
+                  <div>1. Location</div>
+                  <div className="text-[10px] text-neutral-500 font-normal">Home, Garage, Pantry</div>
                 </div>
               </button>
 
@@ -268,8 +268,8 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
               >
                 <Warehouse className="w-4 h-4 text-blue-600 shrink-0" />
                 <div>
-                  <div>2. Мебель / Стеллаж</div>
-                  <div className="text-[10px] text-neutral-500 font-normal">Шкаф, Верстак</div>
+                  <div>2. Furniture / Rack</div>
+                  <div className="text-[10px] text-neutral-500 font-normal">Wardrobe, Workbench</div>
                 </div>
               </button>
 
@@ -284,8 +284,8 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
               >
                 <Layers className="w-4 h-4 text-amber-600 shrink-0" />
                 <div>
-                  <div>3. Полка</div>
-                  <div className="text-[10px] text-neutral-500 font-normal">Отсчет снизу</div>
+                  <div>3. Shelf</div>
+                  <div className="text-[10px] text-neutral-500 font-normal">Counted from bottom</div>
                 </div>
               </button>
 
@@ -300,8 +300,8 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
               >
                 <Box className="w-4 h-4 text-purple-600 shrink-0" />
                 <div>
-                  <div>4. Коробка / Ящик</div>
-                  <div className="text-[10px] text-neutral-500 font-normal">Органайзер, кейс</div>
+                  <div>4. Box / Container / Bin</div>
+                  <div className="text-[10px] text-neutral-500 font-normal">Organizer, Crate, Case</div>
                 </div>
               </button>
             </div>
@@ -311,7 +311,7 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
           {type !== 'location' && (
             <div>
               <label className="block text-xs font-semibold text-neutral-700 mb-1">
-                Родительское место (расположение): <span className="text-rose-500">*</span>
+                Parent location (placement): <span className="text-rose-500">*</span>
               </label>
               <select
                 value={parentId || ''}
@@ -320,7 +320,7 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
                 className="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500 font-medium"
               >
                 <option value="" disabled>
-                  -- Выберите родительское место --
+                  -- Select Parent Location --
                 </option>
                 {locations
                   .filter((loc) => {
@@ -340,7 +340,7 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
           {/* 3. Name */}
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-1">
-              Название места <span className="text-rose-500">*</span>
+              Location Name <span className="text-rose-500">*</span>
             </label>
             <input
               type="text"
@@ -355,14 +355,14 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-semibold text-neutral-700 mb-1 flex items-center justify-between">
-                <span>Код-суффикс</span>
-                <span className="text-[10px] text-neutral-400">д, ш1, п3, к1</span>
+                <span>Address Code Suffix</span>
+                <span className="text-[10px] text-neutral-400">h, w1, s3, b1</span>
               </label>
               <input
                 type="text"
                 value={codeSuffix}
                 onChange={(e) => setCodeSuffix(e.target.value.toLowerCase())}
-                placeholder="к1"
+                placeholder="b1"
                 className="w-full px-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm font-mono uppercase focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
               />
             </div>
@@ -370,8 +370,8 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
             {type === 'shelf' ? (
               <div>
                 <label className="block text-xs font-semibold text-neutral-700 mb-1 flex items-center justify-between">
-                  <span>Номер полки</span>
-                  <span className="text-[10px] text-emerald-600 font-medium">снизу вверх</span>
+                  <span>Shelf Number</span>
+                  <span className="text-[10px] text-emerald-600 font-medium">from bottom to top</span>
                 </label>
                 <input
                   type="number"
@@ -381,7 +381,7 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
                   onChange={(e) => {
                     const val = parseInt(e.target.value, 10);
                     setShelfNumber(isNaN(val) ? undefined : val);
-                    if (!isNaN(val)) setCodeSuffix(`п${val}`);
+                    if (!isNaN(val)) setCodeSuffix(`s${val}`);
                   }}
                   className="w-full px-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
                 />
@@ -389,7 +389,7 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
             ) : (
               <div>
                 <label className="block text-xs font-semibold text-neutral-700 mb-1">
-                  Цвет маркера
+                  Marker Color
                 </label>
                 <div className="flex items-center gap-1.5 pt-1">
                   {PRESET_COLORS.map((c) => (
@@ -411,13 +411,13 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
           {/* 5. Description */}
           <div>
             <label className="block text-xs font-semibold text-neutral-700 mb-1">
-              Описание / Примечание
+              Description / Notes
             </label>
             <input
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Особенности места, назначение, вместимость..."
+              placeholder="Location details, purpose, capacity..."
               className="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-300 rounded-xl text-xs focus:outline-hidden focus:ring-2 focus:ring-emerald-500"
             />
           </div>
@@ -426,14 +426,14 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
           <div className="p-3 bg-neutral-100 rounded-xl border border-neutral-200 flex items-center justify-between">
             <div>
               <span className="text-[10px] uppercase font-bold text-neutral-500 tracking-wider block">
-                Сгенерированный адрес этикетки:
+                Generated Label Address:
               </span>
               <span className="font-mono text-base font-extrabold text-emerald-700">
                 {calculatePreviewCode()}
               </span>
             </div>
             <div className="text-[11px] text-neutral-500 max-w-[200px] text-right font-medium">
-              Формат: [Локация]-[Стеллаж]-[Полка]-[Коробка]
+              Format: [Location]-[Furniture]-[Shelf]-[Box]
             </div>
           </div>
 
@@ -444,14 +444,14 @@ export const EditLocationModal: React.FC<EditLocationModalProps> = ({
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors cursor-pointer"
             >
-              Отмена
+              Cancel
             </button>
             <button
               type="submit"
               className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold shadow-xs flex items-center gap-2 transition-colors cursor-pointer"
             >
               <Save className="w-4 h-4" />
-              Сохранить изменения
+              Save Changes
             </button>
           </div>
         </form>

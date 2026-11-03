@@ -1,6 +1,6 @@
 {
-  "name": "Домашний Склад & Инвентаризация",
-  "description": "Локальная система иерархического хранения и быстрого поиска вещей дома, в гараже и кладовке с маркировкой и этикетками.",
+  "name": "Home Storage & Inventory",
+  "description": "Local hierarchical home inventory management and fast item search with barcode and labeling support.",
   "requestFramePermissions": ["camera"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

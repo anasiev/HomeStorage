@@ -47,23 +47,23 @@ export const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
       onCategoryDeleted();
       onClose();
     } catch (err: any) {
-      setError(err?.message || 'Ошибка удаления категории');
+      setError(err?.message || 'Failed to delete category');
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden flex flex-col border border-neutral-200 animate-in fade-in zoom-in-95 duration-150">
-        {/* Шапка */}
+        {/* Header */}
         <div className="px-6 py-4 bg-rose-900 text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2.5 bg-rose-800 rounded-xl text-rose-200">
               <Trash2 className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold">Удалить категорию</h3>
+              <h3 className="text-base font-bold">Delete Category</h3>
               <p className="text-xs text-rose-200">
-                Удаление узла из дерева категорий каталога
+                Remove category node from catalog tree
               </p>
             </div>
           </div>
@@ -75,7 +75,7 @@ export const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
           </button>
         </div>
 
-        {/* Тело */}
+        {/* Body */}
         <div className="p-6 space-y-4 text-xs">
           {error && (
             <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700">
@@ -85,7 +85,7 @@ export const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
 
           <div className="p-3.5 bg-neutral-100 rounded-xl border border-neutral-200">
             <span className="text-neutral-500 uppercase tracking-wider text-[10px] font-bold block">
-              Удаляемая категория:
+              Category to delete:
             </span>
             <span className="text-sm font-bold text-neutral-900 block mt-0.5">
               {category.name}
@@ -99,23 +99,23 @@ export const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
             <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 flex items-start gap-2">
               <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
               <div>
-                Внимание: также будут удалены все вложенные подкатегории ({descendants.length} шт.).
+                Note: all nested subcategories ({descendants.length} pcs) will also be deleted.
               </div>
             </div>
           )}
 
-          {/* Вопрос о связанных вещах */}
+          {/* Question about linked items */}
           <div className="space-y-2">
             <div className="font-semibold text-neutral-800 flex items-center justify-between">
-              <span>Связанных вещей в каталоге:</span>
+              <span>Items linked in this category:</span>
               <span className="px-2 py-0.5 bg-neutral-200 text-neutral-800 rounded-full font-bold">
-                {affectedItems.length} шт.
+                {affectedItems.length} pcs
               </span>
             </div>
 
             {affectedItems.length > 0 && (
               <div className="space-y-2 pt-1">
-                <span className="text-neutral-600">Что сделать со связанными вещами?</span>
+                <span className="text-neutral-600">What to do with linked items?</span>
 
                 {parentCategory ? (
                   <label className="flex items-start gap-2 p-2.5 rounded-xl border border-neutral-200 hover:bg-neutral-50 cursor-pointer">
@@ -128,10 +128,10 @@ export const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
                     />
                     <div>
                       <div className="font-semibold text-neutral-800">
-                        Перенести в родительскую категорию «{parentCategory.name}»
+                        Move to parent category "{parentCategory.name}"
                       </div>
                       <div className="text-[11px] text-neutral-500">
-                        Вещи останутся в каталоге на один уровень выше
+                        Items stay in catalog one level higher
                       </div>
                     </div>
                   </label>
@@ -147,10 +147,10 @@ export const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
                   />
                   <div>
                     <div className="font-semibold text-neutral-800">
-                      Оставить вещи без категории
+                      Leave items uncategorized
                     </div>
                     <div className="text-[11px] text-neutral-500">
-                      Вещи не удалятся со склада, но поле категории очистится
+                      Items will not be deleted, but category will be cleared
                     </div>
                   </div>
                 </label>
@@ -165,7 +165,7 @@ export const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
               onClick={onClose}
               className="px-4 py-2 font-medium text-neutral-700 hover:bg-neutral-100 rounded-xl transition-colors"
             >
-              Отмена
+              Cancel
             </button>
             <button
               type="button"
@@ -173,7 +173,7 @@ export const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
               className="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-semibold shadow-xs flex items-center gap-2 transition-colors cursor-pointer"
             >
               <Trash2 className="w-4 h-4" />
-              Подтвердить удаление
+              Confirm Deletion
             </button>
           </div>
         </div>

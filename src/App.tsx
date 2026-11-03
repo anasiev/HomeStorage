@@ -45,7 +45,7 @@ import { ItemDetailModal } from './components/ItemDetailModal';
 import { GoBackendModal } from './components/GoBackendModal';
 
 export default function App() {
-  // Состояние данных
+  // Data state
   const [locations, setLocations] = useState<LocationNode[]>(() =>
     inventoryManager.getLocations()
   );
@@ -56,7 +56,7 @@ export default function App() {
     inventoryManager.getItems()
   );
 
-  // Навигация и фильтры
+  // Navigation and filters
   const [activeView, setActiveView] = useState<'items' | 'tree' | 'categories'>('items');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLocationId, setSelectedLocationId] = useState<string | null>(null);
@@ -66,7 +66,7 @@ export default function App() {
   const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
-  // Состояние модальных окон
+  // Modal window state
   const [isAddItemOpen, setIsAddItemOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<InventoryItem | null>(null);
   const [isAddLocationOpen, setIsAddLocationOpen] = useState(false);
@@ -87,27 +87,27 @@ export default function App() {
   const [isGoDocsOpen, setIsGoDocsOpen] = useState(false);
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
 
-  // Модальные окна категорий
+  // Category modal windows
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<CategoryNode | null>(null);
   const [parentCategoryIdForNew, setParentCategoryIdForNew] = useState<string | null>(null);
   const [isDeleteCategoryModalOpen, setIsDeleteCategoryModalOpen] = useState(false);
   const [targetDeleteCategory, setTargetDeleteCategory] = useState<CategoryNode | null>(null);
 
-  // Модальное окно детального просмотра карточки товара
+  // Modal window for detailed product view
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [viewingItem, setViewingItem] = useState<InventoryItem | null>(null);
 
   const importFileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Обновление состояния из менеджера
+  // Updating state from the manager
   const refreshData = () => {
     setLocations(inventoryManager.getLocations());
     setCategories(inventoryManager.getCategories());
     setItems(inventoryManager.getItems());
   };
 
-  // Автоматическая синхронизация с автономным Go-сервером (при запуске на http://localhost:8080)
+  // Automatic synchronization with a standalone Go server (when running at http://localhost:8080)
   useEffect(() => {
     inventoryManager.syncWithServer().then((synced) => {
       if (synced) {
@@ -116,7 +116,7 @@ export default function App() {
     });
   }, []);
 
-  // Фильтрация вещей по глобальному поиску, локации и категории
+  // Filtering items by global search, location, and category
   const filteredItems = useMemo(() => {
     let result = inventoryManager.searchItems(
       searchQuery,
@@ -133,14 +133,14 @@ export default function App() {
     return result;
   }, [searchQuery, selectedLocationId, selectedCategoryId, selectedCategoryName, items, locations, categories]);
 
-  // Выбор элемента чекбоксом
+  // Selecting an item via a checkbox
   const handleToggleSelect = (itemId: string) => {
     setSelectedItemIds((prev) =>
       prev.includes(itemId) ? prev.filter((id) => id !== itemId) : [...prev, itemId]
     );
   };
 
-  // Быстрые обработчики из карточки
+  // Quick handlers from the card
   const handleViewItem = (item: InventoryItem) => {
     setViewingItem(item);
     setIsDetailModalOpen(true);
@@ -173,7 +173,7 @@ export default function App() {
     setIsPrintLabelOpen(true);
   };
 
-  // Действия из левого меню
+  // Actions from the left menu
   const handleOpenAddItem = () => {
     setEditingItem(null);
     setIsAddItemOpen(true);
@@ -185,7 +185,7 @@ export default function App() {
       setItemsToDelete(selected);
       setIsDeleteItemsOpen(true);
     } else {
-      alert('Сначала отметьте галочками одну или несколько вещей в каталоге для удаления.');
+      alert('First, select one or more items in the catalog to delete by checking the boxes.');
     }
   };
 
@@ -195,7 +195,7 @@ export default function App() {
       setItemsToMove(selected);
       setIsMoveItemOpen(true);
     } else {
-      alert('Сначала отметьте галочками одну или несколько вещей для перемещения.');
+      alert('First, select one or more items to move by checking the boxes.');
     }
   };
 
@@ -207,7 +207,7 @@ export default function App() {
   const handleOpenEditLocation = (loc?: LocationNode) => {
     const target = loc || (selectedLocationId ? inventoryManager.getLocation(selectedLocationId) : null) || locations[0] || null;
     if (!target && locations.length === 0) {
-      alert('В базе еще нет мест хранения. Сначала создайте место через кнопку «Добавить место».');
+      alert('There are no storage locations in the database yet. First, create a location using the "Add location" button.');
       return;
     }
     setEditingLocation(target);
@@ -217,7 +217,7 @@ export default function App() {
   const handleOpenDeleteLocation = (loc?: LocationNode) => {
     const target = loc || (selectedLocationId ? inventoryManager.getLocation(selectedLocationId) : null) || locations[0] || null;
     if (!target && locations.length === 0) {
-      alert('В базе еще нет мест хранения для удаления.');
+      alert('There are no storage locations to delete in the database yet.');
       return;
     }
     setTargetDeleteLocation(target);
@@ -226,14 +226,14 @@ export default function App() {
 
   const handleOpenMoveLocation = (loc?: LocationNode) => {
     if (locations.length === 0) {
-      alert('В базе еще нет мест хранения для перемещения.');
+      alert('There are no storage locations for the transfer in the database yet..');
       return;
     }
     setTargetMoveLocationId(loc ? loc.id : (selectedLocationId || locations[0]?.id));
     setIsMoveLocationOpen(true);
   };
 
-  // Действия для категорий
+  // Actions for categories
   const handleOpenAddCategory = (parentId?: string | null) => {
     setEditingCategory(null);
     setParentCategoryIdForNew(parentId !== undefined ? parentId : null);
@@ -251,7 +251,7 @@ export default function App() {
     setIsDeleteCategoryModalOpen(true);
   };
 
-  // Экспорт и импорт db.json
+  // Export and import of db.json
   const handleExportDb = () => {
     const jsonStr = inventoryManager.exportDatabaseJSON();
     const blob = new Blob([jsonStr], { type: 'application/json' });
@@ -272,9 +272,9 @@ export default function App() {
       const content = event.target?.result as string;
       if (content && inventoryManager.importDatabaseJSON(content)) {
         refreshData();
-        alert('База данных успешно импортирована из db.json!');
+        alert('Database successfully imported from db.json!');
       } else {
-        alert('Ошибка при импорте. Убедитесь, что файл имеет корректный формат db.json.');
+        alert('Error during import. Ensure that the file is in the correct db.json format.');
       }
     };
     reader.readAsText(file);
@@ -282,7 +282,7 @@ export default function App() {
   };
 
   const handleResetData = () => {
-    if (confirm('Сбросить базу данных и вернуть демонстрационные примеры?')) {
+    if (confirm('Reset the database and restore the demo examples?')) {
       inventoryManager.resetToSampleData();
       refreshData();
       setSelectedLocationId(null);
@@ -302,7 +302,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-neutral-100/70 text-neutral-900 flex flex-col font-sans selection:bg-emerald-500 selection:text-white">
-      {/* Скрытый инпут для импорта db.json */}
+      {/* Hidden input for importing db.json */}
       <input
         ref={importFileInputRef}
         type="file"
@@ -311,7 +311,7 @@ export default function App() {
         className="hidden"
       />
 
-      {/* Левая боковая панель с функциями */}
+      {/* Left-hand side panel with functions */}
       <Sidebar
         onOpenAddItem={handleOpenAddItem}
         onOpenDeleteItems={handleOpenDeleteItems}
@@ -341,9 +341,9 @@ export default function App() {
         onCloseMobile={() => setIsMobileSidebarOpen(false)}
       />
 
-      {/* Основная рабочая область справа от сайдбара */}
+      {/* The main workspace is to the right of the sidebar */}
       <div className="lg:pl-72 flex-1 flex flex-col min-w-0">
-        {/* Мобильный верхний бар */}
+        {/* Mobile top bar */}
         <header className="lg:hidden sticky top-0 z-30 bg-neutral-900 text-white px-4 py-3 flex items-center justify-between shadow-md">
           <div className="flex items-center gap-3">
             <button
@@ -353,7 +353,7 @@ export default function App() {
               <Menu className="w-5 h-5" />
             </button>
             <div className="font-extrabold text-base tracking-tight flex items-center gap-2">
-              <span>Домашний Склад</span>
+              <span>Home Storage</span>
               <span className="text-xs font-mono px-1.5 py-0.5 rounded-md bg-emerald-950 text-emerald-400 font-normal">
                 v1.1
               </span>
@@ -365,20 +365,20 @@ export default function App() {
             className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-semibold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
           >
             <PackagePlus className="w-4 h-4" />
-            <span>Добавить</span>
+            <span>Add</span>
           </button>
         </header>
 
-        {/* Главная часть */}
+        {/* Main part */}
         <main className="p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-6 flex-1">
-          {/* Центрированный глобальный живой поиск */}
+          {/* Centered global live search */}
           <div className="pt-2 pb-1">
             <div className="text-center mb-3">
               <h2 className="text-xl sm:text-2xl font-black text-neutral-900 tracking-tight">
-                Быстрый поиск вещей и деталей
+                Quick search for items and parts
               </h2>
               <p className="text-xs sm:text-sm text-neutral-500 mt-0.5">
-                Иерархия мест (Дом &rarr; Шкаф &rarr; Полка &rarr; Коробка) и дерево категорий
+                Hierarchy of storage locations (Home &rarr; Rack &rarr; Shelf &rarr; Box) and the category tree
               </p>
             </div>
 
@@ -404,19 +404,19 @@ export default function App() {
             />
           </div>
 
-          {/* Плавающий бар пакетных действий при выборе нескольких вещей */}
+          {/* Floating action bar for batch operations when multiple items are selected */}
           {selectedItemIds.length > 0 && (
             <div className="sticky top-4 z-20 bg-neutral-900 text-white p-3 sm:px-5 sm:py-3.5 rounded-2xl shadow-xl border border-neutral-800 flex flex-wrap items-center justify-between gap-3 animate-in fade-in slide-in-from-top-3 duration-200">
               <div className="flex items-center gap-2 text-xs font-semibold">
                 <CheckSquare className="w-4 h-4 text-emerald-400" />
                 <span>
-                  Выбрано позиций: <strong className="text-emerald-400 font-mono">{selectedItemIds.length}</strong>
+                  Items selected: <strong className="text-emerald-400 font-mono">{selectedItemIds.length}</strong>
                 </span>
                 <button
                   onClick={() => setSelectedItemIds([])}
                   className="text-neutral-400 hover:text-white underline ml-2 font-normal"
                 >
-                  Снять выбор
+                  Deselect
                 </button>
               </div>
 
@@ -426,20 +426,20 @@ export default function App() {
                   className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
                 >
                   <ArrowRightLeft className="w-3.5 h-3.5" />
-                  Переместить выбранные
+                  Move selected
                 </button>
                 <button
                   onClick={handleOpenDeleteItems}
                   className="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
-                  Удалить ({selectedItemIds.length})
+                  Delete ({selectedItemIds.length})
                 </button>
               </div>
             </div>
           )}
 
-          {/* РЕЖИМ 1: Дерево категорий каталога */}
+          {/* MODE 1: Catalog category tree */}
           {activeView === 'categories' ? (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
               <div className="lg:col-span-1 space-y-4">
@@ -458,11 +458,11 @@ export default function App() {
                   className="w-full py-2.5 px-4 bg-white hover:bg-neutral-50 text-neutral-800 border border-neutral-300 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 shadow-2xs transition-colors cursor-pointer"
                 >
                   <FolderPlus className="w-4 h-4 text-blue-600" />
-                  <span>Создать корневую категорию</span>
+                  <span>Create a root category</span>
                 </button>
               </div>
 
-              {/* Список вещей внутри выбранной категории */}
+              {/* List of items within the selected category */}
               <div className="lg:col-span-2 space-y-4">
                 {selectedCategoryNode ? (
                   <div className="p-4 bg-white rounded-2xl border border-neutral-200 shadow-xs flex flex-wrap items-center justify-between gap-3">
@@ -492,21 +492,21 @@ export default function App() {
                         className="px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
                       >
                         <Edit2 className="w-3.5 h-3.5 text-neutral-500" />
-                        Редактировать
+                        Edit
                       </button>
                       <button
                         onClick={() => handleOpenAddCategory(selectedCategoryNode.id)}
                         className="px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
                       >
                         <Plus className="w-3.5 h-3.5" />
-                        Подкатегория
+                        Subcategory
                       </button>
                       <button
                         onClick={handleOpenAddItem}
                         className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
                       >
                         <PackagePlus className="w-3.5 h-3.5" />
-                        Добавить вещь
+                        Add item
                       </button>
                     </div>
                   </div>
@@ -514,29 +514,29 @@ export default function App() {
                   <div className="p-4 bg-blue-50 border border-blue-200 rounded-2xl text-xs text-blue-900 flex items-center gap-2">
                     <Info className="w-4 h-4 text-blue-600 shrink-0" />
                     <span>
-                      Кликните на любую категорию в дереве слева, чтобы отфильтровать хранящиеся там вещи.
+                      Click on any category in the tree on the left to filter the items stored there.
                     </span>
                   </div>
                 )}
 
-                {/* Вывод списка карточек для категорий */}
+                {/* Displaying a list of cards for categories */}
                 {filteredItems.length === 0 ? (
                   <div className="bg-white rounded-2xl border border-neutral-200 p-10 text-center space-y-3">
                     <div className="w-12 h-12 bg-neutral-100 text-neutral-400 rounded-2xl flex items-center justify-center mx-auto">
                       <FolderTree className="w-6 h-6" />
                     </div>
                     <h4 className="font-bold text-sm text-neutral-800">
-                      В этой категории пока нет вещей
+                      There are no items in this category yet
                     </h4>
                     <p className="text-xs text-neutral-500 max-w-sm mx-auto">
-                      Нажмите «Добавить вещь» или назначьте эту категорию при редактировании карточек.
+                      Click "Add item" or assign this category when editing cards.
                     </p>
                     <button
                       onClick={handleOpenAddItem}
                       className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
                     >
                       <PackagePlus className="w-4 h-4" />
-                      Добавить вещь
+                      Add item
                     </button>
                   </div>
                 ) : (
@@ -567,7 +567,7 @@ export default function App() {
               </div>
             </div>
           ) : activeView === 'tree' ? (
-            /* РЕЖИМ 2: Дерево мест хранения (4 уровня) */
+            /* MODE 2: Storage location tree (4 levels) */
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
               <div className="lg:col-span-1 space-y-4">
                 <LocationsTreeView
@@ -583,7 +583,7 @@ export default function App() {
                 />
               </div>
 
-              {/* Список вещей внутри выбранного места дерева */}
+              {/* List of items within the selected location in the tree */}
               <div className="lg:col-span-2 space-y-4">
                 {selectedLocation ? (
                   <div className="p-4 bg-white rounded-2xl border border-neutral-200 shadow-xs flex flex-wrap items-center justify-between gap-3">
@@ -608,14 +608,14 @@ export default function App() {
                         title="Переместить это место"
                       >
                         <FolderSync className="w-3.5 h-3.5 text-purple-600" />
-                        Переместить
+                        Move
                       </button>
                       <button
                         onClick={() => handleOpenEditLocation(selectedLocation)}
                         className="px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
                       >
                         <Edit2 className="w-3.5 h-3.5 text-neutral-500" />
-                        Редактировать
+                        Edit
                       </button>
                       <button
                         onClick={() => handleOpenDeleteLocation(selectedLocation)}
@@ -623,21 +623,21 @@ export default function App() {
                         title="Удалить это место"
                       >
                         <Trash2 className="w-3.5 h-3.5 text-rose-500" />
-                        Удалить
+                        Delelte
                       </button>
                       <button
                         onClick={() => handlePrintLocationLabel(selectedLocation)}
                         className="px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
                       >
                         <Printer className="w-3.5 h-3.5 text-neutral-500" />
-                        Печать этикетки места
+                        Print location label
                       </button>
                       <button
                         onClick={handleOpenAddItem}
                         className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
                       >
                         <PackagePlus className="w-3.5 h-3.5" />
-                        Положить вещь сюда
+                        Place the item here
                       </button>
                     </div>
                   </div>
@@ -645,29 +645,29 @@ export default function App() {
                   <div className="p-4 bg-blue-50 border border-blue-200 rounded-2xl text-xs text-blue-900 flex items-center gap-2">
                     <Info className="w-4 h-4 text-blue-600 shrink-0" />
                     <span>
-                      Кликните на любую полку или коробку в дереве слева, чтобы отфильтровать хранящиеся там вещи.
+                      Click on any shelf or box in the tree on the left to filter the items stored there.
                     </span>
                   </div>
                 )}
 
-                {/* Вывод списка карточек */}
+                {/* Displaying a list of cards */}
                 {filteredItems.length === 0 ? (
                   <div className="bg-white rounded-2xl border border-neutral-200 p-10 text-center space-y-3">
                     <div className="w-12 h-12 bg-neutral-100 text-neutral-400 rounded-2xl flex items-center justify-center mx-auto">
                       <Layers className="w-6 h-6" />
                     </div>
                     <h4 className="font-bold text-sm text-neutral-800">
-                      В этом месте пока нет вещей
+                      There are no items here yet
                     </h4>
                     <p className="text-xs text-neutral-500 max-w-sm mx-auto">
-                      Нажмите кнопку «Добавить вещь», чтобы зарегистрировать новую деталь или перенесите существующую.
+                      Click the "Add item" button to register a new item, or transfer an existing one.
                     </p>
                     <button
                       onClick={handleOpenAddItem}
                       className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
                     >
                       <PackagePlus className="w-4 h-4" />
-                      Добавить вещь
+                      Add item
                     </button>
                   </div>
                 ) : (
@@ -698,9 +698,9 @@ export default function App() {
               </div>
             </div>
           ) : (
-            /* РЕЖИМ 3: Каталог вещей (Основной режим) */
+            /* MODE 3: Item Catalog (Main mode) */
             <div className="space-y-4">
-              {/* Подсказка если активен фильтр места */}
+              {/* Hint if a location filter is active */}
               {selectedLocation && (
                 <div className="p-3.5 bg-emerald-50/80 border border-emerald-200 rounded-2xl flex items-center justify-between gap-3 text-xs">
                   <div className="flex items-center gap-2">
@@ -708,7 +708,7 @@ export default function App() {
                       [{selectedLocation.full_code}]
                     </span>
                     <span className="text-neutral-700">
-                      Отображаются вещи в:{' '}
+                      Items are displayed in:{' '}
                       <strong className="text-neutral-900">
                         {inventoryManager.getLocationPathString(selectedLocation.id)}
                       </strong>
@@ -718,12 +718,12 @@ export default function App() {
                     onClick={() => setSelectedLocationId(null)}
                     className="text-emerald-700 hover:underline font-semibold"
                   >
-                    Показать все места
+                    Show all locations
                   </button>
                 </div>
               )}
 
-              {/* Результаты живого поиска */}
+              {/* Live search results */}
               {filteredItems.length === 0 ? (
                 <div className="bg-white rounded-2xl border border-neutral-200 p-12 text-center space-y-3">
                   <div className="w-14 h-14 bg-neutral-100 text-neutral-400 rounded-2xl flex items-center justify-center mx-auto">
@@ -743,7 +743,7 @@ export default function App() {
                         onClick={() => setSearchQuery('')}
                         className="px-4 py-2 border border-neutral-300 hover:bg-neutral-50 text-neutral-700 rounded-xl text-xs font-semibold transition-colors"
                       >
-                        Очистить поиск
+                        Clear search
                       </button>
                     )}
                     <button
@@ -751,7 +751,7 @@ export default function App() {
                       className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
                     >
                       <PackagePlus className="w-4 h-4" />
-                      Добавить новую вещь
+                      Add new item
                     </button>
                   </div>
                 </div>
@@ -785,7 +785,7 @@ export default function App() {
         </main>
       </div>
 
-      {/* Модальные окна */}
+      {/* Modal windows */}
       <AddItemModal
         key={editingItem ? `edit-${editingItem.id}` : 'new-item'}
         isOpen={isAddItemOpen}
@@ -963,7 +963,7 @@ export default function App() {
         }}
       />
 
-      {/* Полноэкранный просмотр изображения */}
+      {/* Full-screen image viewing */}
       {previewImageUrl && (
         <div
           onClick={() => setPreviewImageUrl(null)}
