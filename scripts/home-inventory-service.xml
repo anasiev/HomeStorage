@@ -1,0 +1,11 @@
+<service>
+  <id>HomeInventoryService</id>
+  <name>Home Inventory Server</name>
+  <description>Self-hosted hierarchical home and warehouse inventory management system.</description>
+  <executable>%BASE%\inventory.exe</executable>
+  <workingdirectory>%BASE%</workingdirectory>
+  <logmode>rotate</logmode>
+  <logpath>%BASE%\logs</logpath>
+  <env name="PORT" value="8080" />
+  <onfailure action="restart" delay="5 sec" />
+</service>

@@ -1,0 +1,25 @@
+[Unit]
+Description=Home Inventory & Storage Management Service
+After=network.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# User to execute the service (replace with your Linux username or keep default)
+User=root
+# Working directory containing db.json, uploads/, and the web/ directory
+WorkingDirectory=/opt/home-inventory
+# Path to the compiled Go binary
+ExecStart=/opt/home-inventory/inventory-linux
+Restart=always
+RestartSec=5s
+Environment="PORT=8080"
+
+# Security hardening
+ProtectSystem=full
+ProtectHome=read-only
+NoNewPrivileges=true
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
