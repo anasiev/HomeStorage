@@ -1,4 +1,4 @@
-# 📦 Home & Warehouse Inventory Management System
+# 📦 Home & Storage Inventory Management System
 
 An autonomous, self-hosted, lightweight inventory and hierarchical storage management system designed for organizing, labeling, and quickly retrieving items at home, in the workshop, garage, pantry, attic, or small warehouse.
 
