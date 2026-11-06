@@ -1,0 +1,22 @@
+npm run build
+
+> react-example@0.0.0 build
+> vite build && mkdir -p go-backend/web && rm -rf go-backend/web/* && cp -r dist/* go-backend/web/
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vite.config.ts:12:27). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+vite v8.3.6 building client environment for production...
+✓ 1712 modules transformed.
+computing gzip size...
+dist/index.html                   0.89 kB │ gzip:   0.41 kB
+dist/assets/index-DsQ_KncA.css   54.74 kB │ gzip:   9.58 kB
+dist/assets/index-B9ejD5jX.js   513.27 kB │ gzip: 138.73 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.51s
+Ошибка в синтаксисе команды.
