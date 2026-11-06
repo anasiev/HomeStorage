@@ -204,6 +204,10 @@ func main() {
 		}
 	})
 
+	// 5. Database import and export
+	mux.HandleFunc("/api/database/import", api.HandleImportDatabase)
+	mux.HandleFunc("/api/database/export", api.HandleExportDatabase)
+
 	// Serve uploaded images from uploads directory
 	fsUploads := http.StripPrefix("/uploads/", http.FileServer(http.Dir(uploadsDir)))
 	mux.Handle("/uploads/", fsUploads)

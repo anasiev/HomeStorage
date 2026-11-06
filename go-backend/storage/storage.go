@@ -1014,3 +1014,75 @@ func generateRandomHex(n int) string {
 	}
 	return hex.EncodeToString(bytes)
 }
+
+// ImportDatabase replaces the entire in-memory database with the imported snapshot and persists to disk.
+func (s *Storage) ImportDatabase(snapshot models.DatabaseSnapshot) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	seenLocs := make(map[string]bool)
+	var uniqueLocs []models.LocationNode
+	for _, l := range snapshot.Locations {
+		if l.ID != "" && !seenLocs[l.ID] {
+			seenLocs[l.ID] = true
+			uniqueLocs = append(uniqueLocs, l)
+		}
+	}
+
+	seenCats := make(map[string]bool)
+	var uniqueCats []models.CategoryNode
+	for _, c := range snapshot.Categories {
+		if c.ID != "" && !seenCats[c.ID] {
+			seenCats[c.ID] = true
+			uniqueCats = append(uniqueCats, c)
+		}
+	}
+
+	seenItems := make(map[string]bool)
+	var uniqueItems []models.InventoryItem
+	for _, it := range snapshot.Items {
+		if it.ID != "" && !seenItems[it.ID] {
+			seenItems[it.ID] = true
+			uniqueItems = append(uniqueItems, it)
+		}
+	}
+
+	s.locations = uniqueLocs
+	s.categories = uniqueCats
+	s.items = uniqueItems
+	s.recalculateAllCodesLocked()
+
+	if err := s.saveToFileLocked(); err != nil {
+		log.Printf("[ERROR] ImportDatabase failed to save to file: %v", err)
+		return err
+	}
+
+	log.Printf("[ImportDatabase] Successfully imported and saved: locations=%d, categories=%d, items=%d",
+		len(s.locations), len(s.categories), len(s.items))
+	return nil
+}
+
+// ExportDatabase returns a full snapshot of the database.
+func (s *Storage) ExportDatabase() models.DatabaseSnapshot {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	locs := make([]models.LocationNode, len(s.locations))
+	copy(locs, s.locations)
+
+	cats := make([]models.CategoryNode, len(s.categories))
+	copy(cats, s.categories)
+
+	items := make([]models.InventoryItem, len(s.items))
+	copy(items, s.items)
+
+	return models.DatabaseSnapshot{
+		Version:    "1.1.0",
+		AppName:    "Home Storage & Inventory",
+		ExportedAt: time.Now(),
+		Locations:  locs,
+		Categories: cats,
+		Items:      items,
+	}
+}
+

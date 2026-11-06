@@ -269,13 +269,16 @@ export default function App() {
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       const content = event.target?.result as string;
-      if (content && inventoryManager.importDatabaseJSON(content)) {
-        refreshData();
-        alert(t('alertDbImportSuccess'));
-      } else {
-        alert(t('alertDbImportError'));
+      if (content) {
+        const success = await inventoryManager.importDatabaseJSON(content);
+        if (success) {
+          refreshData();
+          alert(t('alertDbImportSuccess'));
+        } else {
+          alert(t('alertDbImportError'));
+        }
       }
     };
     reader.readAsText(file);

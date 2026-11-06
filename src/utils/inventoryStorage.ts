@@ -480,27 +480,6 @@ class InventoryStorageManager {
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed && Array.isArray(parsed.locations) && Array.isArray(parsed.items)) {
-          // If the user still has default sample data in Russian, smoothly upgrade to English
-          const isLegacyRussianSeed =
-            parsed.app_name === 'Домашний Склад & Инвентаризация' &&
-            parsed.locations.some((l: LocationNode) => l.name === 'Дом' || l.name === 'Гараж');
-
-          if (isLegacyRussianSeed) {
-            const initialDb: InventoryDatabase = {
-              version: '1.1.0',
-              app_name: 'Home Storage & Inventory',
-              exported_at: new Date().toISOString(),
-              locations: deduplicateById(INITIAL_LOCATIONS),
-              categories: deduplicateById(INITIAL_CATEGORIES).map((c) => ({
-                ...c,
-                parent_id: c.parent_id ? c.parent_id : null,
-              })),
-              items: deduplicateById(INITIAL_ITEMS),
-            };
-            this.saveToStorage(initialDb);
-            return initialDb;
-          }
-
           if (!parsed.categories || !Array.isArray(parsed.categories) || parsed.categories.length === 0) {
             parsed.categories = INITIAL_CATEGORIES;
           }
@@ -1387,7 +1366,7 @@ class InventoryStorageManager {
   }
 
   // Импорт базы данных из JSON
-  public importDatabaseJSON(jsonContent: string): boolean {
+  public async importDatabaseJSON(jsonContent: string): Promise<boolean> {
     try {
       const parsed = JSON.parse(jsonContent);
       if (!parsed || !Array.isArray(parsed.locations) || !Array.isArray(parsed.items)) {
@@ -1395,15 +1374,35 @@ class InventoryStorageManager {
       }
 
       const recomputed = this.recomputeAllCodes(deduplicateById(parsed.locations));
+
+      const rawCategories = Array.isArray(parsed.categories) && parsed.categories.length > 0
+        ? parsed.categories
+        : (this.db.categories && this.db.categories.length > 0 ? this.db.categories : INITIAL_CATEGORIES);
+
+      const normalizedCategories = deduplicateById(rawCategories).map((c: any) => ({
+        ...c,
+        parent_id: c.parent_id ? c.parent_id : null,
+      }));
+
       this.db = {
         version: parsed.version || '1.1.0',
         app_name: parsed.app_name || 'Home Storage & Inventory',
         exported_at: new Date().toISOString(),
         locations: recomputed,
-        categories: deduplicateById(Array.isArray(parsed.categories) ? parsed.categories : INITIAL_CATEGORIES),
+        categories: normalizedCategories,
         items: deduplicateById(parsed.items),
       };
+
+      // 1. Immediately persist to localStorage
       this.saveToStorage(this.db);
+
+      // 2. Persist to standalone Go backend (db.json on disk) if server is running
+      try {
+        await this.sendToServer('/api/database/import', 'POST', this.db);
+      } catch (err) {
+        console.warn('Backend import sync skipped (working offline/localStorage):', err);
+      }
+
       return true;
     } catch (e) {
       console.error('Database import error:', e);

@@ -519,6 +519,46 @@ func (h *APIHandler) HandleDeletePhoto(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// HandleImportDatabase imports a full JSON database snapshot into storage.
+// POST /api/database/import
+func (h *APIHandler) HandleImportDatabase(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		writeError(w, http.StatusMethodNotAllowed, "Method not allowed")
+		return
+	}
+
+	var snapshot models.DatabaseSnapshot
+	if err := json.NewDecoder(r.Body).Decode(&snapshot); err != nil {
+		writeError(w, http.StatusBadRequest, "Invalid JSON database snapshot: "+err.Error())
+		return
+	}
+
+	if err := h.storage.ImportDatabase(snapshot); err != nil {
+		writeError(w, http.StatusInternalServerError, "Failed to import database: "+err.Error())
+		return
+	}
+
+	writeJSON(w, http.StatusOK, map[string]interface{}{
+		"success":    true,
+		"message":    "Database imported successfully",
+		"locations":  len(snapshot.Locations),
+		"categories": len(snapshot.Categories),
+		"items":      len(snapshot.Items),
+	})
+}
+
+// HandleExportDatabase exports the full database snapshot.
+// GET /api/database/export
+func (h *APIHandler) HandleExportDatabase(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		writeError(w, http.StatusMethodNotAllowed, "Method not allowed")
+		return
+	}
+
+	snapshot := h.storage.ExportDatabase()
+	writeJSON(w, http.StatusOK, snapshot)
+}
+
 func generateUUID(prefix string) string {
 	return fmt.Sprintf("%s-%d-%s", prefix, time.Now().Unix(), generateRandomHex(3))
 }
