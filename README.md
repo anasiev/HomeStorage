@@ -22,7 +22,7 @@ Tracks appliances, spare parts, hardware fasteners, automotive components, tools
 ## 📸 Interface & Workflow Walkthrough
 
 ```
-![screenshot](pict1.png)
+![screenshot](pict1.PNG)
 ```
 
 ### 1. Global Live Search & Filtering
