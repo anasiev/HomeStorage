@@ -22,26 +22,7 @@ Tracks appliances, spare parts, hardware fasteners, automotive components, tools
 ## 📸 Interface & Workflow Walkthrough
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ [Home Inventory v1.1]                    [ 🔍 Search items, SKU, barcodes, locations... ]      │
-├──────────────────────────┬──────────────────────────────────────────────────────────────────────┤
-│ 📋 Core Operations:      │ 📁 Location Hierarchy Tree:                                          │
-│ 1. ➕ Add Item           │ 🏠 Home [h]                                                          │
-│ 2. ✏️ Edit Item           │    └── 🚪 Hallway Closet [h-c1]                                      │
-│ 3. 🗑️ Delete Item(s)     │         └── 📚 Shelf 3 [h-c1-s3]                                     │
-│ 4. 🔄 Move Item(s)       │              └── 📦 Box 1 (Cables) [h-c1-s3-b1] (14 items) 🏷️ ✏️     │
-│ 5. 📂 Add Location       │                                                                      │
-│ 6. ✏️ Edit Location      │ ──────────────────────────────────────────────────────────────────── │
-│ 7. 🛡️ Delete Location    │ 📦 Items in Selected Location / Category:                            │
-│ 8. 🔀 Move Location      │ ┌───────────────────────────┐  ┌───────────────────────────────────┐ │
-│ 9. 🌳 View Tree (4-Lvl)  │ │ [Photo] Samsung HEPA     │  │ [Photo] NGK Spark Plugs Laser      │ │
-│                          │ │ SKU: SAM-HEPA-0167       │  │ SKU: NGK-ILKAR7B11                 │ │
-│ 🏷️ Category Catalog:     │ │ Loc: h-c1-s3-b1          │  │ Loc: g-wb1-s2-b1                   │ │
-│ - Parts & Supplies       │ │ Barcode: 4820019284011   │  │ Barcode: 4964520095123             │ │
-│ - Tools & Equipment      │ │ [Details] [Edit] [Print] │  │ [Details] [Edit] [Print]           │ │
-│ - Fasteners & Hardware   │ └───────────────────────────┘  └───────────────────────────────────┘ │
-│ - Electronics & Cables   │                                                                      │
-└──────────────────────────┴──────────────────────────────────────────────────────────────────────┘
+![screenshot](pict1.png)
 ```
 
 ### 1. Global Live Search & Filtering
