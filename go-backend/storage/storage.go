@@ -960,7 +960,7 @@ func (s *Storage) seedInitialData() {
 			Barcode:     "4964520095123",
 			LocationID:  "box-auto",
 			CategoryID:  &catAuto,
-			Photos:      []string{"https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80"},
+			Photos:      []string{"/sample-photos/ngk-spark-plugs.jpg"},
 			Parameters: models.ItemParameters{
 				WeightKG:     &weight2,
 				DimensionsMM: &models.ItemDimensions{Length: 110, Width: 85, Height: 25},

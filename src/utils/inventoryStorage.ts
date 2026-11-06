@@ -323,7 +323,7 @@ const INITIAL_ITEMS: InventoryItem[] = [
     location_id: 'box-appliances-2',
     category_id: 'cat-parts-appliance',
     photos: [
-      'https://images.unsplash.com/photo-1517668808822-9ebb02ae2a0e?auto=format&fit=crop&w=600&q=80',
+      '/sample-photos/delonghi-gaskets.jpg',
     ],
     parameters: {
       weight_kg: 0.05,
@@ -383,7 +383,7 @@ const INITIAL_ITEMS: InventoryItem[] = [
     location_id: 'box-auto-parts',
     category_id: 'cat-parts-auto',
     photos: [
-      'https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80',
+      '/sample-photos/ngk-spark-plugs.jpg',
     ],
     parameters: {
       weight_kg: 0.28,
@@ -483,12 +483,40 @@ class InventoryStorageManager {
           if (!parsed.categories || !Array.isArray(parsed.categories) || parsed.categories.length === 0) {
             parsed.categories = INITIAL_CATEGORIES;
           }
-          parsed.items = deduplicateById<InventoryItem>(parsed.items);
+          let itemsModified = false;
+          parsed.items = deduplicateById<InventoryItem>(parsed.items).map((it) => {
+            if (it.photos && Array.isArray(it.photos)) {
+              let photoChanged = false;
+              const updatedPhotos = it.photos.map((p) => {
+                if (typeof p === 'string' && p.includes('photo-1517668808822')) {
+                  photoChanged = true;
+                  itemsModified = true;
+                  return '/sample-photos/delonghi-gaskets.jpg';
+                }
+                if (typeof p === 'string' && p.includes('photo-1486006920555')) {
+                  photoChanged = true;
+                  itemsModified = true;
+                  return '/sample-photos/ngk-spark-plugs.jpg';
+                }
+                return p;
+              });
+              if (photoChanged) {
+                return { ...it, photos: updatedPhotos };
+              }
+            }
+            return it;
+          });
+
           parsed.locations = deduplicateById<LocationNode>(parsed.locations);
           parsed.categories = deduplicateById<CategoryNode>(parsed.categories || []).map((c) => ({
             ...c,
             parent_id: c.parent_id ? c.parent_id : null,
           }));
+
+          if (itemsModified) {
+            this.saveToStorage(parsed);
+          }
+
           return parsed;
         }
       }
