@@ -18,11 +18,11 @@ import {
   Code,
   Box,
   RotateCcw,
-  Sparkles,
   FolderTree,
   Edit2,
 } from 'lucide-react';
-import { LocationNode, InventoryItem, CategoryNode } from '../types/inventory';
+import { useLanguage } from '../i18n/LanguageContext';
+import { LanguageSelector } from './LanguageSelector';
 
 interface SidebarProps {
   onOpenAddItem: () => void;
@@ -73,9 +73,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isOpenMobile,
   onCloseMobile,
 }) => {
+  const { t } = useLanguage();
+
   return (
     <>
-      {/* Затемнение для мобильных устройств */}
+      {/* Dim backdrop for mobile */}
       {isOpenMobile && (
         <div
           onClick={onCloseMobile}
@@ -90,20 +92,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
       >
         <div className="flex flex-col h-full overflow-y-auto">
           {/* Brand header */}
-          <div className="p-5 border-b border-neutral-800 flex items-center justify-between">
+          <div className="p-4 sm:p-5 border-b border-neutral-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-emerald-500 flex items-center justify-center text-neutral-950 font-black shadow-lg shadow-emerald-500/20">
+              <div className="w-9 h-9 rounded-xl bg-emerald-500 flex items-center justify-center text-neutral-950 font-black shadow-lg shadow-emerald-500/20 shrink-0">
                 <Box className="w-5 h-5" />
               </div>
-              <div>
-                <h1 className="font-extrabold text-sm tracking-tight text-white flex items-center gap-1.5">
-                  Storage & Inventory
-                  <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-neutral-800 text-emerald-400 font-normal">
-                    v1.1
+              <div className="min-w-0">
+                <h1 className="font-extrabold text-sm tracking-tight text-white flex items-center gap-1.5 truncate">
+                  <span className="truncate">{t('appName')}</span>
+                  <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-neutral-800 text-emerald-400 font-normal shrink-0">
+                    {t('version')}
                   </span>
                 </h1>
-                <p className="text-[11px] text-neutral-400">
-                  Inventory & Labeling
+                <p className="text-[11px] text-neutral-400 truncate">
+                  {t('appSubtitle')}
                 </p>
               </div>
             </div>
@@ -112,30 +114,82 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* Storage statistics */}
           <div className="px-5 py-3 bg-neutral-950/60 border-b border-neutral-800/80 grid grid-cols-3 gap-2 text-xs">
             <div className="p-2 rounded-xl bg-neutral-800/50 text-center">
-              <span className="text-neutral-400 block text-xs">Items</span>
+              <span className="text-neutral-400 block text-xs truncate">
+                {t('statsItems')}
+              </span>
               <span className="font-bold text-sm text-emerald-400 font-mono">
                 {totalItems}
               </span>
             </div>
             <div className="p-2 rounded-xl bg-neutral-800/50 text-center">
-              <span className="text-neutral-400 block text-xs">Locations</span>
+              <span className="text-neutral-400 block text-xs truncate">
+                {t('statsLocations')}
+              </span>
               <span className="font-bold text-sm text-blue-400 font-mono">
                 {totalLocations}
               </span>
             </div>
             <div className="p-2 rounded-xl bg-neutral-800/50 text-center">
-              <span className="text-neutral-400 block text-xs">Categories</span>
+              <span className="text-neutral-400 block text-xs truncate">
+                {t('statsCategories')}
+              </span>
               <span className="font-bold text-sm text-purple-400 font-mono">
                 {totalCategories}
               </span>
             </div>
           </div>
 
-          {/* Fixed operations menu */}
+          {/* Operations menu */}
           <div className="p-4 flex-1 space-y-4">
+            {/* VIEW MODE SWITCHER — PLACED ABOVE CONTROL PANEL AS REQUESTED */}
+            <div className="bg-neutral-950/70 p-2.5 rounded-2xl border border-neutral-800">
+              <div className="px-1 mb-1.5 text-[11px] font-bold uppercase tracking-wider text-neutral-400 flex items-center justify-between">
+                <span>{t('viewMode')}</span>
+              </div>
+              <div className="grid grid-cols-3 gap-1 p-1 bg-neutral-900 rounded-xl border border-neutral-800/60">
+                <button
+                  type="button"
+                  onClick={() => setActiveView('items')}
+                  className={`py-1.5 px-1 rounded-lg text-center text-xs font-medium transition-colors cursor-pointer truncate ${
+                    activeView === 'items'
+                      ? 'bg-emerald-600 text-white shadow-2xs font-bold'
+                      : 'text-neutral-400 hover:text-neutral-200'
+                  }`}
+                  title={t('viewModeItems')}
+                >
+                  {t('viewModeItems')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveView('tree')}
+                  className={`py-1.5 px-1 rounded-lg text-center text-xs font-medium transition-colors cursor-pointer truncate ${
+                    activeView === 'tree'
+                      ? 'bg-emerald-600 text-white shadow-2xs font-bold'
+                      : 'text-neutral-400 hover:text-neutral-200'
+                  }`}
+                  title={t('viewModeStorage')}
+                >
+                  {t('viewModeStorage')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveView('categories')}
+                  className={`py-1.5 px-1 rounded-lg text-center text-xs font-medium transition-colors cursor-pointer truncate ${
+                    activeView === 'categories'
+                      ? 'bg-emerald-600 text-white shadow-2xs font-bold'
+                      : 'text-neutral-400 hover:text-neutral-200'
+                  }`}
+                  title={t('viewModeCategories')}
+                >
+                  {t('viewModeCategories')}
+                </button>
+              </div>
+            </div>
+
+            {/* CONTROL PANEL */}
             <div>
               <div className="px-2 mb-2 text-xs font-bold uppercase tracking-wider text-neutral-400">
-                Control Panel
+                {t('controlPanel')}
               </div>
               <nav className="space-y-1.5">
                 {/* 1. Add item */}
@@ -147,12 +201,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   }}
                   className="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-semibold text-neutral-100 hover:text-white bg-emerald-600 hover:bg-emerald-500 shadow-xs transition-colors text-left cursor-pointer group"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <PackagePlus className="w-4.5 h-4.5 text-white" />
-                    <span>1. Add Item</span>
+                  <div className="flex items-center gap-2.5 truncate">
+                    <PackagePlus className="w-4.5 h-4.5 text-white shrink-0" />
+                    <span className="truncate">{t('addItem')}</span>
                   </div>
-                  <span className="text-xs opacity-80 font-normal group-hover:translate-x-0.5 transition-transform">
-                    New
+                  <span className="text-xs opacity-80 font-normal group-hover:translate-x-0.5 transition-transform shrink-0">
+                    {t('newItem')}
                   </span>
                 </button>
 
@@ -165,12 +219,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   }}
                   className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-neutral-300 hover:text-white hover:bg-neutral-800 transition-colors text-left cursor-pointer"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <Trash2 className="w-4.5 h-4.5 text-rose-400" />
-                    <span>2. Delete Item</span>
+                  <div className="flex items-center gap-2.5 truncate">
+                    <Trash2 className="w-4.5 h-4.5 text-rose-400 shrink-0" />
+                    <span className="truncate">{t('deleteItem')}</span>
                   </div>
                   {selectedItemsCount > 0 && (
-                    <span className="px-2 py-0.5 bg-rose-500/20 text-rose-300 rounded font-mono text-xs">
+                    <span className="px-2 py-0.5 bg-rose-500/20 text-rose-300 rounded font-mono text-xs shrink-0">
                       {selectedItemsCount}
                     </span>
                   )}
@@ -185,12 +239,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   }}
                   className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-neutral-300 hover:text-white hover:bg-neutral-800 transition-colors text-left cursor-pointer"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <ArrowRightLeft className="w-4.5 h-4.5 text-emerald-400" />
-                    <span>3. Move Item</span>
+                  <div className="flex items-center gap-2.5 truncate">
+                    <ArrowRightLeft className="w-4.5 h-4.5 text-emerald-400 shrink-0" />
+                    <span className="truncate">{t('moveItem')}</span>
                   </div>
                   {selectedItemsCount > 0 && (
-                    <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-300 rounded font-mono text-xs">
+                    <span className="px-2 py-0.5 bg-emerald-500/20 text-emerald-300 rounded font-mono text-xs shrink-0">
                       {selectedItemsCount}
                     </span>
                   )}
@@ -205,11 +259,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   }}
                   className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-neutral-300 hover:text-white hover:bg-neutral-800 transition-colors text-left cursor-pointer"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <FolderPlus className="w-4.5 h-4.5 text-blue-400" />
-                    <span>4. Add Location</span>
+                  <div className="flex items-center gap-2.5 truncate">
+                    <FolderPlus className="w-4.5 h-4.5 text-blue-400 shrink-0" />
+                    <span className="truncate">{t('addLocation')}</span>
                   </div>
-                  <span className="text-xs text-neutral-400 font-mono">
+                  <span className="text-xs text-neutral-400 font-mono shrink-0">
                     h-w-s-b
                   </span>
                 </button>
@@ -223,11 +277,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   }}
                   className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-neutral-300 hover:text-white hover:bg-neutral-800 transition-colors text-left cursor-pointer"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <Edit2 className="w-4.5 h-4.5 text-cyan-400" />
-                    <span>Edit Location</span>
+                  <div className="flex items-center gap-2.5 truncate">
+                    <Edit2 className="w-4.5 h-4.5 text-cyan-400 shrink-0" />
+                    <span className="truncate">{t('editLocation')}</span>
                   </div>
-                  <span className="text-xs text-neutral-400">
+                  <span className="text-xs text-neutral-400 shrink-0">
                     properties
                   </span>
                 </button>
@@ -241,11 +295,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   }}
                   className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-neutral-300 hover:text-white hover:bg-neutral-800 transition-colors text-left cursor-pointer"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <ShieldAlert className="w-4.5 h-4.5 text-amber-400" />
-                    <span>5. Delete Location</span>
+                  <div className="flex items-center gap-2.5 truncate">
+                    <ShieldAlert className="w-4.5 h-4.5 text-amber-400 shrink-0" />
+                    <span className="truncate">{t('deleteLocation')}</span>
                   </div>
-                  <span className="text-xs text-neutral-400">
+                  <span className="text-xs text-neutral-400 shrink-0">
                     safe check
                   </span>
                 </button>
@@ -259,11 +313,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   }}
                   className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-neutral-300 hover:text-white hover:bg-neutral-800 transition-colors text-left cursor-pointer"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <FolderSync className="w-4.5 h-4.5 text-purple-400" />
-                    <span>6. Move Location</span>
+                  <div className="flex items-center gap-2.5 truncate">
+                    <FolderSync className="w-4.5 h-4.5 text-purple-400 shrink-0" />
+                    <span className="truncate">{t('moveLocation')}</span>
                   </div>
-                  <span className="text-xs text-neutral-400 font-mono">
+                  <span className="text-xs text-neutral-400 font-mono shrink-0">
                     Drag&Drop
                   </span>
                 </button>
@@ -282,21 +336,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       : 'text-neutral-300 hover:text-white hover:bg-neutral-800'
                   }`}
                 >
-                  <div className="flex items-center gap-2.5">
-                    <Layers className="w-4.5 h-4.5 text-amber-400" />
-                    <span>7. Storage Tree</span>
+                  <div className="flex items-center gap-2.5 truncate">
+                    <Layers className="w-4.5 h-4.5 text-amber-400 shrink-0" />
+                    <span className="truncate">{t('storageTree')}</span>
                   </div>
-                  <span className="text-xs font-mono text-emerald-400">
-                    4 lvls
+                  <span className="text-xs font-mono text-emerald-400 shrink-0">
+                    {t('storageTreeLvls')}
                   </span>
                 </button>
               </nav>
             </div>
 
-            {/* Catalog Categories */}
+            {/* Item Categories */}
             <div className="pt-2 border-t border-neutral-800">
               <div className="px-2 mb-2 text-xs font-bold uppercase tracking-wider text-neutral-400">
-                Item Categories
+                {t('itemCategories')}
               </div>
               <div className="space-y-1.5">
                 <button
@@ -312,11 +366,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       : 'text-neutral-300 hover:text-white hover:bg-neutral-800'
                   }`}
                 >
-                  <div className="flex items-center gap-2.5">
-                    <FolderTree className="w-4.5 h-4.5 text-blue-400" />
-                    <span>Category Tree</span>
+                  <div className="flex items-center gap-2.5 truncate">
+                    <FolderTree className="w-4.5 h-4.5 text-blue-400 shrink-0" />
+                    <span className="truncate">{t('categoryTree')}</span>
                   </div>
-                  <span className="text-xs text-neutral-400 font-mono">
+                  <span className="text-xs text-neutral-400 font-mono shrink-0">
                     {totalCategories}
                   </span>
                 </button>
@@ -329,100 +383,69 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   }}
                   className="w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-sm font-medium text-neutral-300 hover:text-white hover:bg-neutral-800 transition-colors text-left cursor-pointer"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <FolderPlus className="w-4.5 h-4.5 text-emerald-400" />
-                    <span>Add Category</span>
+                  <div className="flex items-center gap-2.5 truncate">
+                    <FolderPlus className="w-4.5 h-4.5 text-emerald-400 shrink-0" />
+                    <span className="truncate">{t('addCategory')}</span>
                   </div>
-                  <span className="text-xs text-emerald-400 font-mono">+</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Main view toggle */}
-            <div className="pt-2 border-t border-neutral-800">
-              <div className="px-2 mb-2 text-xs font-bold uppercase tracking-wider text-neutral-400">
-                View Mode
-              </div>
-              <div className="grid grid-cols-3 gap-1.5 p-1 bg-neutral-950 rounded-xl">
-                <button
-                  type="button"
-                  onClick={() => setActiveView('items')}
-                  className={`py-2 px-1 rounded-lg text-center text-xs sm:text-sm font-medium transition-colors cursor-pointer ${
-                    activeView === 'items'
-                      ? 'bg-neutral-800 text-white shadow-2xs font-bold'
-                      : 'text-neutral-400 hover:text-neutral-200'
-                  }`}
-                >
-                  Items
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveView('tree')}
-                  className={`py-2 px-1 rounded-lg text-center text-xs sm:text-sm font-medium transition-colors cursor-pointer ${
-                    activeView === 'tree'
-                      ? 'bg-neutral-800 text-white shadow-2xs font-bold'
-                      : 'text-neutral-400 hover:text-neutral-200'
-                  }`}
-                >
-                  Storage
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveView('categories')}
-                  className={`py-2 px-1 rounded-lg text-center text-xs sm:text-sm font-medium transition-colors cursor-pointer ${
-                    activeView === 'categories'
-                      ? 'bg-neutral-800 text-white shadow-2xs font-bold'
-                      : 'text-neutral-400 hover:text-neutral-200'
-                  }`}
-                >
-                  Categories
+                  <span className="text-xs text-emerald-400 font-mono shrink-0">+</span>
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Bottom block: Import/Export db.json and Go Server info */}
-          <div className="p-4 border-t border-neutral-800 bg-neutral-950/40 space-y-2">
+          {/* Bottom block: Language Selector, Go Server, Export/Import db.json & Reset */}
+          <div className="p-3.5 border-t border-neutral-800 bg-neutral-950/70 space-y-2">
+            {/* LANGUAGE SELECTOR IN BOTTOM-LEFT AREA NEAR GO SERVER */}
+            <div className="space-y-1">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 px-1">
+                {t('language')}
+              </div>
+              <LanguageSelector />
+            </div>
+
+            {/* Go Server modal trigger */}
             <button
               type="button"
               onClick={onOpenGoDocs}
-              className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium bg-neutral-800/80 hover:bg-neutral-800 text-neutral-200 transition-colors"
+              className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium bg-neutral-800/80 hover:bg-neutral-800 text-neutral-200 transition-colors cursor-pointer border border-neutral-750"
             >
-              <div className="flex items-center gap-2">
-                <Code className="w-4 h-4 text-cyan-400" />
-                <span>Go Server &amp; Service</span>
+              <div className="flex items-center gap-2 truncate">
+                <Code className="w-4 h-4 text-cyan-400 shrink-0" />
+                <span className="truncate">{t('goServer')}</span>
               </div>
-              <span className="text-[10px] font-mono text-cyan-400">net/http</span>
+              <span className="text-[10px] font-mono text-cyan-400 shrink-0">net/http</span>
             </button>
 
+            {/* Database JSON export / import */}
             <div className="grid grid-cols-2 gap-1.5">
               <button
                 type="button"
                 onClick={onExportDb}
-                className="py-1.5 px-2 rounded-lg text-[11px] font-medium bg-neutral-800 hover:bg-neutral-700 text-neutral-300 flex items-center justify-center gap-1.5 transition-colors"
-                title="Download db.json file"
+                className="py-1.5 px-2 rounded-lg text-[11px] font-medium bg-neutral-800 hover:bg-neutral-700 text-neutral-300 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                title={t('downloadDb')}
               >
-                <Download className="w-3.5 h-3.5 text-neutral-400" />
-                <span>db.json</span>
+                <Download className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
+                <span className="truncate">{t('downloadDb')}</span>
               </button>
               <button
                 type="button"
                 onClick={onImportDbClick}
-                className="py-1.5 px-2 rounded-lg text-[11px] font-medium bg-neutral-800 hover:bg-neutral-700 text-neutral-300 flex items-center justify-center gap-1.5 transition-colors"
-                title="Import your db.json"
+                className="py-1.5 px-2 rounded-lg text-[11px] font-medium bg-neutral-800 hover:bg-neutral-700 text-neutral-300 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                title={t('importDb')}
               >
-                <Upload className="w-3.5 h-3.5 text-neutral-400" />
-                <span>Import</span>
+                <Upload className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
+                <span className="truncate">{t('importDb')}</span>
               </button>
             </div>
 
+            {/* Reset to sample data */}
             <button
               type="button"
               onClick={onResetData}
-              className="w-full text-center text-[10px] text-neutral-500 hover:text-neutral-300 py-1 transition-colors flex items-center justify-center gap-1 cursor-pointer"
+              className="w-full text-center text-[10px] text-neutral-400 hover:text-rose-400 py-1 transition-colors flex items-center justify-center gap-1.5 cursor-pointer hover:bg-neutral-900/50 rounded-lg"
             >
-              <RotateCcw className="w-3 h-3" />
-              Reset to Sample Data
+              <RotateCcw className="w-3 h-3 text-neutral-500" />
+              <span className="truncate">{t('resetSampleData')}</span>
             </button>
           </div>
         </div>

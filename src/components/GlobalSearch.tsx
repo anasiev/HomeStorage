@@ -9,8 +9,6 @@ import {
   X,
   LayoutGrid,
   List,
-  Filter,
-  Layers,
   MapPin,
   Tag,
   ChevronDown,
@@ -20,6 +18,7 @@ import {
 } from 'lucide-react';
 import { LocationNode, CategoryNode } from '../types/inventory';
 import { inventoryManager } from '../utils/inventoryStorage';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface GlobalSearchProps {
   searchQuery: string;
@@ -50,6 +49,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
   onToggleViewMode,
   totalResults,
 }) => {
+  const { t } = useLanguage();
   const [isCategoryTreeOpen, setIsCategoryTreeOpen] = useState(false);
   const [expandedNodes, setExpandedNodes] = useState<Record<string, boolean>>({
     'cat-parts': true,
@@ -88,19 +88,16 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
     }
   };
 
-  // Надежное получение дочерних категорий с нормализацией parent_id (null, undefined, '')
   const getCategoryChildren = (parentId: string | null): CategoryNode[] => {
     if (!categories || categories.length === 0) return [];
     const allCatIds = new Set(categories.map((c) => c.id));
 
     if (parentId === null) {
-      // Корневые категории: parent_id равен null, undefined, '', либо ссылается на отсутствующего родителя
       return categories.filter((c) => !c.parent_id || !allCatIds.has(c.parent_id));
     }
     return categories.filter((c) => c.parent_id === parentId);
   };
 
-  // Рекурсивный рендер раскрывающегося дерева категорий для мобильных и десктопа
   const renderCategoryNodes = (parentId: string | null, depth = 0): React.ReactNode => {
     const children = getCategoryChildren(parentId);
     if (children.length === 0) return null;
@@ -140,7 +137,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
                           ? 'hover:bg-blue-700 text-white'
                           : 'hover:bg-neutral-200 text-neutral-500'
                       }`}
-                      title={isExpanded ? 'Collapse' : 'Expand'}
+                      title={isExpanded ? t('collapseTree') : t('expandTree')}
                     >
                       {isExpanded ? (
                         <ChevronDown className="w-4 h-4 stroke-[2.5]" />
@@ -202,8 +199,8 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
           type="text"
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="Live search by name, SKU, barcode, category, address code (h-w1-s3-b1)..."
-          className="w-full py-3.5 pl-3 pr-10 text-base text-neutral-900 placeholder-neutral-400 focus:outline-hidden bg-transparent"
+          placeholder={t('searchPlaceholder')}
+          className="w-full py-3.5 pl-3 pr-10 text-sm sm:text-base text-neutral-900 placeholder-neutral-400 focus:outline-hidden bg-transparent"
         />
 
         {searchQuery && (
@@ -211,7 +208,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
             type="button"
             onClick={() => onSearchChange('')}
             className="p-2 mr-2 rounded-lg text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 transition-colors cursor-pointer"
-            title="Clear search"
+            title={t('searchClear')}
           >
             <X className="w-4 h-4" />
           </button>
@@ -226,7 +223,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
           <button
             type="button"
             onClick={() => setIsCategoryTreeOpen((prev) => !prev)}
-            className={`px-3.5 py-2 rounded-xl text-sm sm:text-base font-semibold flex items-center gap-2 transition-all cursor-pointer border ${
+            className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all cursor-pointer border ${
               isCategoryTreeOpen
                 ? 'bg-neutral-900 text-white border-neutral-900 shadow-sm'
                 : hasActiveCategory
@@ -235,10 +232,10 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
             }`}
           >
             <FolderTree className="w-4 h-4 text-blue-600 shrink-0" />
-            <span>
+            <span className="truncate max-w-[240px]">
               {hasActiveCategory
-                ? `Category: ${categoryPath || selectedCategoryName}`
-                : `Category Tree (${categories.length})`}
+                ? `${t('category')}: ${categoryPath || selectedCategoryName}`
+                : t('categoryTreeCount', { count: categories.length })}
             </span>
             <ChevronDown
               className={`w-4 h-4 transition-transform ${
@@ -257,7 +254,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
               <button
                 onClick={onClearLocationFilter}
                 className="p-1 hover:bg-emerald-200 rounded-full transition-colors ml-1 text-emerald-800 cursor-pointer"
-                title="Clear location filter"
+                title={t('clearFilter')}
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -275,7 +272,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
                   onSelectCategoryName('');
                 }}
                 className="p-1 hover:bg-blue-200 rounded-full transition-colors ml-1 text-blue-800 cursor-pointer"
-                title="Clear category filter"
+                title={t('clearFilter')}
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -286,7 +283,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
         {/* Right side: results count and grid/list view switcher */}
         <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0">
           <span className="text-sm text-neutral-600 font-medium">
-            Found:{' '}
+            {t('foundCount')}:{' '}
             <strong className="text-neutral-900 font-bold text-sm sm:text-base">
               {totalResults}
             </strong>
@@ -301,7 +298,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
                   ? 'bg-neutral-900 text-white shadow-2xs'
                   : 'text-neutral-500 hover:text-neutral-900'
               }`}
-              title="Grid view"
+              title={t('gridView')}
             >
               <LayoutGrid className="w-4 h-4" />
             </button>
@@ -313,7 +310,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
                   ? 'bg-neutral-900 text-white shadow-2xs'
                   : 'text-neutral-500 hover:text-neutral-900'
               }`}
-              title="List view"
+              title={t('listView')}
             >
               <List className="w-4 h-4" />
             </button>
@@ -328,7 +325,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
             <div className="flex items-center gap-2">
               <FolderTree className="w-4 h-4 text-blue-600" />
               <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-neutral-700">
-                Catalog Category Tree
+                {t('categoryTree')}
               </h4>
             </div>
 
@@ -341,14 +338,14 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
                   }}
                   className="text-xs sm:text-sm text-neutral-500 hover:text-neutral-900 underline cursor-pointer"
                 >
-                  Clear filter
+                  {t('clearFilter')}
                 </button>
               )}
               <button
                 type="button"
                 onClick={() => setIsCategoryTreeOpen(false)}
                 className="p-1 rounded-lg text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100"
-                title="Collapse tree"
+                title={t('collapseTree')}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -366,12 +363,12 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({
           >
             <div className="flex items-center gap-2">
               <Tag className="w-4 h-4 text-emerald-400" />
-              <span>All categories (no filter)</span>
+              <span>{t('allCategories')}</span>
             </div>
             {!hasActiveCategory && <Check className="w-4 h-4 stroke-[3]" />}
           </div>
 
-          {/* Иерархическое дерево с раскрывающимися подпунктами */}
+          {/* Recursive tree with sub-levels */}
           <div className="space-y-1.5 max-h-[50vh] overflow-y-auto pr-1">
             {renderCategoryNodes(null)}
           </div>

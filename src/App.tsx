@@ -12,17 +12,13 @@ import {
   Trash2,
   Printer,
   Layers,
-  MapPin,
-  Sparkles,
-  Info,
   CheckSquare,
-  Square,
-  Image as ImageIcon,
   FolderPlus,
   FolderTree,
   FolderSync,
   Edit2,
   Plus,
+  Info,
 } from 'lucide-react';
 import { InventoryItem, LocationNode, CategoryNode } from './types/inventory';
 import { inventoryManager } from './utils/inventoryStorage';
@@ -43,8 +39,12 @@ import { CategoryModal } from './components/CategoryModal';
 import { DeleteCategoryModal } from './components/DeleteCategoryModal';
 import { ItemDetailModal } from './components/ItemDetailModal';
 import { GoBackendModal } from './components/GoBackendModal';
+import { ResetConfirmModal } from './components/ResetConfirmModal';
+import { useLanguage } from './i18n/LanguageContext';
 
 export default function App() {
+  const { t } = useLanguage();
+
   // Data state
   const [locations, setLocations] = useState<LocationNode[]>(() =>
     inventoryManager.getLocations()
@@ -86,6 +86,7 @@ export default function App() {
   const [printTargetItem, setPrintTargetItem] = useState<InventoryItem | null>(null);
   const [isGoDocsOpen, setIsGoDocsOpen] = useState(false);
   const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
+  const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
 
   // Category modal windows
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
@@ -185,7 +186,7 @@ export default function App() {
       setItemsToDelete(selected);
       setIsDeleteItemsOpen(true);
     } else {
-      alert('First, select one or more items in the catalog to delete by checking the boxes.');
+      alert(t('alertSelectItemsToDelete'));
     }
   };
 
@@ -195,7 +196,7 @@ export default function App() {
       setItemsToMove(selected);
       setIsMoveItemOpen(true);
     } else {
-      alert('First, select one or more items to move by checking the boxes.');
+      alert(t('alertSelectItemsToMove'));
     }
   };
 
@@ -207,7 +208,7 @@ export default function App() {
   const handleOpenEditLocation = (loc?: LocationNode) => {
     const target = loc || (selectedLocationId ? inventoryManager.getLocation(selectedLocationId) : null) || locations[0] || null;
     if (!target && locations.length === 0) {
-      alert('There are no storage locations in the database yet. First, create a location using the "Add location" button.');
+      alert(t('alertNoLocationsForEdit'));
       return;
     }
     setEditingLocation(target);
@@ -217,7 +218,7 @@ export default function App() {
   const handleOpenDeleteLocation = (loc?: LocationNode) => {
     const target = loc || (selectedLocationId ? inventoryManager.getLocation(selectedLocationId) : null) || locations[0] || null;
     if (!target && locations.length === 0) {
-      alert('There are no storage locations to delete in the database yet.');
+      alert(t('alertNoLocationsForDelete'));
       return;
     }
     setTargetDeleteLocation(target);
@@ -226,7 +227,7 @@ export default function App() {
 
   const handleOpenMoveLocation = (loc?: LocationNode) => {
     if (locations.length === 0) {
-      alert('There are no storage locations for the transfer in the database yet..');
+      alert(t('alertNoLocationsForMove'));
       return;
     }
     setTargetMoveLocationId(loc ? loc.id : (selectedLocationId || locations[0]?.id));
@@ -272,24 +273,23 @@ export default function App() {
       const content = event.target?.result as string;
       if (content && inventoryManager.importDatabaseJSON(content)) {
         refreshData();
-        alert('Database successfully imported from db.json!');
+        alert(t('alertDbImportSuccess'));
       } else {
-        alert('Error during import. Ensure that the file is in the correct db.json format.');
+        alert(t('alertDbImportError'));
       }
     };
     reader.readAsText(file);
     e.target.value = '';
   };
 
-  const handleResetData = () => {
-    if (confirm('Reset the database and restore the demo examples?')) {
-      inventoryManager.resetToSampleData();
-      refreshData();
-      setSelectedLocationId(null);
-      setSelectedCategoryId(null);
-      setSelectedCategoryName('');
-      setSelectedItemIds([]);
-    }
+  // Reset with confirmation modal
+  const handleConfirmReset = () => {
+    inventoryManager.resetToSampleData();
+    refreshData();
+    setSelectedLocationId(null);
+    setSelectedCategoryId(null);
+    setSelectedCategoryName('');
+    setSelectedItemIds([]);
   };
 
   const selectedLocation = selectedLocationId
@@ -336,7 +336,7 @@ export default function App() {
         onExportDb={handleExportDb}
         onImportDbClick={() => importFileInputRef.current?.click()}
         onOpenGoDocs={() => setIsGoDocsOpen(true)}
-        onResetData={handleResetData}
+        onResetData={() => setIsResetConfirmOpen(true)}
         isOpenMobile={isMobileSidebarOpen}
         onCloseMobile={() => setIsMobileSidebarOpen(false)}
       />
@@ -353,9 +353,9 @@ export default function App() {
               <Menu className="w-5 h-5" />
             </button>
             <div className="font-extrabold text-base tracking-tight flex items-center gap-2">
-              <span>Home Storage</span>
+              <span>{t('appName')}</span>
               <span className="text-xs font-mono px-1.5 py-0.5 rounded-md bg-emerald-950 text-emerald-400 font-normal">
-                v1.1
+                {t('version')}
               </span>
             </div>
           </div>
@@ -365,20 +365,20 @@ export default function App() {
             className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-semibold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
           >
             <PackagePlus className="w-4 h-4" />
-            <span>Add</span>
+            <span>{t('newItem')}</span>
           </button>
         </header>
 
-        {/* Main part */}
+        {/* Main workspace */}
         <main className="p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-6 flex-1">
           {/* Centered global live search */}
           <div className="pt-2 pb-1">
             <div className="text-center mb-3">
               <h2 className="text-xl sm:text-2xl font-black text-neutral-900 tracking-tight">
-                Quick search for items and parts
+                {t('searchTitle')}
               </h2>
               <p className="text-xs sm:text-sm text-neutral-500 mt-0.5">
-                Hierarchy of storage locations (Home &rarr; Rack &rarr; Shelf &rarr; Box) and the category tree
+                {t('searchSubtitle')}
               </p>
             </div>
 
@@ -410,13 +410,16 @@ export default function App() {
               <div className="flex items-center gap-2 text-xs font-semibold">
                 <CheckSquare className="w-4 h-4 text-emerald-400" />
                 <span>
-                  Items selected: <strong className="text-emerald-400 font-mono">{selectedItemIds.length}</strong>
+                  {t('itemsSelected')}:{' '}
+                  <strong className="text-emerald-400 font-mono">
+                    {selectedItemIds.length}
+                  </strong>
                 </span>
                 <button
                   onClick={() => setSelectedItemIds([])}
-                  className="text-neutral-400 hover:text-white underline ml-2 font-normal"
+                  className="text-neutral-400 hover:text-white underline ml-2 font-normal cursor-pointer"
                 >
-                  Deselect
+                  {t('deselect')}
                 </button>
               </div>
 
@@ -426,14 +429,14 @@ export default function App() {
                   className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
                 >
                   <ArrowRightLeft className="w-3.5 h-3.5" />
-                  Move selected
+                  {t('moveSelected')}
                 </button>
                 <button
                   onClick={handleOpenDeleteItems}
                   className="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
-                  Delete ({selectedItemIds.length})
+                  {t('deleteSelected')} ({selectedItemIds.length})
                 </button>
               </div>
             </div>
@@ -458,7 +461,7 @@ export default function App() {
                   className="w-full py-2.5 px-4 bg-white hover:bg-neutral-50 text-neutral-800 border border-neutral-300 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 shadow-2xs transition-colors cursor-pointer"
                 >
                   <FolderPlus className="w-4 h-4 text-blue-600" />
-                  <span>Create a root category</span>
+                  <span>{t('createRootCategory')}</span>
                 </button>
               </div>
 
@@ -492,30 +495,28 @@ export default function App() {
                         className="px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
                       >
                         <Edit2 className="w-3.5 h-3.5 text-neutral-500" />
-                        Edit
+                        {t('edit')}
                       </button>
                       <button
                         onClick={() => handleOpenAddCategory(selectedCategoryNode.id)}
                         className="px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
                       >
                         <Plus className="w-3.5 h-3.5" />
-                        Subcategory
+                        {t('subCategory')}
                       </button>
                       <button
                         onClick={handleOpenAddItem}
                         className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
                       >
                         <PackagePlus className="w-3.5 h-3.5" />
-                        Add item
+                        {t('addNewItem')}
                       </button>
                     </div>
                   </div>
                 ) : (
                   <div className="p-4 bg-blue-50 border border-blue-200 rounded-2xl text-xs text-blue-900 flex items-center gap-2">
                     <Info className="w-4 h-4 text-blue-600 shrink-0" />
-                    <span>
-                      Click on any category in the tree on the left to filter the items stored there.
-                    </span>
+                    <span>{t('clickCategoryHint')}</span>
                   </div>
                 )}
 
@@ -526,17 +527,17 @@ export default function App() {
                       <FolderTree className="w-6 h-6" />
                     </div>
                     <h4 className="font-bold text-sm text-neutral-800">
-                      There are no items in this category yet
+                      {t('noItemsInCategory')}
                     </h4>
                     <p className="text-xs text-neutral-500 max-w-sm mx-auto">
-                      Click "Add item" or assign this category when editing cards.
+                      {t('noItemsInCategoryDesc')}
                     </p>
                     <button
                       onClick={handleOpenAddItem}
                       className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
                     >
                       <PackagePlus className="w-4 h-4" />
-                      Add item
+                      {t('addNewItem')}
                     </button>
                   </div>
                 ) : (
@@ -605,48 +606,46 @@ export default function App() {
                       <button
                         onClick={() => handleOpenMoveLocation(selectedLocation)}
                         className="px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
-                        title="Переместить это место"
+                        title={t('moveLocation')}
                       >
                         <FolderSync className="w-3.5 h-3.5 text-purple-600" />
-                        Move
+                        {t('move')}
                       </button>
                       <button
                         onClick={() => handleOpenEditLocation(selectedLocation)}
                         className="px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
                       >
                         <Edit2 className="w-3.5 h-3.5 text-neutral-500" />
-                        Edit
+                        {t('edit')}
                       </button>
                       <button
                         onClick={() => handleOpenDeleteLocation(selectedLocation)}
                         className="px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200 text-rose-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
-                        title="Удалить это место"
+                        title={t('deleteLocation')}
                       >
                         <Trash2 className="w-3.5 h-3.5 text-rose-500" />
-                        Delelte
+                        {t('delete')}
                       </button>
                       <button
                         onClick={() => handlePrintLocationLabel(selectedLocation)}
                         className="px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
                       >
                         <Printer className="w-3.5 h-3.5 text-neutral-500" />
-                        Print location label
+                        {t('printLocationLabel')}
                       </button>
                       <button
                         onClick={handleOpenAddItem}
                         className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
                       >
                         <PackagePlus className="w-3.5 h-3.5" />
-                        Place the item here
+                        {t('placeItemHere')}
                       </button>
                     </div>
                   </div>
                 ) : (
                   <div className="p-4 bg-blue-50 border border-blue-200 rounded-2xl text-xs text-blue-900 flex items-center gap-2">
                     <Info className="w-4 h-4 text-blue-600 shrink-0" />
-                    <span>
-                      Click on any shelf or box in the tree on the left to filter the items stored there.
-                    </span>
+                    <span>{t('clickLocationHint')}</span>
                   </div>
                 )}
 
@@ -657,17 +656,17 @@ export default function App() {
                       <Layers className="w-6 h-6" />
                     </div>
                     <h4 className="font-bold text-sm text-neutral-800">
-                      There are no items here yet
+                      {t('noItemsInLocation')}
                     </h4>
                     <p className="text-xs text-neutral-500 max-w-sm mx-auto">
-                      Click the "Add item" button to register a new item, or transfer an existing one.
+                      {t('noItemsInLocationDesc')}
                     </p>
                     <button
                       onClick={handleOpenAddItem}
                       className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
                     >
                       <PackagePlus className="w-4 h-4" />
-                      Add item
+                      {t('addNewItem')}
                     </button>
                   </div>
                 ) : (
@@ -708,7 +707,7 @@ export default function App() {
                       [{selectedLocation.full_code}]
                     </span>
                     <span className="text-neutral-700">
-                      Items are displayed in:{' '}
+                      {t('itemsDisplayedIn')}{' '}
                       <strong className="text-neutral-900">
                         {inventoryManager.getLocationPathString(selectedLocation.id)}
                       </strong>
@@ -716,9 +715,9 @@ export default function App() {
                   </div>
                   <button
                     onClick={() => setSelectedLocationId(null)}
-                    className="text-emerald-700 hover:underline font-semibold"
+                    className="text-emerald-700 hover:underline font-semibold cursor-pointer"
                   >
-                    Show all locations
+                    {t('showAllLocations')}
                   </button>
                 </div>
               )}
@@ -730,20 +729,20 @@ export default function App() {
                     <PackagePlus className="w-7 h-7" />
                   </div>
                   <h3 className="font-bold text-base text-neutral-800">
-                    {searchQuery ? 'Ничего не найдено по запросу' : 'Склад пуст'}
+                    {searchQuery ? t('noItemsFound') : t('emptyWarehouse')}
                   </h3>
                   <p className="text-xs text-neutral-500 max-w-md mx-auto">
                     {searchQuery
-                      ? `По запросу «${searchQuery}» совпадений не обнаружено. Проверьте артикул, категорию или адрес.`
-                      : 'Добавьте первую вещь или импортируйте базу данных db.json.'}
+                      ? t('noItemsFoundDesc', { query: searchQuery })
+                      : t('emptyWarehouseDesc')}
                   </p>
                   <div className="pt-2 flex items-center justify-center gap-3">
                     {searchQuery && (
                       <button
                         onClick={() => setSearchQuery('')}
-                        className="px-4 py-2 border border-neutral-300 hover:bg-neutral-50 text-neutral-700 rounded-xl text-xs font-semibold transition-colors"
+                        className="px-4 py-2 border border-neutral-300 hover:bg-neutral-50 text-neutral-700 rounded-xl text-xs font-semibold transition-colors cursor-pointer"
                       >
-                        Clear search
+                        {t('searchClear')}
                       </button>
                     )}
                     <button
@@ -751,7 +750,7 @@ export default function App() {
                       className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
                     >
                       <PackagePlus className="w-4 h-4" />
-                      Add new item
+                      {t('addNewItem')}
                     </button>
                   </div>
                 </div>
@@ -929,6 +928,12 @@ export default function App() {
         onClose={() => setIsGoDocsOpen(false)}
       />
 
+      <ResetConfirmModal
+        isOpen={isResetConfirmOpen}
+        onClose={() => setIsResetConfirmOpen(false)}
+        onConfirm={handleConfirmReset}
+      />
+
       <ItemDetailModal
         isOpen={isDetailModalOpen}
         onClose={() => {
@@ -972,7 +977,7 @@ export default function App() {
           <div className="relative max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl shadow-2xl border border-white/20">
             <img
               src={previewImageUrl}
-              alt="Увеличенное фото"
+              alt="Photo preview"
               className="w-full h-full object-contain max-h-[85vh]"
             />
             <button

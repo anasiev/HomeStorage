@@ -9,9 +9,7 @@ import {
   Edit3,
   Trash2,
   ArrowRightLeft,
-  Tag,
   Scale,
-  Maximize2,
   ChevronLeft,
   ChevronRight,
   MapPin,
@@ -20,6 +18,7 @@ import {
 } from 'lucide-react';
 import { InventoryItem, LocationNode } from '../types/inventory';
 import { inventoryManager } from '../utils/inventoryStorage';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface ItemCardProps {
   item: InventoryItem;
@@ -48,6 +47,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
   onImageClick,
   viewMode = 'grid',
 }) => {
+  const { t } = useLanguage();
   const [photoIndex, setPhotoIndex] = useState(0);
 
   const loc = location || inventoryManager.getLocation(item.location_id);
@@ -135,7 +135,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
             <h4
               onClick={() => (onView ? onView(item) : onEdit(item))}
               className="text-base sm:text-lg font-bold text-neutral-900 truncate cursor-pointer hover:text-emerald-600 transition-colors"
-              title="Open item details"
+              title={t('viewDetails')}
             >
               {item.name}
             </h4>
@@ -162,35 +162,35 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           <button
             onClick={() => onPrintLabel(item)}
             className="p-2 sm:p-2.5 text-neutral-600 hover:text-blue-600 hover:bg-neutral-100 rounded-xl cursor-pointer transition-colors"
-            title="Print label"
+            title={t('printLabel')}
           >
             <Printer className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
           <button
             onClick={() => onMove(item)}
             className="p-2 sm:p-2.5 text-neutral-600 hover:text-emerald-600 hover:bg-neutral-100 rounded-xl cursor-pointer transition-colors"
-            title="Move item"
+            title={t('move')}
           >
             <ArrowRightLeft className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
           <button
             onClick={() => (onView ? onView(item) : onEdit(item))}
             className="p-2 sm:p-2.5 text-neutral-600 hover:text-blue-600 hover:bg-neutral-100 rounded-xl cursor-pointer transition-colors"
-            title="View item details"
+            title={t('viewDetails')}
           >
             <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
           <button
             onClick={() => onEdit(item)}
             className="p-2 sm:p-2.5 text-neutral-600 hover:text-amber-600 hover:bg-neutral-100 rounded-xl cursor-pointer transition-colors"
-            title="Edit item"
+            title={t('edit')}
           >
             <Edit3 className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
           <button
             onClick={() => onDelete(item)}
             className="p-2 sm:p-2.5 text-neutral-600 hover:text-rose-600 hover:bg-neutral-100 rounded-xl cursor-pointer transition-colors"
-            title="Delete item"
+            title={t('delete')}
           >
             <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
@@ -207,7 +207,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           : 'border-neutral-200 hover:border-neutral-300'
       }`}
     >
-      {/* Фото и карусель */}
+      {/* Photo carousel */}
       <div className="relative aspect-4/3 w-full bg-neutral-100 overflow-hidden group">
         <img
           src={currentPhoto}
@@ -216,7 +216,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 cursor-pointer"
         />
 
-        {/* Чекбокс выбора для пакетных действий */}
+        {/* Checkbox */}
         {onToggleSelect && (
           <div className="absolute top-2.5 left-2.5 z-10">
             <button
@@ -233,7 +233,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           </div>
         )}
 
-        {/* Бейдж полного адреса по ТЗ: д-ш1-п3-к1 */}
+        {/* Location badge */}
         <div className="absolute top-2.5 right-2.5 z-10">
           <div className="font-mono text-xs sm:text-sm font-extrabold px-2.5 py-1 rounded-xl bg-neutral-900/85 backdrop-blur-xs text-emerald-400 shadow-sm border border-white/10 flex items-center gap-1.5">
             <MapPin className="w-3.5 h-3.5 text-emerald-400" />
@@ -241,7 +241,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           </div>
         </div>
 
-        {/* Навигация карусели при нескольких фото */}
+        {/* Carousel buttons */}
         {photos.length > 1 && (
           <>
             <button
@@ -270,10 +270,10 @@ export const ItemCard: React.FC<ItemCardProps> = ({
         )}
       </div>
 
-      {/* Контент карточки */}
+      {/* Card content */}
       <div className="p-4 flex flex-col flex-1 justify-between gap-3">
         <div>
-          {/* Путь в иерархии */}
+          {/* Breadcrumb path */}
           <div className="text-xs text-neutral-500 font-medium truncate mb-1" title={locationPath}>
             {locationPath}
           </div>
@@ -282,7 +282,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           <h3
             onClick={() => (onView ? onView(item) : onEdit(item))}
             className="font-bold text-neutral-900 text-base leading-snug line-clamp-2 cursor-pointer hover:text-emerald-600 transition-colors"
-            title="Open item details"
+            title={t('viewDetails')}
           >
             {item.name}
           </h3>
@@ -341,16 +341,16 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           <button
             onClick={() => onPrintLabel(item)}
             className="flex-1 py-2 px-2.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-            title="Print barcode & QR label"
+            title={t('printLabel')}
           >
             <Printer className="w-4 h-4 text-neutral-600" />
-            <span>Label</span>
+            <span>{t('printLabel')}</span>
           </button>
 
           <button
             onClick={() => onMove(item)}
             className="p-2 text-neutral-600 hover:text-emerald-700 hover:bg-neutral-100 rounded-xl transition-colors cursor-pointer"
-            title="Move to another location"
+            title={t('move')}
           >
             <ArrowRightLeft className="w-4 h-4" />
           </button>
@@ -358,7 +358,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           <button
             onClick={() => (onView ? onView(item) : onEdit(item))}
             className="p-2 text-neutral-600 hover:text-blue-700 hover:bg-neutral-100 rounded-xl transition-colors cursor-pointer"
-            title="View item details"
+            title={t('viewDetails')}
           >
             <Eye className="w-4 h-4" />
           </button>
@@ -366,7 +366,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           <button
             onClick={() => onEdit(item)}
             className="p-2 text-neutral-600 hover:text-amber-700 hover:bg-neutral-100 rounded-xl transition-colors cursor-pointer"
-            title="Edit item"
+            title={t('edit')}
           >
             <Edit3 className="w-4 h-4" />
           </button>
@@ -374,7 +374,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
           <button
             onClick={() => onDelete(item)}
             className="p-2 text-neutral-600 hover:text-rose-700 hover:bg-neutral-100 rounded-xl transition-colors cursor-pointer"
-            title="Delete item"
+            title={t('delete')}
           >
             <Trash2 className="w-4 h-4" />
           </button>
