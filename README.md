@@ -83,6 +83,25 @@ Photos are stored directly on the local filesystem with structured isolation:
 
 ---
 
+## 🌐 Supported Languages (i18n)
+
+The system features a fully localized user interface supporting both Left-to-Right (LTR) and Right-to-Left (RTL) text layouts:
+
+| Flag | Language | Native Name | Direction |
+| :---: | --- | --- | :---: |
+| 🇬🇧 | English | English | LTR |
+| 🇷🇺 | Russian | Русский | LTR |
+| 🇩🇪 | German | Deutsch | LTR |
+| 🇨🇳 | Chinese | 中文 | LTR |
+| 🇮🇳 | Hindi | हिन्दी | LTR |
+| 🇪🇸 | Spanish | Español | LTR |
+| 🇸🇦 | Arabic | العربية | RTL |
+| 🇫🇷 | French | Français | LTR |
+| 🇧🇩 | Bengali | বাংলা | LTR |
+| 🇵🇹 | Portuguese | Português | LTR |
+| 🇯🇵 | Japanese | 日本語 | LTR |
+
+
 ## 💾 Backup & Disaster Recovery Guide
 
 > **CRITICAL**: To create a full backup of your inventory, you only need to preserve **TWO** items:
