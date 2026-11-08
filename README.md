@@ -16,6 +16,7 @@ Tracks appliances, spare parts, hardware fasteners, automotive components, tools
 - **Safe Deletion Protection**: Locations cannot be deleted if items are currently placed inside them.
 - **Run as a Background Service**: Ready-made templates and automated scripts for **Windows 10/11 services** and **Linux systemd services**.
 - **100% Offline-First & Private**: Your data stays on your local drive. Accessible by all smartphones, tablets, and PCs on your local Wi-Fi network.
+- **Multi-Language Support (i18n)**: Easily switch between languages for a fully localized user interface.
 
 ---
 
