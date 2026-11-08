@@ -322,6 +322,6 @@ If this project has saved you time or helped you in your work, consider supporti
   <br>⚠️ *Note for USDT: Please ensure you are sending via the **TRC-20 (Tron)** network. Sending to the wrong network will result in a permanent loss of funds.*
 --- 
 📱 **Telegram Wallet (No fees):** 
-    Send directly to username: `@technokhv`
+    Send directly to username: `@anasiev`
 
 ---
