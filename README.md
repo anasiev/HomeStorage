@@ -319,7 +319,7 @@ If this project has saved you time or helped you in your work, consider supporti
 💵 **USDT (TRC-20 / Tron network):**
 *     `TGxa9vYFV6VBeb37GHh8GnuAuARji9PT1v`
   ![USDT](USDT_trc20.png)
-⚠️ *Note for USDT: Please ensure you are sending via the **TRC-20 (Tron)** network. Sending to the wrong network will result in a permanent loss of funds.*
+  ⚠️ *Note for USDT: Please ensure you are sending via the **TRC-20 (Tron)** network. Sending to the wrong network will result in a permanent loss of funds.*
 --- 
 📱 **Telegram Wallet (No fees):** 
     Send directly to username: `@technokhv`
