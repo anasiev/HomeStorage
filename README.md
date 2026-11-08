@@ -315,10 +315,11 @@ If this project has saved you time or helped you in your work, consider supporti
 *   💎 **GRAM / TON (The Open Network):**
 *     `UQCjN9if4bTewLNJRYaUdeaSdziQlNLgPuHN39t1Vlzlmrdp`
 * ![GRAM](GRAM_ton.png)
-* -------------------------------------------------
+---
 *   💵 **USDT (TRC-20 / Tron network):**
 *     `TGxa9vYFV6VBeb37GHh8GnuAuARji9PT1v`
 * ![USDT](USDT_trc20.png)
+--- 
 *   📱 **Telegram Wallet (No fees):** 
     Send directly to username: `@technokhv`
 
