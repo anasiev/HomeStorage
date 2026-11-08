@@ -22,7 +22,7 @@ Tracks appliances, spare parts, hardware fasteners, automotive components, tools
 
 ## 📸 Interface & Workflow Walkthrough
 
-![screenshot](pict1.PNG)
+![screenshot](pict1.png)
 
 ### 1. Global Live Search & Filtering
 - Instant substring filtering across item titles, descriptions, SKUs, barcodes, physical dimensions, notes, and hierarchical address codes.
