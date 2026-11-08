@@ -307,3 +307,19 @@ All endpoints return and accept JSON, unless specified otherwise.
 ## 📄 License
 
 Licensed under the [Apache-2.0 License](LICENSE).
+
+## 💖 Support the Project
+
+If this project has saved you time or helped you in your work, consider supporting its further development. You can send a donation using crypto networks or directly via Telegram:
+
+*   💎 **GRAM / TON (The Open Network):** 
+    `UQCjN9if4bTewLNJRYaUdeaSdziQlNLgPuHN39t1Vlzlmrdp`
+*   💵 **USDT (TRC-20 / Tron network):** 
+    `TGxa9vYFV6VBeb37GHh8GnuAuARji9PT1v`
+*   📱 **Telegram Wallet (No fees / Без комиссии):** 
+    Send directly to username / Отправить прямо по юзернейму: `@technokhv`
+
+---
+⚠️ *Note for USDT: Please ensure you are sending via the **TRC-20 (Tron)** network. Sending to the wrong network will result in a permanent loss of funds.*
+⚠️ *Примечание для USDT: Пожалуйста, убедитесь, что отправляете перевод в сети **TRC-20 (Tron)**. Отправка в другой сети приведет к безвозвратной потере средств.*
+
