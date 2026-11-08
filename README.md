@@ -312,9 +312,11 @@ Licensed under the [Apache-2.0 License](LICENSE).
 
 If this project has saved you time or helped you in your work, consider supporting its further development. You can send a donation using crypto networks or directly via Telegram:
 
-*   💎 **GRAM / TON (The Open Network):** 
+*   💎 **GRAM / TON (The Open Network):**
+*    <img src="./images/GRAM_ton.png" width="200" alt="QR GRAM">
     `UQCjN9if4bTewLNJRYaUdeaSdziQlNLgPuHN39t1Vlzlmrdp`
-*   💵 **USDT (TRC-20 / Tron network):** 
+*   💵 **USDT (TRC-20 / Tron network):**
+*   <img src="./images/USDT_trc20.png" width="200" alt="QR USDT">
     `TGxa9vYFV6VBeb37GHh8GnuAuARji9PT1v`
 *   📱 **Telegram Wallet (No fees):** 
     Send directly to username: `@technokhv`
