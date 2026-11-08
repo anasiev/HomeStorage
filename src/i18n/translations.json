@@ -111,7 +111,9 @@
     "collapseTree": "Collapse tree",
     "expandTree": "Expand tree",
     "clearFilter": "Clear filter",
-    "categoryTreeCount": "Category Tree ({count})"
+    "categoryTreeCount": "Category Tree ({count})",
+    "deployFolderTitle": "Deploying to a New Folder or Another PC",
+    "deployFolderDesc": "To run in a new folder, you must copy BOTH the executable (inventory.exe) AND the frontend folder (web/ from go-backend/web)."
   },
   "ru": {
     "appName": "Хранение & Склад",
@@ -225,7 +227,9 @@
     "collapseTree": "Свернуть дерево",
     "expandTree": "Развернуть дерево",
     "clearFilter": "Сбросить фильтр",
-    "categoryTreeCount": "Дерево категорий ({count})"
+    "categoryTreeCount": "Дерево категорий ({count})",
+    "deployFolderTitle": "Перенос в новую папку или на другой компьютер",
+    "deployFolderDesc": "Для работы сервера необходимо перенести И файл inventory.exe, И папку web/ (скопировав её из go-backend/web)."
   },
   "de": {
     "appName": "Lager & Inventar",
@@ -339,7 +343,9 @@
     "collapseTree": "Baum einklappen",
     "expandTree": "Baum ausklappen",
     "clearFilter": "Filter zurücksetzen",
-    "categoryTreeCount": "Kategoriebaum ({count})"
+    "categoryTreeCount": "Kategoriebaum ({count})",
+    "deployFolderTitle": "Auf neuen Ordner oder anderen PC übertragen",
+    "deployFolderDesc": "Um in einem neuen Ordner auszuführen, müssen Sie SOWOHL inventory.exe ALS AUCH den Ordner web/ (aus go-backend/web) kopieren."
   },
   "zh": {
     "appName": "家庭仓储与库存",
@@ -453,7 +459,9 @@
     "collapseTree": "折叠树",
     "expandTree": "展开树",
     "clearFilter": "重置筛选",
-    "categoryTreeCount": "分类目录树 ({count})"
+    "categoryTreeCount": "分类目录树 ({count})",
+    "deployFolderTitle": "部署到新文件夹或其他电脑",
+    "deployFolderDesc": "要在新文件夹中运行，必须同时复制可执行文件 (inventory.exe) 和前端文件夹 (来自 go-backend/web 的 web/)。"
   },
   "hi": {
     "appName": "होम स्टोरेज और इन्वेंटरी",
@@ -567,7 +575,9 @@
     "collapseTree": "ट्री संक्षिप्त करें",
     "expandTree": "ट्री विस्तृत करें",
     "clearFilter": "फ़िल्टर साफ़ करें",
-    "categoryTreeCount": "श्रेणी ट्री ({count})"
+    "categoryTreeCount": "श्रेणी ट्री ({count})",
+    "deployFolderTitle": "नए फ़ोल्डर या अन्य पीसी पर परिनियोजन",
+    "deployFolderDesc": "नए फ़ोल्डर में चलाने के लिए, आपको inventory.exe और web/ फ़ोल्डर (go-backend/web से) दोनों की प्रतिलिपि बनानी होगी।"
   },
   "es": {
     "appName": "Almacén e Inventario",
@@ -681,7 +691,9 @@
     "collapseTree": "Contraer árbol",
     "expandTree": "Expandir árbol",
     "clearFilter": "Limpiar filtro",
-    "categoryTreeCount": "Árbol de categorías ({count})"
+    "categoryTreeCount": "Árbol de categorías ({count})",
+    "deployFolderTitle": "Despliegue en una nueva carpeta u otro PC",
+    "deployFolderDesc": "Para ejecutar en una nueva carpeta, debe copiar TANTO el archivo inventory.exe COMO la carpeta web/ (desde go-backend/web)."
   },
   "ar": {
     "appName": "التخزين والمخزون",
@@ -795,7 +807,9 @@
     "collapseTree": "طي الشجرة",
     "expandTree": "توسيع الشجرة",
     "clearFilter": "إلغاء التصفية",
-    "categoryTreeCount": "شجرة الفئات ({count})"
+    "categoryTreeCount": "شجرة الفئات ({count})",
+    "deployFolderTitle": "النقل إلى مجلد جديد أو كمبيوتر آخر",
+    "deployFolderDesc": "للتشغيل في مجلد جديد، يجب نسخ كل من inventory.exe ومجلد web/ (من go-backend/web)."
   },
   "fr": {
     "appName": "Stockage & Inventaire",
@@ -909,7 +923,9 @@
     "collapseTree": "Réduire l'arbre",
     "expandTree": "Développer l'arbre",
     "clearFilter": "Effacer le filtre",
-    "categoryTreeCount": "Arbre des catégories ({count})"
+    "categoryTreeCount": "Arbre des catégories ({count})",
+    "deployFolderTitle": "Déploiement dans un nouveau dossier ou autre PC",
+    "deployFolderDesc": "Pour exécuter dans un nouveau dossier, vous devez copier À LA FOIS inventory.exe ET le dossier web/ (depuis go-backend/web)."
   },
   "bn": {
     "appName": "হোম স্টোরেজ ও ইনভেন্টরি",
@@ -1023,7 +1039,9 @@
     "collapseTree": "ট্রি সংকুচিত করুন",
     "expandTree": "ট্রি প্রসারিত করুন",
     "clearFilter": "ফিল্টার মুছুন",
-    "categoryTreeCount": "ক্যাটাগরি ট্রি ({count})"
+    "categoryTreeCount": "ক্যাটাগরি ট্রি ({count})",
+    "deployFolderTitle": "নতুন ফোল্ডার বা অন্য পিসিতে স্থাপন",
+    "deployFolderDesc": "একটি নতুন ফোল্ডারে চালানোর জন্য, আপনাকে inventory.exe এবং web/ ফোল্ডার (go-backend/web থেকে) উভয়ই কপি করতে হবে।"
   },
   "pt": {
     "appName": "Armazenamento & Estoque",
@@ -1137,7 +1155,9 @@
     "collapseTree": "Recolher árvore",
     "expandTree": "Expandir árvore",
     "clearFilter": "Limpar filtro",
-    "categoryTreeCount": "Árvore de categorias ({count})"
+    "categoryTreeCount": "Árvore de categorias ({count})",
+    "deployFolderTitle": "Implantação em nova pasta ou outro PC",
+    "deployFolderDesc": "Para executar em uma nova pasta, você deve copiar TANTO o executável inventory.exe QUANTO a pasta web/ (de go-backend/web)."
   },
   "ja": {
     "appName": "家庭用収納 & 在庫管理",
@@ -1251,6 +1271,8 @@
     "collapseTree": "ツリーを折りたたむ",
     "expandTree": "ツリーを展開",
     "clearFilter": "フィルター解除",
-    "categoryTreeCount": "カテゴリツリー ({count})"
+    "categoryTreeCount": "カテゴリツリー ({count})",
+    "deployFolderTitle": "新しいフォルダや他のPCへの配置",
+    "deployFolderDesc": "新しいフォルダで実行するには、inventory.exe と web/ フォルダ（go-backend/web から）の両方をコピーする必要があります。"
   }
 }

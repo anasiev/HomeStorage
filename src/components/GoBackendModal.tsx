@@ -13,6 +13,7 @@ import {
   Check,
   Server,
   Cpu,
+  Folder,
 } from 'lucide-react';
 import { inventoryManager } from '../utils/inventoryStorage';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -171,6 +172,26 @@ export const GoBackendModal: React.FC<GoBackendModalProps> = ({ isOpen, onClose 
                   <div className="text-white">GOOS=linux GOARCH=amd64 go build -o inventory main.go</div>
                   <div className="mt-2">{t('crossBuildMac')}</div>
                   <div className="text-white">GOOS=darwin GOARCH=arm64 go build -o inventory-mac main.go</div>
+                </div>
+              </div>
+
+              {/* 3. Folder transfer guide */}
+              <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl space-y-2 text-xs">
+                <div className="flex items-center gap-2 font-bold text-amber-500">
+                  <Folder className="w-4 h-4 text-amber-500 shrink-0" />
+                  <span>{t('deployFolderTitle')}</span>
+                </div>
+                <p className="text-neutral-300 text-[11px] leading-relaxed">
+                  {t('deployFolderDesc')}
+                </p>
+                <div className="bg-neutral-950 p-2.5 rounded-lg font-mono text-[11px] text-sky-400 space-y-0.5 border border-neutral-800">
+                  <div>your-inventory-folder/</div>
+                  <div>├── inventory.exe &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-neutral-500">(Go server)</span></div>
+                  <div>├── web/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-emerald-400 font-bold">&lt;-- copy go-backend/web here!</span></div>
+                  <div>│&nbsp;&nbsp; ├── index.html</div>
+                  <div>│&nbsp;&nbsp; └── assets/</div>
+                  <div>├── db.json &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-neutral-500">(database - auto created)</span></div>
+                  <div>└── uploads/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-neutral-500">(photos - auto created)</span></div>
                 </div>
               </div>
 
