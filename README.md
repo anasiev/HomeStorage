@@ -265,6 +265,24 @@ GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o inventory-mac main.go
 GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o inventory-mac-intel main.go
 ```
 
+### 3. Deploying to a New Folder or Another PC
+
+When moving `inventory.exe` to a new folder, on a flash drive, or to another PC, you must copy **BOTH** the executable and the `web` folder:
+
+```
+your-inventory-folder/
+├── inventory.exe          <-- compiled Go server executable
+├── web/                   <-- REQUIRED: copy the go-backend/web folder here!
+│   ├── index.html
+│   ├── assets/
+│   └── sample-photos/
+├── db.json                <-- your database (auto-created if absent)
+└── uploads/               <-- photos folder (auto-created if absent)
+```
+
+> 💡 **Automated Packaging**:
+> You can also run `scripts\create-portable-package.bat` on Windows (or `scripts/create-portable-package.sh` on Linux). It will automatically generate a self-contained `portable_inventory/` directory with `inventory.exe`, `web/`, and a `start.bat` launcher.
+
 ---
 
 ## ⚖️ Advantages & Limitations
@@ -327,6 +345,8 @@ All endpoints return and accept JSON, unless specified otherwise.
 ## 📄 License
 
 Licensed under the [Apache-2.0 License](LICENSE).
+
+---
 
 ## 💖 Support the Project
 
