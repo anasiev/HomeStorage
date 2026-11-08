@@ -316,10 +316,9 @@ If this project has saved you time or helped you in your work, consider supporti
     `UQCjN9if4bTewLNJRYaUdeaSdziQlNLgPuHN39t1Vlzlmrdp`
 *   💵 **USDT (TRC-20 / Tron network):** 
     `TGxa9vYFV6VBeb37GHh8GnuAuARji9PT1v`
-*   📱 **Telegram Wallet (No fees / Без комиссии):** 
-    Send directly to username / Отправить прямо по юзернейму: `@technokhv`
+*   📱 **Telegram Wallet (No fees):** 
+    Send directly to username: `@technokhv`
 
 ---
 ⚠️ *Note for USDT: Please ensure you are sending via the **TRC-20 (Tron)** network. Sending to the wrong network will result in a permanent loss of funds.*
-⚠️ *Примечание для USDT: Пожалуйста, убедитесь, что отправляете перевод в сети **TRC-20 (Tron)**. Отправка в другой сети приведет к безвозвратной потере средств.*
 
